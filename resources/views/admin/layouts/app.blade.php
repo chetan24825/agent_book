@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    @include('admin.includes.style')
+</head>
+
+<body>
+    @include('admin.includes.header')
+    @include('admin.includes.sidebar')
+    @yield('content')
+    @include('admin.includes.footer')
+</body>
+
+@include('admin.includes.script')
+@stack('scripts')
+
+</html>
