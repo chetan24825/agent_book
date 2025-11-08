@@ -1,15 +1,17 @@
 @extends('admin.layouts.app')
 @section('content')
-@push('styles')
-<style>
-    @media (max-width: 768px) {
-    .card-body {
-        height: 100vh !important; /* Full height on mobile */
-        max-height: none !important; /* Remove max-height */
-    }
-}
-</style>
-@endpush
+    @push('styles')
+        <style>
+            @media (max-width: 768px) {
+                .card-body {
+                    height: 100vh !important;
+                    /* Full height on mobile */
+                    max-height: none !important;
+                    /* Remove max-height */
+                }
+            }
+        </style>
+    @endpush
     <div id="layout-wrapper">
         <div class="main-content">
             <div class="page-content">
@@ -41,21 +43,25 @@
                         @endif
                         <div class="col-12">
                             <div class="card">
-                            <div class="card-header bg-primary d-flex justify-content-between align-items-center position-sticky top-0  shadow" style="z-index: 0;">
+                                <div class="card-header bg-primary d-flex justify-content-between align-items-center position-sticky top-0  shadow"
+                                    style="z-index: 0;">
 
-                                <h4 class="card-title">Agents</h4>
-                                <div class="d-flex justify-content-end">
-                                    <form action="{{ route('admin.agents') }}" method="GET" class="d-flex justify-content-end">
-                                        <input type="text" name="search" class="form-control me-2" placeholder="Search ..." value="{{ request('search') }}">
-                                        <button type="submit" class="btn btn-light me-2">Search</button>
-                                        <a href="{{ route('admin.agents') }}" class="btn btn-danger pt-2 me-2">Reset</a>
-                                    </form>
-                                <a href="{{ route('admin.download.agents') }}" class="btn btn-dark pt-2">
-                                    <i class="fas fa-download"></i> Download
-                                </a>
+                                    <h4 class="card-title">Agents</h4>
+                                    <div class="d-flex justify-content-end">
+                                        <form action="{{ route('admin.agents') }}" method="GET"
+                                            class="d-flex justify-content-end">
+                                            <input type="text" name="search" class="form-control me-2"
+                                                placeholder="Search ..." value="{{ request('search') }}">
+                                            <button type="submit" class="btn btn-light me-2">Search</button>
+                                            <a href="{{ route('admin.agents') }}" class="btn btn-danger pt-2 me-2">Reset</a>
+                                        </form>
+                                        <a href="{{ route('admin.download.agents') }}" class="btn btn-dark pt-2">
+                                            <i class="fas fa-download"></i> Download
+                                        </a>
+                                    </div>
                                 </div>
-                            </div>
-                                                <div class="card-body" style="max-height: 400px; overflow-y: auto;>
+                                <div class="card-body"
+                                    style="max-height: 400px; overflow-y: auto;">
                                 <div class="table-responsive">
                                     <table id="datatable-row-callback"
                                         class="table table-hover table-bordered table-striped dt-responsive nowrap"
@@ -99,9 +105,9 @@
                                                                 class="fas fa-pencil-alt"></i></button>
 
                                                         <!-- <button type="button" class="btn btn-danger  delete-btn"
-                                                            data-id="{{ $agent->id }}">
-                                                            <i class="fas fa-trash-alt"></i>
-                                                        </button> -->
+                                                                data-id="{{ $agent->id }}">
+                                                                <i class="fas fa-trash-alt"></i>
+                                                            </button> -->
 
                                                         <a href="{{ route('admin.agent.view', $agent->id) }}"
                                                             target="blank" class="btn btn-info"><i
@@ -175,8 +181,7 @@
                                                                         <input type="text" class="form-control"
                                                                             id="phone{{ $agent->id }}" name="phone"
                                                                             oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10)"
-                                                                            maxlength="10"
-                                                                            value="{{ $agent->phone }}">
+                                                                            maxlength="10" value="{{ $agent->phone }}">
                                                                         @error('phone')
                                                                             <span
                                                                                 class="text-danger">{{ $message }}</span>
@@ -189,8 +194,7 @@
                                                                             id="phone_2{{ $agent->id }}"
                                                                             name="phone_2"
                                                                             oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10)"
-                                                                            maxlength="10"
-                                                                            value="{{ $agent->phone_2 }}">
+                                                                            maxlength="10" value="{{ $agent->phone_2 }}">
                                                                         @error('phone_2')
                                                                             <span
                                                                                 class="text-danger">{{ $message }}</span>
@@ -226,16 +230,16 @@
                                         </tbody>
                                     </table>
                                     <div class="d-flex justify-content-center mt-4">
-                                         {{ $agents->links('pagination::bootstrap-5') }}
+                                        {{ $agents->links('pagination::bootstrap-5') }}
                                     </div>
                                 </div>
                             </div>
-                            </div>
-                        </div> <!-- end col -->
-                    </div>
+                        </div>
+                    </div> <!-- end col -->
                 </div>
             </div>
         </div>
+    </div>
     </div>
 @endsection
 

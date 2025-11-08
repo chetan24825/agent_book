@@ -3,7 +3,7 @@
         <div id="sidebar-menu">
             <ul class="left-menu list-unstyled" id="side-menu">
                 <li>
-                    <a href="#" class="">
+                    <a href="{{ route('agent.dashboard') }}" class="">
                         <i class="fas fa-desktop"></i>
                         <span>Dashboard</span>
                     </a>
@@ -17,19 +17,18 @@
                 </li>
 
                 <li>
-                    <a href="#" class="">
-                        <i class="fas fa-box"></i>
-                        <span>My Order</span>
-                    </a>
-                </li>
-
-                <li>
-                    <a href="#" class="">
+                    <a href="{{ route('agent.products') }}" class="">
                         <i class="fas fa-baby-carriage"></i>
                         <span>Products</span>
                     </a>
                 </li>
 
+                <li>
+                    <a href="#" class="">
+                        <i class="fas fa-box"></i>
+                        <span>My Order</span>
+                    </a>
+                </li>
 
 
                 <li>

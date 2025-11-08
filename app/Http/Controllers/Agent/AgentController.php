@@ -3,8 +3,9 @@
 namespace App\Http\Controllers\Agent;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use App\Models\Product\Product;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -13,6 +14,12 @@ class AgentController extends Controller
     function toAgentLogin()
     {
         return view('agent.auth.login');
+    }
+
+    function toproducts()
+    {
+        $products = Product::with(['category'])->cursor();
+        return view('agent.product.products', compact('products'));
     }
 
     function toAgentLoginPost(Request $request)

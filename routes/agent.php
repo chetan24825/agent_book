@@ -8,7 +8,6 @@ use App\Http\Controllers\AizUploadController;
 Route::group(['middleware' => 'guest'], function () {
     Route::get('/login', [AgentController::class, 'toAgentLogin'])->name('login');
     Route::post('/login', [AgentController::class, 'toAgentLoginPost']);
-
 });
 
 Route::group(['middleware' => ['auth:agent']], function () {
@@ -18,6 +17,10 @@ Route::group(['middleware' => ['auth:agent']], function () {
     Route::get('/profile', [AgentController::class, 'toAgentprofile'])->name('profile');
     Route::post('/profile', [AgentController::class, 'toAgentprofileUpdate']);
     Route::post('/update-password', [AgentController::class, 'updatePassword'])->name('profile.updatePassword');
+
+    //Products
+    Route::get('/products', [AgentController::class, 'toproducts'])->name('products');
+    Route::post('agent/cart/add', [AgentController::class, 'add'])->name('cart.add');
 
 
 
