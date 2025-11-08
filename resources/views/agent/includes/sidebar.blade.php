@@ -17,6 +17,23 @@
                 </li>
 
                 <li>
+                    <a href="javascript: void(0);" class="has-arrow ">
+                        <i class="fa fa-user-cog"></i>
+                        <span>Customers</span>
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="{{ route('agent.newClients') }}"><i
+                                    class="mdi mdi-checkbox-blank-circle align-middle"></i>Add Customers
+                            </a></li>
+
+                        <li><a href="{{ route('agent.ourClients') }}"><i
+                                    class="mdi mdi-checkbox-blank-circle align-middle"></i>List of
+                                Customers</a></li>
+
+                    </ul>
+                </li>
+
+                <li>
                     <a href="{{ route('agent.products') }}" class="">
                         <i class="fas fa-baby-carriage"></i>
                         <span>Products</span>

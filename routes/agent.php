@@ -1,8 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Agent\AgentController;
 use App\Http\Controllers\AizUploadController;
+use App\Http\Controllers\Agent\AgentController;
+use App\Http\Controllers\Client\MyClientController;
 
 
 Route::group(['middleware' => 'guest'], function () {
@@ -21,6 +22,15 @@ Route::group(['middleware' => ['auth:agent']], function () {
     //Products
     Route::get('/products', [AgentController::class, 'toproducts'])->name('products');
     Route::post('agent/cart/add', [AgentController::class, 'add'])->name('cart.add');
+
+
+    //My Clients
+    Route::get('/my-clients', [MyClientController::class, 'toclients'])->name('ourClients');
+    Route::get('/clients/new', [MyClientController::class, 'tonewclients'])->name('newClients');
+    Route::post('/clients/new', [MyClientController::class, 'toClientStore']);
+    Route::delete('/clients/delete/{id}', [MyClientController::class, 'toClientDelete'])->name('newClients.delete');
+    Route::put('/clients/update/{id}', [MyClientController::class, 'toClientupdate'])->name('clients.update');
+
 
 
 

@@ -25,6 +25,14 @@ Route::group(['middleware' => ['auth:admin']], function () {
     Route::get('/download/agents', [AdminController::class, 'downloadAgents'])->name('download.agents');
 
 
+    // users
+    Route::get('/users', [AdminController::class, 'UserList'])->name('users');
+    Route::put('/user/update/{id}', [AdminController::class, 'UserUpdate'])->name('users.update');
+    Route::delete('user/delete/{id}', [AdminController::class, 'UserDelete'])->name('user.delete');
+    Route::get('/user/view/{slug}', [AdminController::class, 'touserview'])->name('user.view');
+
+
+
     // GetSettings
     Route::get('/settings', [AdminController::class, 'toSettings'])->name('settings');
     Route::post('/settings', [AdminController::class, 'toSettingUpload']);

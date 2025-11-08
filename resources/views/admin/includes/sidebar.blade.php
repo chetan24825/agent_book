@@ -31,23 +31,20 @@
 
 
 
-
-
-
                 <li>
-                    <a href="javascript: void(0);" class="has-arrow">
-                        <i class="fas fa-chart-area"></i>
-                        <span>Categories</span>
+                    <a href="javascript: void(0);" class="has-arrow ">
+                        <i class="fa fa-user-cog"></i>
+                        <span>Users</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
-                        <li><a href="{{ route('admin.categories') }}"><i class="fas fa-chart-area align-middle"></i>
-                                List Of Categories</a></li>
+                        <li><a href=""><i class="mdi mdi-checkbox-blank-circle align-middle"></i>Add Users
+                            </a></li>
+
+                        <li><a href="{{ route('admin.users') }}"><i
+                                    class="mdi mdi-checkbox-blank-circle align-middle"></i>List of Users</a></li>
 
                     </ul>
                 </li>
-
-
-
 
 
                 <li class="{{ Route::is('admin.product.edit') ? 'mm-active' : '' }}">
@@ -66,6 +63,10 @@
                                     class="mdi mdi-checkbox-blank-circle align-middle"></i>Add New
                                 Products</a>
                         </li>
+
+
+                        <li><a href="{{ route('admin.categories') }}"><i class="fas fa-chart-area align-middle"></i>
+                                List Of Categories</a></li>
 
 
                     </ul>

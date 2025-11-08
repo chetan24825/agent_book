@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 
+use App\Models\User;
 use App\Models\Role\Agent;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -182,4 +183,83 @@ class AdminController extends Controller
             return response()->json(['error' => 'An error occurred: ' . $e->getMessage()], 500);
         }
     }
+
+
+// -------------------------------------------------------------------------------------------
+// -------------------------------------User Section------------------------------------------
+// -------------------------------------------------------------------------------------------
+
+
+ public function UserList()
+    {
+        $users = User::with('sponsor')->get();
+        return view('admin.management.users.users', compact('users'));
+    }
+
+    public function UserUpdate(Request $request, $id)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . $id,
+            'phone' => 'required|string|max:20',
+        ]);
+
+        $user = User::find($id);
+
+        if (!$user) {
+            return redirect()->back()->with('error', 'User not found.');
+        }
+
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->phone = $request->phone;
+        $user->status = $request->status;
+        $user->phone_2 = $request->phone_2;
+        $user->state = $request->state;
+        $user->city = $request->city;
+        $user->zip_code = $request->zip_code;
+        $user->address = $request->address;
+
+        if ($user->save()) {
+            return redirect()->back()->with('success', 'User updated successfully.');
+        }
+
+        return redirect()->back()->with('error', 'User not updated.');
+    }
+
+    public function UserDelete($id)
+    {
+        $user = User::find($id);
+
+        if (!$user) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'User not found.',
+            ], 404);
+        }
+
+        if ($user->delete()) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'User deleted successfully.',
+            ], 200);
+        }
+
+        return response()->json([
+            'status' => 'error',
+            'message' => 'User not deleted.',
+        ], 500);
+    }
+
+    function touserview($id)
+    {
+        $client = User::find($id);
+        if ($client) {
+            Auth::guard('web')->login($client);
+            return redirect()->route('user.dashboard');
+        }
+    }
+
+
+
 }
