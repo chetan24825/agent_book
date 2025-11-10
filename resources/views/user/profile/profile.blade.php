@@ -52,14 +52,12 @@
                                                 Password</a>
                                             <a class="nav-item nav-link text-white" id="card7-profile-tab"
                                                 data-bs-toggle="tab" href="#card7-profile" aria-selected="false"
-                                                tabindex="-1" role="tab">Epin</a>
+                                                tabindex="-1" role="tab">KYC</a>
                                             <a class="nav-item nav-link text-white" id="card7-contact-tab"
                                                 data-bs-toggle="tab" href="#card7-contact" aria-selected="false"
                                                 tabindex="-1" role="tab">Bank
                                                 Details</a>
-                                            <!-- <a class="nav-item nav-link" id="card7-crypto-tab" data-bs-toggle="tab"
-                                                                        href="#card7-crypto" aria-selected="false" tabindex="-1"
-                                                                        role="tab">Crypto</a> -->
+
                                         </div>
                                     </div>
                                 </div>
@@ -149,16 +147,6 @@
 
                                                         <div class="row mb-3">
                                                             <div class="col-sm-4">
-                                                                <p class="mb-0">Zip Code</p>
-                                                            </div>
-                                                            <div class="col-sm-8">
-                                                                <p class="text-muted mb-0">{{ auth()->user()->zip_code }}
-                                                                </p>
-                                                            </div>
-                                                        </div>
-                                                        <hr>
-                                                        <div class="row mb-3">
-                                                            <div class="col-sm-4">
                                                                 <p class="mb-0">Address</p>
                                                             </div>
                                                             <div class="col-sm-8">
@@ -177,7 +165,7 @@
                                         <div class="tab-pane fade" id="card7-password" role="tabpanel"
                                             aria-labelledby="card7-password-tab">
                                             <div class="card-body">
-                                                <form action="{{ route('user.update.password') }}" method="POST">
+                                                <form action="{{ route('user.password.update') }}" method="POST">
                                                     @csrf
                                                     <div class="row">
 
@@ -188,10 +176,12 @@
                                                                 name="new_password" required>
                                                         </div>
                                                         <div class="col-md-6 mb-3">
-                                                            <label for="confirm_password" class="form-label">Confirm New
+                                                            <label for="new_password_confirmation"
+                                                                class="form-label">Confirm New
                                                                 Password</label>
                                                             <input type="password" class="form-control"
-                                                                id="confirm_password" name="confirm_password" required>
+                                                                id="new_password_confirmation"
+                                                                name="new_password_confirmation" required>
                                                         </div>
                                                     </div>
                                                     <button type="submit" class="btn btn-primary text-white">Update
@@ -204,36 +194,44 @@
                                         <div class="tab-pane fade" id="card7-profile" role="tabpanel"
                                             aria-labelledby="card7-profile-tab">
                                             <div class="col-xl-12" id="offerProductForm">
-                                                <div class="card">
-                                                    <div class="card-body">
-                                                        <form class="row g-3" action="{{ route('user.epin.generate') }}"
-                                                            method="post" enctype="multipart/form-data">
-                                                            @csrf
 
-                                                            <!-- Aadhar Fields -->
-                                                            <div class="col-md-4">
-                                                                <label for="user_pin" class="form-label">Enter Pin (Min 6
-                                                                    Character)</label>
-                                                                <input type="text" class="form-control"
-                                                                    name="user_pin" maxlength="6"
-                                                                    oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 6)"
-                                                                    value="{{ old('user_pin') }}" />
-                                                                @error('user_pin')
-                                                                    <span class="text-danger">{{ $message }}</span>
-                                                                @enderror
+                                                <form class="row g-3" action="{{ route('user.kyc.update') }}"
+                                                    method="post" enctype="multipart/form-data">
+                                                    @csrf
+
+                                                    <!-- Aadhar Fields -->
+                                                    <div class="col-md-6">
+                                                        <label for="Status" class="form-label mt-3">PanCard
+                                                            <span class="text-danger">*</span></label>
+                                                        <div class="input-group" data-toggle="aizuploader"
+                                                            data-type="image" data-multiple="false">
+                                                            <div class="input-group-prepend">
+                                                                <div
+                                                                    class="input-group-text bg-soft-secondary font-weight-medium">
+                                                                    Browse</div>
                                                             </div>
-
-
-                                                            <!-- Submit Button -->
-                                                            <div class="col-12">
-                                                                <button type="submit" name="save"
-                                                                    class="btn btn-primary text-white">
-                                                                    {{ auth()->user()->user_pin === null ? 'Save' : 'Update' }}
-                                                                </button>
-                                                            </div>
-                                                        </form>
+                                                            <div class="form-control file-amount">Choose file</div>
+                                                            <input type="hidden" name="pancard" class="selected-files"
+                                                                value="{{ old('pancard', auth()->user()->pancard) }}"
+                                                                required>
+                                                        </div>
+                                                        <div class="file-preview box sm"></div>
+                                                        @error('pancard')
+                                                            <span class="text-danger">{{ $message }}</span>
+                                                        @enderror
                                                     </div>
-                                                </div>
+
+
+
+                                                    <!-- Submit Button -->
+                                                    <div class="col-12">
+                                                        <button type="submit" name="save"
+                                                            class="btn btn-primary text-white">
+                                                            {{ auth()->user()->user_pin === null ? 'Save' : 'Update' }}
+                                                        </button>
+                                                    </div>
+                                                </form>
+
                                             </div>
                                         </div>
 
@@ -243,7 +241,7 @@
                                                 <div class="card">
 
                                                     <div class="card-body">
-                                                        <form class="row g-3" action="{{ route('user.bankdetail') }}"
+                                                        <form class="row g-3" action="{{ route('user.bank.update') }}"
                                                             method="post" enctype="multipart/form-data">
                                                             @csrf
 
@@ -310,12 +308,30 @@
 
                                                             </div>
 
-                                                            {{-- <div class="col-md-6">
-                                                                <label for="bank_passbook_photo" class="form-label">Bank
-                                                                    Passbook/Statement Photo</label>
-                                                                <input type="file" class="form-control"
-                                                                    id="bank_passbook_photo" name="bank_passbook_photo" />
-                                                            </div> --}}
+
+                                                            <div class="col-md-6">
+                                                                <label for="Status" class="form-label mt-3">Check Book
+                                                                    Image
+                                                                    <span class="text-danger">*</span></label>
+                                                                <div class="input-group" data-toggle="aizuploader"
+                                                                    data-type="image" data-multiple="false">
+                                                                    <div class="input-group-prepend">
+                                                                        <div
+                                                                            class="input-group-text bg-soft-secondary font-weight-medium">
+                                                                            Browse</div>
+                                                                    </div>
+                                                                    <div class="form-control file-amount">Choose file</div>
+                                                                    <input type="hidden" name="check_image"
+                                                                        class="selected-files"
+                                                                        value="{{ old('check_image', auth()->user()->check_image) }}"
+                                                                        required>
+                                                                </div>
+                                                                <div class="file-preview box sm"></div>
+                                                                @error('check_image')
+                                                                    <span class="text-danger">{{ $message }}</span>
+                                                                @enderror
+                                                            </div>
+
 
 
 
@@ -370,7 +386,7 @@
             <div class="modal-content">
                 <form action="{{ Route('user.profileupdate') }}" method="POST" enctype="multipart/form-data">
                     @csrf
-                    @method('PUT')
+
                     <div class="modal-header">
                         <h5 class="modal-title" id="editProfileModalLabel">Edit Profile</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -379,6 +395,8 @@
                         <div class="row">
                             <!-- Profile Image Section -->
                             <div class="col-12 mb-3 ">
+                                <label for="Profile" class="form-label">Profile Image</label>
+
                                 <div class="input-group" data-toggle="aizuploader" data-type="image"
                                     data-multiple="false">
                                     <div class="input-group-prepend">
@@ -393,7 +411,7 @@
                             </div>
 
                             <!-- Other Profile Fields -->
-                            @foreach (['name' => 'Full Name', 'email' => 'Email', 'phone' => 'Phone', 'phone_2' => 'Alternate Phone', 'state' => 'State', 'city' => 'City', 'zip_code' => 'Zip Code', 'address' => 'Address'] as $field => $label)
+                            @foreach (['name' => 'Full Name', 'email' => 'Email', 'phone' => 'Phone', 'phone_2' => 'Alternate Phone', 'state' => 'State', 'city' => 'City', 'address' => 'Address'] as $field => $label)
                                 <div class="col-md-6 mb-3">
                                     <label for="{{ $field }}" class="form-label">{{ $label }}</label>
                                     <input type="text" class="form-control" id="{{ $field }}"
@@ -414,6 +432,17 @@
 
 
     @push('scripts')
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                @if (session('active_tab'))
+                    var tabTriggerEl = document.querySelector('#{{ session('active_tab') }}-tab');
+                    var tab = new bootstrap.Tab(tabTriggerEl);
+                    tab.show();
+                @endif
+            });
+        </script>
+
+
         <script>
             function previewImage(event) {
                 const image = document.getElementById('currentImage');

@@ -37,7 +37,7 @@
                         <span>Users</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
-                        <li><a href=""><i class="mdi mdi-checkbox-blank-circle align-middle"></i>Add Users
+                        <li><a href="#"><i class="mdi mdi-checkbox-blank-circle align-middle"></i>Add Users
                             </a></li>
 
                         <li><a href="{{ route('admin.users') }}"><i

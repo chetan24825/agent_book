@@ -6,28 +6,14 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    /**
+     * Run the migrations.
+     */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-
-            // Sponsor & Guard
-            $table->unsignedBigInteger('sponsor_id')->nullable()->after('id');
-            $table->string('guard')->nullable()->after('sponsor_id');
-
-            // Status
-            $table->tinyInteger('status')->default(1)->after('guard');
-            $table->tinyInteger('admin_verification_status')->default(0)->after('status');
-
-            // Contact + Address
-            $table->string('phone')->nullable()->after('status');
-            $table->string('phone_2')->nullable()->after('phone');
-            $table->string('avatar')->nullable()->after('phone_2');
-            $table->string('address')->nullable()->after('avatar');
-            $table->string('state')->nullable()->after('address');
-            $table->string('city')->nullable()->after('state');
-
+        Schema::table('agents', function (Blueprint $table) {
             // Bank Details
-            $table->string('account_name')->nullable()->after('city');
+            $table->string('account_name')->nullable()->after('agent_code');
             $table->string('account_type')->nullable()->after('account_name');
             $table->string('account_number')->nullable()->after('account_type');
             $table->string('bank_name')->nullable()->after('account_number');
@@ -35,28 +21,24 @@ return new class extends Migration
             $table->string('check_image')->nullable()->after('ifsc_code');
             $table->string('pancard')->nullable()->after('check_image');
 
-            // Aadhar
+            $table->string('admin_verification_status')->default(0);
+
+
+            // Aadhar Document Fields (ordered correctly)
             $table->string('aadhar_card')->nullable()->after('pancard');
             $table->string('aadhar_card_front')->nullable()->after('aadhar_card');
             $table->string('aadhar_card_back')->nullable()->after('aadhar_card_front');
         });
     }
 
+    /**
+     * Reverse the migrations.
+     */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-
+        Schema::table('agents', function (Blueprint $table) {
             $table->dropColumn([
-                'sponsor_id',
-                'guard',
-                'status',
                 'admin_verification_status',
-                'phone_2',
-                'phone',
-                'avatar',
-                'address',
-                'state',
-                'city',
                 'account_name',
                 'account_type',
                 'account_number',
@@ -66,7 +48,7 @@ return new class extends Migration
                 'pancard',
                 'aadhar_card',
                 'aadhar_card_front',
-                'aadhar_card_back',
+                'aadhar_card_back'
             ]);
         });
     }

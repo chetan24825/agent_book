@@ -185,14 +185,14 @@ class AdminController extends Controller
     }
 
 
-// -------------------------------------------------------------------------------------------
-// -------------------------------------User Section------------------------------------------
-// -------------------------------------------------------------------------------------------
+    // -------------------------------------------------------------------------------------------
+    // -------------------------------------User Section------------------------------------------
+    // -------------------------------------------------------------------------------------------
 
 
- public function UserList()
+    public function UserList()
     {
-        $users = User::with('sponsor')->get();
+        $users = User::with('sponsor')->cursor();
         return view('admin.management.users.users', compact('users'));
     }
 
@@ -217,7 +217,7 @@ class AdminController extends Controller
         $user->phone_2 = $request->phone_2;
         $user->state = $request->state;
         $user->city = $request->city;
-        $user->zip_code = $request->zip_code;
+
         $user->address = $request->address;
 
         if ($user->save()) {
@@ -225,6 +225,15 @@ class AdminController extends Controller
         }
 
         return redirect()->back()->with('error', 'User not updated.');
+    }
+
+    function tousershow($id)
+    {
+        $user = User::find($id);
+        if (!$user) {
+            return redirect()->back()->with('error', 'User not found.');
+        }
+        return view('admin.management.users.useredit', compact('user'));
     }
 
     public function UserDelete($id)
@@ -259,7 +268,4 @@ class AdminController extends Controller
             return redirect()->route('user.dashboard');
         }
     }
-
-
-
 }

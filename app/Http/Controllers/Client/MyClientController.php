@@ -6,38 +6,58 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 
 class MyClientController extends Controller
 {
-    function toClientStore(Request $request)
+
+
+    public function toClientStore(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:my_clients,email',
-            'phone' => 'required|string',
+            'name'  => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'phone' => 'required|string|max:15',
         ]);
 
-        $my_clients = new User();
-        $my_clients->name = $request->name;
-        $my_clients->email = $request->email;
-        $my_clients->phone = $request->phone;
-        $my_clients->guard = current_guard();
-        $my_clients->user_id = $request->user_id;
+        DB::beginTransaction();
 
+        try {
 
-        $my_clients->phone_2 = $request->phone_2;
-        $my_clients->avatar = $request->avatar;
-        $my_clients->address = $request->address;
-        $my_clients->save();
+            $client = new User();
+            $client->name       = $request->name;
+            $client->email      = $request->email;
+            $client->phone      = $request->phone;
+            $client->phone_2    = $request->phone_2;
+            $client->avatar     = $request->avatar;
+            $client->address    = $request->address;
+            $client->guard      = current_guard();
+            $client->sponsor_id = Auth::id();
+            $client->password = Hash::make(111);
+            $client->status     = 1; // optional default active
 
-        return redirect()->back()->with('success', 'Client added successfully!');
+            $client->save();
+
+            DB::commit();
+            return redirect()->back()->with('success', 'Client added successfully!');
+        } catch (\Exception $e) {
+
+            DB::rollBack();
+
+            Log::error('Client Store Failed: ' . $e->getMessage());
+
+            return redirect()->back()->with('error', $e->getMessage());
+        }
     }
+
 
 
 
     function toclients(Request $request)
     {
-        $query = User::where('user_id', Auth::user()->id)
+        $query = User::where('sponsor_id', Auth::user()->id)
             ->where('guard', current_guard());
 
         if ($request->has('search')) {
@@ -64,9 +84,9 @@ class MyClientController extends Controller
 
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:my_clients,email,' . $id,
+            'email' => 'required|email|max:255|unique:users,email,' . $id,
             'phone' => 'required|string|max:20',
-            'status' => 'required|in:0,1',
+            // 'status' => 'required|in:0,1',
             'address' => 'nullable|string|max:255',
             'avatar' => 'nullable',
         ]);

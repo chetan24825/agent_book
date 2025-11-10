@@ -22,6 +22,16 @@
                                     role="tab">Profile Details</a>
                             </li>
                             <li class="nav-item">
+                                <a class="nav-link" id="kyc-tab" data-bs-toggle="tab" href="#kycTab"
+                                    role="tab">KYC</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" id="bank-tab" data-bs-toggle="tab" href="#bankTab" role="tab">Bank
+                                    Details</a>
+                            </li>
+
+                            <li class="nav-item">
                                 <a class="nav-link" id="password-tab" data-bs-toggle="tab" href="#password"
                                     role="tab">Password Settings</a>
                             </li>
@@ -99,6 +109,20 @@
                                 </form>
                             </div>
 
+                            <!-- ✅ KYC Tab -->
+                            <div class="tab-pane fade" id="kycTab" role="tabpanel">
+                                <h5 class="fw-bold mb-2">KYC Details</h5>
+                                <p>Upload KYC documents here...</p>
+                                <!-- ADD YOUR KYC FORM HERE -->
+                            </div>
+
+                            <!-- ✅ Bank Details Tab -->
+                            <div class="tab-pane fade" id="bankTab" role="tabpanel">
+                                <h5 class="fw-bold mb-2">Bank Details</h5>
+                                <p>Enter bank account details here...</p>
+                                <!-- ADD YOUR BANK FORM HERE -->
+                            </div>
+
                             <!-- Password Settings Tab -->
                             <div class="tab-pane fade" id="password" role="tabpanel">
                                 <form action="{{ route('agent.profile.updatePassword') }}" method="POST">
@@ -119,8 +143,9 @@
                                                 <label class="form-label">Current Login Password</label>
                                                 <div class="input-group">
                                                     <!-- Initially masked password -->
-                                                    <input type="password" class="form-control" id="currentnpasswordField"
-                                                        value="{{ $decryptedPassword }}" readonly />
+                                                    <input type="password" class="form-control"
+                                                        id="currentnpasswordField" value="{{ $decryptedPassword }}"
+                                                        readonly />
 
                                                     <!-- Toggle Button -->
                                                     <button type="button" class="btn btn-outline-secondary"
@@ -169,6 +194,8 @@
                             </div>
 
                         </div> <!-- End of tab-content -->
+
+
                     </div>
                 </div>
             </div>

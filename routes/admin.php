@@ -28,6 +28,8 @@ Route::group(['middleware' => ['auth:admin']], function () {
     // users
     Route::get('/users', [AdminController::class, 'UserList'])->name('users');
     Route::put('/user/update/{id}', [AdminController::class, 'UserUpdate'])->name('users.update');
+    Route::get('/user/show/{slug}', [AdminController::class, 'tousershow'])->name('users.show');
+
     Route::delete('user/delete/{id}', [AdminController::class, 'UserDelete'])->name('user.delete');
     Route::get('/user/view/{slug}', [AdminController::class, 'touserview'])->name('user.view');
 

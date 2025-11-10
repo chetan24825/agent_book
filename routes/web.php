@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AizUploadController;
+use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\Admin\AdminController;
 
 Route::get('/', function () {
@@ -16,3 +18,35 @@ Route::get('/logout', function () {
     request()->session()->regenerateToken(); // Regenerate the CSRF token for security
     return redirect()->route('login'); // Redirect to the login page (or any other route)
 })->name('logout');
+
+
+
+Route::group(['middleware' => ['auth:web'], 'prefix' => 'user', 'as' => 'user.'], function () {
+    Route::get('/dashboard', [UserController::class, 'toUserDashboard'])->name('dashboard');
+
+
+    // Profile Update
+    Route::get('profile', [UserController::class, 'UserProfile'])->name('profile');
+    Route::post('profile/update', [UserController::class, 'updateProfile'])->name('profileupdate');
+    Route::post('password/update', [UserController::class, 'updatePassword'])->name('password.update');
+    Route::post('kyc/update', [UserController::class, 'updateKyc'])->name('kyc.update');
+    Route::post('bank/update', [UserController::class, 'updateBankDetails'])->name('bank.update');
+
+
+    //Products
+    Route::get('/products', [UserController::class, 'toproducts'])->name('products');
+
+    Route::get('order', [UserController::class, 'Order'])->name('order');
+    Route::get('favourites', [UserController::class, 'VisitingCards'])->name('visitingcards');
+    Route::delete('favourite/delete/{id}', [UserController::class, 'toDeleteFavourite'])->name('user.favourite');
+
+
+
+
+    // AizUpload
+    Route::post('/aiz-uploader', [AizUploadController::class, 'show_uploader']);
+    Route::post('/aiz-uploader/upload', [AizUploadController::class, 'upload']);
+    Route::get('/aiz-uploader/get_uploaded_files', [AizUploadController::class, 'get_uploaded_files']);
+    Route::post('/aiz-uploader/get_file_by_ids', [AizUploadController::class, 'get_preview_files']);
+    Route::get('/aiz-uploader/download/{id}', [AizUploadController::class, 'attachment_download'])->name('download_attachment');
+});
