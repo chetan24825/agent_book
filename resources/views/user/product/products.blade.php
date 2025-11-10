@@ -5,6 +5,8 @@
             <div class="page-content">
                 <div class="container-fluid">
 
+
+
                     {{-- Flash Messages --}}
                     @if (session('success'))
                         <div class="alert alert-success alert-dismissible fade show" id="success-alert">
@@ -20,18 +22,27 @@
                         </div>
                     @endif
 
+
                     <div class="card">
 
-                        <div class="card-header bg-primary d-flex justify-content-between align-items-center position-sticky top-0  shadow"
+                        <div class="card-header bg-primary d-flex justify-content-between align-items-center position-sticky top-0 shadow"
                             style="z-index: 0;">
                             <h4 class="card-title">List Of Products</h4>
-                            <div class="d-flex justify-content-end">
 
-                                <a href="#" class="btn btn-dark pt-2">
+                            <div class="d-flex justify-content-end">
+                                <a href="" class="btn btn-dark position-relative">
                                     <i class="fas fa-shopping-cart me-1"></i> Cart
+
+                                    @if ($globalCartCount > 0)
+                                        <span
+                                            class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                            {{ $globalCartCount }}
+                                        </span>
+                                    @endif
                                 </a>
                             </div>
                         </div>
+
                         <div class="card-body">
 
                             <div class="row g-4">
@@ -245,13 +256,50 @@
                     $('#qtyInput').val(q - 1);
                 }
             });
+        });
+    </script>
 
-            $('#addCartForm').submit(function(e) {
-                e.preventDefault();
-                $.post("{{ route('agent.cart.add') }}", $(this).serialize(), function() {
-                    $('#addCartModal').modal('hide');
-                    Swal.fire('Added!', 'Product added to cart successfully!', 'success');
-                }).fail(() => Swal.fire('Error!', 'Something went wrong.', 'error'));
+    <script>
+        $(document).ready(function() {
+
+            $('#addCartForm').on('submit', function(e) {
+                e.preventDefault(); // stop normal form submit
+
+                $.ajax({
+                    url: "{{ route('user.cart.add') }}",
+                    type: "POST",
+                    data: $(this).serialize(),
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+
+                    success: function(response) {
+
+                        // Close Modal if open
+                        $('#addCartModal').modal('hide');
+
+                        // Show Success Alert
+                        Swal.fire({
+                            title: 'Added!',
+                            text: 'Product has been added to your cart.',
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        }).then(() => {
+                            // Refresh after clicking OK
+                            location.reload();
+                        });
+                    },
+
+                    error: function(xhr) {
+                        Swal.fire({
+                            title: 'Error!',
+                            text: xhr.responseJSON?.message ?? 'Something went wrong.',
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
+                    }
+                });
+
             });
 
         });

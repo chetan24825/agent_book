@@ -8,6 +8,7 @@ use App\Models\Inc\YoutubeVideo;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Packages\Package;
+use App\Models\Product\Product;
 
 class BasicController extends Controller
 {
@@ -20,24 +21,6 @@ class BasicController extends Controller
         return redirect()->route('site.index');
     }
 
-
-    public function toAdvertiserVideosAdd(Request $request)
-    {
-        $validatedData = $request->validate([
-            'youtubelink' => 'required|url|unique:youtube_videos,links',
-        ]);
-
-        $videoLink = new YoutubeVideo();
-        $videoLink->user_id = Auth::id();
-        $videoLink->guard = current_guard();
-        $videoLink->links = $validatedData['youtubelink'];
-
-        if ($videoLink->save()) {
-            return redirect()->back()->with('success', 'Video added successfully.');
-        }
-
-        return redirect()->back()->with('error', 'Video not added.');
-    }
 
     public function Notifications()
     {
@@ -63,10 +46,67 @@ class BasicController extends Controller
         return view('notification.notification', compact('notifications', 'prefix'));
     }
 
+    public function addToCart(Request $request)
+    {
+        $request->validate([
+            'product_id' => 'required|integer',
+            'quantity'   => 'required|integer|min:1',
+        ]);
+        // Fetch product
+        $product = Product::find($request->product_id);
 
-    public function packageShow(){
+        if (!$product) {
+            return response()->json([
+                'status'  => false,
+                'message' => 'Product not found!',
+            ], 404);
+        }
 
-         $packages = Package::where('status', 1)->orderByRaw('CAST(price AS DECIMAL(10,2)) ASC')->get();
-        return view('package.packages', compact('packages'));
+        // Get existing cart
+        $cart = session()->get('cart', []);
+
+        $product_id = $product->id;
+
+        // If product already exists in cart, update quantity
+        if (isset($cart[$product_id])) {
+            $cart[$product_id]['quantity'] += $request->quantity;
+        } else {
+            // Add new item to cart
+            $cart[$product_id] = [
+                'product_id' => $product_id,
+                'quantity'   => $request->quantity,
+                'user_id'    => Auth::guard(current_guard())->id(),
+                'guard'      => current_guard(),
+                'price'      => $product->sale_price ?? $product->mrp_price,
+                'name'       => $product->product_name,
+                'image'      => $product->thumbphotos ?? null,
+            ];
+        }
+
+        // Save updated cart to session
+        session()->put('cart', $cart);
+
+        return response()->json([
+            'status'  => true,
+            'message' => 'Product added to cart successfully.',
+            'cart'    => $cart,
+            'count'   => count($cart),
+        ]);
+    }
+
+
+    public function removeFromCart($id)
+    {
+        $cart = session()->get('cart', []);
+
+        if (isset($cart[$id])) {
+            unset($cart[$id]);
+            session()->put('cart', $cart);
+        }
+
+        return response()->json([
+            'status'  => true,
+            'message' => 'Product Remove to cart successfully.',
+        ]);
     }
 }

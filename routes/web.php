@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AizUploadController;
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Agent\AgentController;
+use App\Http\Controllers\Basic\BasicController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -35,6 +37,8 @@ Route::group(['middleware' => ['auth:web'], 'prefix' => 'user', 'as' => 'user.']
 
     //Products
     Route::get('/products', [UserController::class, 'toproducts'])->name('products');
+    Route::post('cart/add', [BasicController::class, 'addToCart'])->name('cart.add');
+
 
     Route::get('order', [UserController::class, 'Order'])->name('order');
     Route::get('favourites', [UserController::class, 'VisitingCards'])->name('visitingcards');

@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AizUploadController;
 use App\Http\Controllers\Agent\AgentController;
+use App\Http\Controllers\Basic\BasicController;
 use App\Http\Controllers\Client\MyClientController;
 
 
@@ -22,7 +23,7 @@ Route::group(['middleware' => ['auth:agent']], function () {
     //Products
     Route::get('/products', [AgentController::class, 'toproducts'])->name('products');
 
-    Route::post('agent/cart/add', [AgentController::class, 'add'])->name('cart.add');
+    Route::post('/cart/add', [BasicController::class, 'addToCart'])->name('cart.add');
 
 
     //My Clients
