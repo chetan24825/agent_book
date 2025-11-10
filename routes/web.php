@@ -37,7 +37,11 @@ Route::group(['middleware' => ['auth:web'], 'prefix' => 'user', 'as' => 'user.']
 
     //Products
     Route::get('/products', [UserController::class, 'toproducts'])->name('products');
+    Route::get('carts', [UserController::class, 'Cartdetail'])->name('carts');
+
     Route::post('cart/add', [BasicController::class, 'addToCart'])->name('cart.add');
+    Route::get('/cart/remove/{id}', [BasicController::class, 'removeFromCart'])->name('cart.remove');
+    Route::post('/cart/update/{id}', [BasicController::class, 'updateCart'])->name('cart.update');
 
 
     Route::get('order', [UserController::class, 'Order'])->name('order');

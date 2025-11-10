@@ -26,9 +26,15 @@
                             style="z-index: 0;">
                             <h4 class="card-title">List Of Products</h4>
                             <div class="d-flex justify-content-end">
-
-                                <a href="#" class="btn btn-dark pt-2">
+                                <a href="{{ route('agent.carts') }}" class="btn btn-dark position-relative">
                                     <i class="fas fa-shopping-cart me-1"></i> Cart
+
+                                    @if ($globalCartCount > 0)
+                                        <span
+                                            class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                            {{ $globalCartCount }}
+                                        </span>
+                                    @endif
                                 </a>
                             </div>
                         </div>

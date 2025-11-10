@@ -21,10 +21,7 @@ class CartServiceProvider extends ServiceProvider
     {
         view()->composer('*', function ($view) {
             $cart = session()->get('cart', []);
-
             $cartCount = count($cart);
-
-
             $view->with('globalCart', $cart)
                 ->with('globalCartCount', $cartCount);
         });

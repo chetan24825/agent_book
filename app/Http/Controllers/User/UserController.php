@@ -121,4 +121,10 @@ class UserController extends Controller
         $products = Product::with(['category'])->cursor();
         return view('user.product.products', compact('products'));
     }
+
+    function Cartdetail()
+    {
+        return view('user.product.cart');
+    }
+
 }

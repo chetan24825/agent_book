@@ -22,8 +22,13 @@ Route::group(['middleware' => ['auth:agent']], function () {
 
     //Products
     Route::get('/products', [AgentController::class, 'toproducts'])->name('products');
+    Route::get('carts', [AgentController::class, 'Cartdetail'])->name('carts');
+
+
 
     Route::post('/cart/add', [BasicController::class, 'addToCart'])->name('cart.add');
+    Route::get('/cart/remove/{id}', [BasicController::class, 'removeFromCart'])->name('cart.remove');
+    Route::post('/cart/update/{id}', [BasicController::class, 'updateCart'])->name('cart.update');
 
 
     //My Clients

@@ -104,9 +104,29 @@ class BasicController extends Controller
             session()->put('cart', $cart);
         }
 
-        return response()->json([
-            'status'  => true,
-            'message' => 'Product Remove to cart successfully.',
+        return  redirect()->back()->with('success', 'Product Remove to cart successfully.');
+    }
+
+    public function updateCart($id, Request $request)
+    {
+        $request->validate([
+            'quantity' => 'required|integer|min:1'
         ]);
+
+        // Get cart from session
+        $cart = session()->get('cart', []);
+
+        // Check if product exists in cart
+        if (isset($cart[$id])) {
+            $cart[$id]['quantity'] = (int)$request->quantity;
+
+            // Update total price for that item if you store total
+            $cart[$id]['total'] = $cart[$id]['quantity'] * $cart[$id]['price'];
+        }
+
+        // Save updated cart back into session
+        session()->put('cart', $cart);
+
+        return redirect()->back()->with('success', 'Cart updated successfully.');
     }
 }

@@ -4,9 +4,6 @@
         <div class="main-content">
             <div class="page-content">
                 <div class="container-fluid">
-
-
-
                     {{-- Flash Messages --}}
                     @if (session('success'))
                         <div class="alert alert-success alert-dismissible fade show" id="success-alert">
@@ -30,7 +27,7 @@
                             <h4 class="card-title">List Of Products</h4>
 
                             <div class="d-flex justify-content-end">
-                                <a href="" class="btn btn-dark position-relative">
+                                <a href="{{ route('user.carts') }}" class="btn btn-dark position-relative">
                                     <i class="fas fa-shopping-cart me-1"></i> Cart
 
                                     @if ($globalCartCount > 0)

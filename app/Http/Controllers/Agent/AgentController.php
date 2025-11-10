@@ -90,4 +90,9 @@ class AgentController extends Controller
         // Redirect with success message
         return redirect()->back()->with('success', 'Password updated successfully!');
     }
+
+    function Cartdetail()
+    {
+        return view('agent.product.cart');
+    }
 }
