@@ -13,6 +13,18 @@
                                         {{ session('success') }}
                                     </div>
                                 @endif
+
+                                @if (session('error'))
+                                    <div class="alert alert-danger">
+                                        {{ session('error') }}
+                                    </div>
+                                @endif
+
+                                @if (session('warning'))
+                                    <div class="alert alert-warning">
+                                        {{ session('warning') }}
+                                    </div>
+                                @endif
                                 <div class="card-header bg-primary">
                                     <h4 class="card-title text-white">My Wallet & Withdrawal</h4>
                                 </div>
@@ -21,14 +33,14 @@
                                     <div class="d-flex justify-content-between align-items-center">
                                         <h5>Wallet Balance:</h5>
                                         <h3 class="text-success">
-                                            <strong>&#8377; {{ number_format(auth()->user()->balance, 2) }}</strong>
+                                            <strong>&#8377; {{ number_format(auth()->user()->commission, 2) }}</strong>
                                         </h3>
                                     </div>
                                     <hr>
 
 
                                     <!-- <hr> -->
-                                    <form action="{{ route('user.withdraw') }}" method="post" class="row g-3" novalidate>
+                                    <form action="{{ route('agent.withdraw') }}" method="post" class="row g-3" novalidate>
                                         @csrf
 
                                         <!-- Withdrawal Amount -->
@@ -117,7 +129,6 @@
                                                         </td>
                                                     </tr>
                                                 @empty
-
                                                 @endforelse
                                             </tbody>
                                         </table>

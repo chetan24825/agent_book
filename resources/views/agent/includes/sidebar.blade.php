@@ -63,7 +63,7 @@
                 </li>
 
                 <li>
-                    <a href="#">
+                    <a href="{{route('agent.wallet')}}">
                         <i class="fas fa-wallet"></i>
                         <span>My Wallet</span>
                     </a>

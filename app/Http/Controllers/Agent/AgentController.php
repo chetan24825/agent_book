@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Agent;
 
+use App\Models\User;
 use App\Models\Orders\Order;
-use Illuminate\Http\Request;
 
+use Illuminate\Http\Request;
 use App\Models\Inc\Withdrawal;
 use App\Models\Product\Product;
+use App\Models\Orders\OrderItem;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -93,10 +95,74 @@ class AgentController extends Controller
         return redirect()->back()->with('success', 'Password updated successfully!');
     }
 
-    function Cartdetail()
+    public function Cartdetail()
     {
-        return view('agent.product.cart');
+        $users = User::orderBy('name')
+            ->where('sponsor_id', Auth::guard(current_guard())->id()) // ✅ correct id()
+            ->where('guard', current_guard())                         // ✅ filter by guard correctly
+            ->cursor();
+
+        return view('agent.product.cart', compact('users'));
     }
+
+    public function toCheck(Request $request)
+    {
+        // ✅ Validate Form Request
+        $request->validate([
+            'checkout_user_id'   => 'required|exists:users,id',
+            'checkout_user_guard' => 'required'
+        ]);
+
+        // ✅ Get Cart
+        $cart = session()->get('cart', []);
+
+        if (!$cart || count($cart) == 0) {
+            return back()->with('error', 'Your cart is empty!');
+        }
+
+        // ✅ Fetch Selected User
+        $user = User::findOrFail($request->checkout_user_id);
+
+        // ✅ Calculate Total Amount
+        $totalAmount = collect($cart)->sum(function ($item) {
+            return $item['price'] * $item['quantity'];
+        });
+
+        // ✅ Create Unique Order ID
+        $customOrderId = 'ODR' . now()->format('YmdHis');
+
+        // ✅ Create Order
+        $order = Order::create([
+            'user_id'             => $user->id,
+            'guard'               => 'web', // ✅ Use passed guard
+            'total_amount'        => $totalAmount,
+            'payment_status'      => 'pending',
+            'order_status'        => 'pending',
+            'commission_user_id'  => $user->sponsor_id ?? Auth::guard(current_guard())->id(),   // Commission Receiver
+            'commission_guard'     => $user->guard ?? current_guard(),
+            'custom_order_id'     => $customOrderId,
+            'order_by'            => current_guard() // agent ordering on behalf
+        ]);
+
+        // ✅ Insert Order Items
+        foreach ($cart as $item) {
+            OrderItem::create([
+                'order_id'     => $order->id,
+                'product_id'   => $item['product_id'],
+                'product_name' => $item['name'],
+                'price'        => $item['price'],
+                'quantity'     => $item['quantity'],
+                'total'        => $item['price'] * $item['quantity'],
+            ]);
+        }
+
+        // ✅ Clear cart
+        session()->forget('cart');
+
+        return redirect()->back()->with('success', 'Order placed successfully!');
+    }
+
+
 
     public function toorders()
     {
@@ -112,35 +178,35 @@ class AgentController extends Controller
 
     public function wallet()
     {
-        $withdrawal = Withdrawal::where('user_id', Auth::user()->id)->get();
-        return view('agent.wallet.wallet', compact('withdrawal'));
+        $withdrawal = Withdrawal::where('user_id', Auth::guard(current_guard())->id())->where('user_guard', current_guard())->cursor();
+        return view('agent.wallets.wallet', compact('withdrawal'));
     }
 
 
     public function Userwithdraw(Request $request)
     {
         $request->validate([
-            'amount' => 'required|numeric|max:' . Auth::user()->balance,
+            'amount' => 'required|numeric|max:' . Auth::guard(current_guard())->user()->commission,
         ], [
             'amount.max' => 'You do not have sufficient balance to withdraw this amount.',
         ]);
 
         $requestedAmount = (float) $request->amount;
 
-        if (Withdrawal::where('user_id', Auth::id())->where('status', 0)->count() > 0) {
-            return redirect()->back()->with('warning', 'Your withdrawal request is pending.');
+        if (Withdrawal::where('user_id', Auth::guard(current_guard())->id())->where('user_guard', current_guard())->where('status', 0)->count() > 0) {
+            return redirect()->back()->withInput()->with('warning', 'Your withdrawal request is pending.');
         }
         try {
             $withdrawal = new Withdrawal();
             $withdrawal->transaction_id = 'WD' . now()->format('YmdHis');
             $withdrawal->user_id = Auth::user()->id;
+            $withdrawal->user_guard = current_guard();
             $withdrawal->amount = $requestedAmount;
-            $withdrawal->balance_amount = (Auth::user()->balance);
+            $withdrawal->balance_amount = Auth::guard(current_guard())->user()->commission;
             $withdrawal->save();
             return redirect()->back()->with('success', 'Your withdrawal request has been submitted successfully.');
         } catch (\Exception $e) {
-            // Handle exceptions
-            return redirect()->back()->with('error', 'An error occurred while processing your withdrawal request. Please try again later.');
+            return redirect()->back()->with('error', $e->getMessage());
         }
     }
 }

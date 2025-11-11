@@ -39,6 +39,7 @@
                                             <th>Total Amount</th>
                                             <th>Payment Status</th>
                                             <th>Order Status</th>
+                                            <th>Commission</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -51,8 +52,11 @@
                                                 <td class="fw-bold">{{ $order->custom_order_id ?? 'N/A' }}</td>
 
                                                 <td>
-                                                    {{ $order->user?->name ?? 'N/A' }} <br>
-                                                    <small class="text-muted">{{ $order->user?->email ?? '' }}</small>
+                                                    {{ $order->user?->shop_name ?? '' }} <br>
+                                                    <small class="text-muted">
+
+                                                         {{ $order->user?->name ?? 'N/A' }}
+                                                    </small>
                                                 </td>
 
                                                 <td>
@@ -82,6 +86,9 @@
                                                         {{ ucfirst($order->order_status) }}
                                                     </span>
                                                 </td>
+
+
+                                                 <td>₹{{ number_format($order->total_commission, 2) }}</td>
 
                                                 <td>
                                                     <a href="{{ route('admin.order.invoice', $order->id) }}"

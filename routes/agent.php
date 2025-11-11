@@ -23,12 +23,13 @@ Route::group(['middleware' => ['auth:agent']], function () {
     //Products
     Route::get('/products', [AgentController::class, 'toproducts'])->name('products');
     Route::get('carts', [AgentController::class, 'Cartdetail'])->name('carts');
+    Route::post('checkout', [AgentController::class, 'toCheck'])->name('checkout');
+
 
     //Orders
     Route::get('orders', [AgentController::class, 'toorders'])->name('orders');
 
     //Wallet
-     //wallet
     Route::get('wallet', [AgentController::class, 'Wallet'])->name('wallet');
     Route::post('/withdraw', [AgentController::class, 'Userwithdraw'])->name('withdraw');
 

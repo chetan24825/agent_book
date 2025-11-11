@@ -85,6 +85,13 @@
                 </li>
 
                 <li>
+                    <a href="{{route('admin.withdraws')}}">
+                        <i class="fas fa-wallet"></i>
+                        <span>Withdraws</span>
+                    </a>
+                </li>
+
+                <li>
                     <a href="{{ url('admin/uploaded-files') }}" class="">
                         <i class="far fa-image"></i>
                         <span>Uploads</span>

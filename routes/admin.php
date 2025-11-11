@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Orders\OrderController;
 use App\Http\Controllers\Basic\ProductController;
 use App\Http\Controllers\Basic\CategoryController;
+use App\Http\Controllers\Basic\WithdrawalController;
 use App\Http\Controllers\Management\AgentsManagementController;
 
 Route::group(['middleware' => 'guest'], function () {
@@ -54,6 +55,11 @@ Route::group(['middleware' => ['auth:admin']], function () {
     Route::get('order/edit/{id}', [OrderController::class, 'toOrderEdit'])->name('order.edit');
     Route::post('order/update/{id}', [OrderController::class, 'toOrderUpdate'])->name('order.update');
     Route::get('order/invoice/{id}', [OrderController::class, 'invoice'])->name('order.invoice');
+
+
+    Route::get('/withdrawls', [WithdrawalController::class, 'topending'])->name('withdraws');
+    Route::get('/withdrawl/view/{slug}', [WithdrawalController::class, 'toview'])->name('withdraws.view');
+    Route::put('/withdrawl/view/{slug}', [WithdrawalController::class, 'towithdrawalupdate'])->name('withdrawal.update');
 
 
     // Categories

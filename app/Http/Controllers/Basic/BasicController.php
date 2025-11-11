@@ -159,7 +159,8 @@ class BasicController extends Controller
             'order_status'   => 'pending',
             'commission_user_id' => $user->sponsor_id,
             'commission_guard' => $user->guard,
-            'custom_order_id' => 'ODR' . now()->format('YmdHis')
+            'custom_order_id' => 'ODR' . now()->format('YmdHis'),
+            'order_by' => current_guard(),
         ]);
 
         // Insert Order Items

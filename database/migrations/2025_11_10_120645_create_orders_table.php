@@ -26,6 +26,9 @@ return new class extends Migration
             $table->string('order_status')->default('pending');
             // pending | confirmed | shipped | delivered | cancelled
 
+            $table->string('order_by')->nullable();
+
+
             $table->unsignedBigInteger('commission_user_id')->nullable(); // Who placed the order
             $table->string('commission_guard')->nullable();
             $table->decimal('total_commission', 50, 2)->default(0);

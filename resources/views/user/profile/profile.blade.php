@@ -79,7 +79,17 @@
                                                 <hr>
                                                 <!-- Profile Information Display in Two Columns -->
                                                 <div class="row">
+
                                                     <div class="col-md-6">
+                                                        <div class="row mb-3">
+                                                            <div class="col-sm-4">
+                                                                <p class="mb-0">Shop Name</p>
+                                                            </div>
+                                                            <div class="col-sm-8">
+                                                                <p class="text-muted mb-0">{{ auth()->user()->shop_name }}</p>
+                                                            </div>
+                                                        </div>
+                                                        <hr>
                                                         <div class="row mb-3">
                                                             <div class="col-sm-4">
                                                                 <p class="mb-0">Full Name</p>
@@ -411,7 +421,7 @@
                             </div>
 
                             <!-- Other Profile Fields -->
-                            @foreach (['name' => 'Full Name', 'email' => 'Email', 'phone' => 'Phone', 'phone_2' => 'Alternate Phone', 'state' => 'State', 'city' => 'City', 'address' => 'Address'] as $field => $label)
+                            @foreach (['shop_name' => 'Shop Name','name' => 'Full Name', 'email' => 'Email', 'phone' => 'Phone', 'phone_2' => 'Alternate Phone', 'state' => 'State', 'city' => 'City', 'address' => 'Address'] as $field => $label)
                                 <div class="col-md-6 mb-3">
                                     <label for="{{ $field }}" class="form-label">{{ $label }}</label>
                                     <input type="text" class="form-control" id="{{ $field }}"

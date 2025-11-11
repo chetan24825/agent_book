@@ -11,7 +11,7 @@ class OrderController extends Controller
 {
     function toorders()
     {
-        $orders = Order::with(['user', 'sponsor'])->orderBy('id', 'DESC')->get();
+        $orders = Order::with(['user', 'sponsor'])->orderBy('id', 'DESC')->cursor();
         return view('admin.orders.order', compact('orders'));
     }
 
