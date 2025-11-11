@@ -78,7 +78,8 @@
                         <span>Orders</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
-                        <li><a href="#"><i class="mdi mdi-checkbox-blank-circle align-middle"></i>Lists Of
+                        <li><a href="{{ route('admin.orders') }}"><i
+                                    class="mdi mdi-checkbox-blank-circle align-middle"></i>Lists Of
                                 Orders</a></li>
                     </ul>
                 </li>

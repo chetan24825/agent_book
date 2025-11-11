@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers\Basic;
 
+use App\Models\Orders\Order;
 use Illuminate\Http\Request;
+use App\Models\Product\Product;
 use App\Models\Inc\Notification;
 use App\Models\Inc\YoutubeVideo;
+use App\Models\Orders\OrderItem;
+use App\Models\Packages\Package;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Packages\Package;
-use App\Models\Product\Product;
 
 class BasicController extends Controller
 {
@@ -128,5 +130,53 @@ class BasicController extends Controller
         session()->put('cart', $cart);
 
         return redirect()->back()->with('success', 'Cart updated successfully.');
+    }
+
+    public function toCheck()
+    {
+        $cart = session()->get('cart', []);
+
+        if (!$cart || count($cart) == 0) {
+            return back()->with('error', 'Your cart is empty!');
+        }
+
+        // Calculate totals
+        $totalAmount = 0;
+        foreach ($cart as $item) {
+            $totalAmount += ($item['price'] * $item['quantity']);
+        }
+
+        $user = Auth::guard(current_guard())->user();
+
+
+
+        // Create Order
+        $order = Order::create([
+            'user_id'        => $user->id,
+            'guard'          => current_guard(),
+            'total_amount'   => $totalAmount,
+            'payment_status' => 'pending',
+            'order_status'   => 'pending',
+            'commission_user_id' => $user->sponsor_id,
+            'commission_guard' => $user->guard,
+            'custom_order_id' => 'ODR' . now()->format('YmdHis')
+        ]);
+
+        // Insert Order Items
+        foreach ($cart as $item) {
+            OrderItem::create([
+                'order_id'     => $order->id,
+                'product_id'   => $item['product_id'],
+                'product_name' => $item['name'],
+                'price'        => $item['price'],
+                'quantity'     => $item['quantity'],
+                'total'        => $item['price'] * $item['quantity'],
+            ]);
+        }
+
+        // Clear cart
+        session()->forget('cart');
+
+        return redirect()->back()->with('success', 'Order placed successfully!');
     }
 }

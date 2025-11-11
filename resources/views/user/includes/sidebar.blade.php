@@ -29,6 +29,13 @@
             <ul class="left-menu list-unstyled" id="side-menu">
 
                 <li>
+                    <a href="{{ route('user.dashboard') }}" class="">
+                        <i class="fas fa-desktop"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+
+                <li>
                     <a href="{{ route('user.profile') }}">
                         <i class="fa fa-shapes"></i>
                         <span>Profile</span>
@@ -62,12 +69,12 @@
                     </a>
                 </li>
 
-                <li>
+                {{-- <li>
                     <a href="#">
                         <i class="fas fa-wallet"></i>
                         <span> Wallet</span>
                     </a>
-                </li>
+                </li> --}}
 
 
 

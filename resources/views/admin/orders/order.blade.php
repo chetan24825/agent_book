@@ -1,4 +1,4 @@
-@extends('user.layouts.app')
+@extends('admin.layouts.app')
 @section('content')
     <div id="layout-wrapper">
 
@@ -84,9 +84,16 @@
                                                 </td>
 
                                                 <td>
-                                                    <a href="{{ route('user.order.invoice', $order->id) }}"
+                                                    <a href="{{ route('admin.order.invoice', $order->id) }}"
                                                         class="btn btn-info btn-sm">View</a>
 
+                                                    <a href="{{ route('admin.order.edit', $order->id) }}"
+                                                        class="btn btn-primary btn-sm">Edit</a>
+
+                                                    <button class="btn btn-danger btn-sm delete-btn"
+                                                        data-id="{{ $order->id }}">
+                                                        Delete
+                                                    </button>
                                                 </td>
 
                                             </tr>
@@ -146,7 +153,32 @@
                 $('#success-alert').fadeOut('slow');
             }, 2000);
 
+            // ✅ Delete Confirmation
+            $('.delete-btn').click(function() {
+                let id = $(this).data('id');
 
+                Swal.fire({
+                    title: 'Delete Order?',
+                    text: "This action cannot be undone!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        fetch(`{{ url('admin/order/delete') }}/${id}`, {
+                            method: 'DELETE',
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            }
+                        }).then(() => {
+                            Swal.fire('Deleted!', 'Order has been removed.', 'success');
+                            setTimeout(() => location.reload(), 800);
+                        });
+                    }
+                });
+            });
 
         });
     </script>

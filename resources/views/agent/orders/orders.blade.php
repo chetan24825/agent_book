@@ -1,4 +1,4 @@
-@extends('user.layouts.app')
+@extends('agent.layouts.app')
 @section('content')
     <div id="layout-wrapper">
 
@@ -34,12 +34,13 @@
                                         <tr>
                                             <th>#</th>
                                             <th>Order ID</th>
-                                            <th>User</th>
-                                            <th>Sponsor</th>
                                             <th>Total Amount</th>
                                             <th>Payment Status</th>
-                                            <th>Order Status</th>
-                                            <th>Action</th>
+                                            <th>Commission Status</th>
+                                            <th>Commission Amount</th>
+                                            <th>Commission Date</th>
+
+
                                         </tr>
                                     </thead>
 
@@ -49,16 +50,6 @@
                                                 <td>{{ $loop->iteration }}</td>
 
                                                 <td class="fw-bold">{{ $order->custom_order_id ?? 'N/A' }}</td>
-
-                                                <td>
-                                                    {{ $order->user?->name ?? 'N/A' }} <br>
-                                                    <small class="text-muted">{{ $order->user?->email ?? '' }}</small>
-                                                </td>
-
-                                                <td>
-                                                    <span
-                                                        class="badge bg-success">{{ $order->sponsor?->agent_code ?? 'N/A' }}</span>
-                                                </td>
 
                                                 <td>₹{{ number_format($order->total_amount, 2) }}</td>
 
@@ -73,22 +64,31 @@
                                                 </td>
 
                                                 <td>
-                                                    <span
-                                                        class="badge
-                                                @if ($order->order_status == 'delivered') bg-success
-                                                @elseif($order->order_status == 'shipped') bg-primary
-                                                @elseif($order->order_status == 'cancelled') bg-danger
-                                                @else bg-secondary @endif">
-                                                        {{ ucfirst($order->order_status) }}
-                                                    </span>
+
+                                                    @if ($order->commission_status == 1)
+                                                        <span class="badge bg-success">Paid</span>
+                                                    @endif
+                                                    @if ($order->commission_status == 0)
+                                                        <span class="badge bg-warning">Pending</span>
+                                                    @endif
+                                                    @if ($order->commission_status == 2)
+                                                        <span class="badge bg-danger">Reject</span>
+                                                    @endif
+
+
                                                 </td>
 
                                                 <td>
-                                                    <a href="{{ route('user.order.invoice', $order->id) }}"
-                                                        class="btn btn-info btn-sm">View</a>
-
+                                                    ₹{{ number_format($order->total_commission, 2) }}
                                                 </td>
 
+                                                <td>
+                                                    @if ($order->commission_status == 1 && !empty($order->commission_date))
+                                                        {{ \Carbon\Carbon::parse($order->commission_date)->format('d M Y H:i:s') }}
+                                                    @else
+                                                        Pending
+                                                    @endif
+                                                </td>
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -108,8 +108,7 @@
 {{-- ✅ STYLES --}}
 @push('styles')
     <link rel="stylesheet" href="{{ asset('panel/libs/datatables.net-bs5/css/dataTables.bootstrap5.min.css') }}">
-    <link rel="stylesheet"
-        href="{{ asset('panel/libs/datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('panel/libs/datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css') }}">
     <link rel="stylesheet" href="{{ asset('panel/libs/sweetalert2/sweetalert2.min.css') }}">
 @endpush
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Models\Orders\Order;
 use Illuminate\Http\Request;
 use App\Models\Product\Product;
 use App\Http\Controllers\Controller;
@@ -127,4 +128,22 @@ class UserController extends Controller
         return view('user.product.cart');
     }
 
+    public function toOrder()
+    {
+        $orders = Order::with(['user', 'sponsor'])
+            ->where('user_id', Auth::guard(current_guard())->id())
+            ->orderBy('id', 'DESC')
+            ->get();
+
+        return view('user.orders.orders', compact('orders'));
+    }
+
+
+    function invoice($id)
+    {
+        $order = Order::with('items', 'user', 'sponsor')
+            ->where('user_id', Auth::guard(current_guard())->id())
+            ->findOrFail($id);
+        return view('user.orders.invoice', compact('order'));
+    }
 }

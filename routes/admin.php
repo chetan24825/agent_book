@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AizUploadController;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Orders\OrderController;
 use App\Http\Controllers\Basic\ProductController;
 use App\Http\Controllers\Basic\CategoryController;
 use App\Http\Controllers\Management\AgentsManagementController;
@@ -29,7 +30,6 @@ Route::group(['middleware' => ['auth:admin']], function () {
     Route::get('/users', [AdminController::class, 'UserList'])->name('users');
     Route::put('/user/update/{id}', [AdminController::class, 'UserUpdate'])->name('users.update');
     Route::get('/user/show/{slug}', [AdminController::class, 'tousershow'])->name('users.show');
-
     Route::delete('user/delete/{id}', [AdminController::class, 'UserDelete'])->name('user.delete');
     Route::get('/user/view/{slug}', [AdminController::class, 'touserview'])->name('user.view');
 
@@ -46,6 +46,14 @@ Route::group(['middleware' => ['auth:admin']], function () {
     Route::get('product-edit/{id}', [ProductController::class, 'productEdit'])->name('product.edit');
     Route::put('product-update/{id}', [ProductController::class, 'productUpdate'])->name('product.update');
     Route::delete('product/delete/{id}', [ProductController::class, 'productDelete'])->name('product.delete');
+
+
+    // Orders
+    Route::get('orders', [OrderController::class, 'toorders'])->name('orders');
+    Route::delete('order/delete/{id}', [OrderController::class, 'toOrderDelete'])->name('order.delete');
+    Route::get('order/edit/{id}', [OrderController::class, 'toOrderEdit'])->name('order.edit');
+    Route::post('order/update/{id}', [OrderController::class, 'toOrderUpdate'])->name('order.update');
+    Route::get('order/invoice/{id}', [OrderController::class, 'invoice'])->name('order.invoice');
 
 
     // Categories

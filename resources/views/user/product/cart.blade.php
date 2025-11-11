@@ -106,7 +106,13 @@
                                             <span>₹{{ number_format($grandTotal, 2) }}</span>
                                         </p>
 
-                                        <a href="#" class="btn btn-success w-100 btn-lg mt-3">Proceed to Checkout</a>
+
+
+                                        <form action="{{ route('user.checkout') }}" method="POST">
+                                            @csrf
+                                            <button class="btn btn-success btn-lg w-100">Proceed to Checkout</button>
+                                        </form>
+
                                     </div>
                                 </div>
 
