@@ -138,6 +138,13 @@
                                 </div>
                             </div>
 
+
+                            @php
+                                $bankDetails = $withdrawal->bank_details
+                                    ? json_decode($withdrawal->bank_details, true)
+                                    : null;
+                            @endphp
+
                             <div class="col-xl-6">
                                 <div class="card shadow-sm">
                                     <div class="card-header bg-primary text-white">
@@ -147,63 +154,72 @@
                                     <div class="card-body">
                                         <div class="row">
 
-                                            <div class="col-md-6">
-                                                <label for="account_holder_name" class="form-label mt-2">Account
-                                                    Holder Name</label>
-                                                <input type="text" class="form-control" id="account_holder_name"
-                                                    value="{{ old('account_holder_name', $withdrawal->user?->account_name) }}"
-                                                    name="account_holder_name" readonly />
-                                            </div>
+                                            {{-- ✅ If withdrawal has no saved bank details, show from user --}}
+                                            @if (!$bankDetails)
+                                                <div class="col-md-6">
+                                                    <label class="form-label mt-2">Account Holder Name</label>
+                                                    <input type="text" class="form-control"
+                                                        value="{{ $withdrawal->user?->account_name }}" readonly />
+                                                </div>
 
-                                            <div class="col-md-6">
-                                                <label for="bank_name" class="form-label mt-2">Bank
-                                                    Name</label>
-                                                <input type="text" class="form-control" id="bank_name"
-                                                    value="{{ old('bank_name', $withdrawal->user?->bank_name) }}"
-                                                    name="bank_name" readonly />
-                                            </div>
+                                                <div class="col-md-6">
+                                                    <label class="form-label mt-2">Bank Name</label>
+                                                    <input type="text" class="form-control"
+                                                        value="{{ $withdrawal->user?->bank_name }}" readonly />
+                                                </div>
 
-                                            <div class="col-md-6">
-                                                <label for="account_number" class="form-label mt-2">Account
-                                                    Number</label>
-                                                <input type="text" class="form-control"
-                                                    value="{{ old('account_number', $withdrawal->user?->account_number) }}"
-                                                    id="account_number" name="account_number" readonly />
-                                            </div>
+                                                <div class="col-md-6">
+                                                    <label class="form-label mt-2">Account Number</label>
+                                                    <input type="text" class="form-control"
+                                                        value="{{ $withdrawal->user?->account_number }}" readonly />
+                                                </div>
 
-                                            <div class="col-md-6">
-                                                <label for="confirm_account_number" class="form-label mt-2">Confirm
-                                                    Account
-                                                    Number</label>
-                                                <input type="text" class="form-control"
-                                                    value="{{ old('account_holder_name', $withdrawal->user?->account_number) }}"
-                                                    id="confirm_account_number" name="confirm_account_number" readonly />
-                                            </div>
+                                                <div class="col-md-6">
+                                                    <label class="form-label mt-2">IFSC Code</label>
+                                                    <input type="text" class="form-control"
+                                                        value="{{ $withdrawal->user?->ifsc_code }}" readonly />
+                                                </div>
 
-                                            <div class="col-md-6">
-                                                <label for="ifsc_code" class="form-label mt-2">IFSC
-                                                    Code</label>
-                                                <input type="text" class="form-control" id="ifsc_code"
-                                                    value="{{ old('ifsc_code', $withdrawal->user?->ifsc_code) }}"
-                                                    name="ifsc_code" readonly />
-                                            </div>
+                                                <div class="col-md-6">
+                                                    <label class="form-label mt-2">Account Type</label>
+                                                    <input type="text" class="form-control"
+                                                        value="{{ ucfirst($withdrawal->user?->account_type) }}"
+                                                        readonly />
+                                                </div>
 
-                                            <div class="col-md-6">
-                                                <label for="account_type" class="form-label mt-2">Account
-                                                    Type</label>
-                                                <select class="form-control" id="account_type" name="account_type"
-                                                    readonly>
-                                                    <option value="">Select Account Type</option>
-                                                    <option value="savings"
-                                                        {{ old('account_type', $withdrawal->user?->account_type ?? '') == 'savings' ? 'selected' : '' }}>
-                                                        Savings
-                                                    </option>
-                                                    <option value="current"
-                                                        {{ old('account_type', $withdrawal->user?->account_type ?? '') == 'current' ? 'selected' : '' }}>
-                                                        Current
-                                                    </option>
-                                                </select>
-                                            </div>
+                                                {{-- ✅ Else, show stored JSON bank_details --}}
+                                            @else
+                                                <div class="col-md-6">
+                                                    <label class="form-label mt-2">Account Holder Name</label>
+                                                    <input type="text" class="form-control"
+                                                        value="{{ $bankDetails['account_name'] ?? '' }}" readonly />
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <label class="form-label mt-2">Bank Name</label>
+                                                    <input type="text" class="form-control"
+                                                        value="{{ $bankDetails['bank_name'] ?? '' }}" readonly />
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <label class="form-label mt-2">Account Number</label>
+                                                    <input type="text" class="form-control"
+                                                        value="{{ $bankDetails['account_number'] ?? '' }}" readonly />
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <label class="form-label mt-2">IFSC Code</label>
+                                                    <input type="text" class="form-control"
+                                                        value="{{ $bankDetails['ifsc_code'] ?? '' }}" readonly />
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <label class="form-label mt-2">Account Type</label>
+                                                    <input type="text" class="form-control"
+                                                        value="{{ ucfirst($bankDetails['account_type'] ?? '') }}"
+                                                        readonly />
+                                                </div>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>

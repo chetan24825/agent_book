@@ -19,6 +19,9 @@ Route::group(['middleware' => ['auth:agent']], function () {
     Route::get('/profile', [AgentController::class, 'toAgentprofile'])->name('profile');
     Route::post('/profile', [AgentController::class, 'toAgentprofileUpdate']);
     Route::post('/update-password', [AgentController::class, 'updatePassword'])->name('profile.updatePassword');
+    Route::post('kyc/update', [AgentController::class, 'updateKyc'])->name('kyc.update');
+    Route::post('bank/update', [AgentController::class, 'updateBankDetails'])->name('bank.update');
+
 
     //Products
     Route::get('/products', [AgentController::class, 'toproducts'])->name('products');

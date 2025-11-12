@@ -30,11 +30,20 @@ class WithdrawalController extends Controller
             $withdrawal = Withdrawal::findOrFail($id)->load('user');
             $user = $withdrawal->user;
 
+
             if ($request->has('approve')) {
-                // Calculate the new balance
+
                 $newBalance = $user->commission - $withdrawal->amount;
                 $withdrawal->balance_amount = $newBalance;
                 $withdrawal->remark = $request->remark; // Approved
+
+                $withdrawal->bank_details = [
+                    'account_name'   => $user->account_name,
+                    'account_type'   => $user->account_type,
+                    'account_number' => $user->account_number,
+                    'bank_name'      => $user->bank_name,
+                    'ifsc_code'      => $user->ifsc_code,
+                ];
 
                 $user->commission = $newBalance;
                 $user->save();

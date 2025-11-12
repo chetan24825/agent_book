@@ -58,7 +58,8 @@ class AgentController extends Controller
         return view('agent.form.profile');
     }
 
-    function toAgentprofileUpdate(Request $request)
+
+    public function toAgentprofileUpdate(Request $request)
     {
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
@@ -69,31 +70,81 @@ class AgentController extends Controller
             'address' => 'nullable|string|max:255',
             'state' => 'nullable|string|max:255',
             'city' => 'nullable|string|max:255',
-
             'agent_code' => 'nullable|unique:agents,agent_code,' . Auth::id() . ',id',
         ]);
 
-        if (auth()->user()->update($validatedData)) {
-            return redirect()->back()->with('success', 'Updated successfully.');
-        }
+        auth()->user()->update($validatedData);
+
+        return back()->with([
+            'success' => 'Profile Updated Successfully ✅',
+            'active_tab' => 'profile'
+        ]);
     }
 
 
     public function updatePassword(Request $request)
     {
-        // Validate the password fields
         $request->validate([
             'password' => 'required|string|confirmed',
         ]);
 
-        // Update the password
         $user = auth()->user();
         $user->password = Hash::make($request->password);
         $user->save();
 
-        // Redirect with success message
-        return redirect()->back()->with('success', 'Password updated successfully!');
+        return back()->with([
+            'success' => 'Password Updated Successfully ✅',
+            'active_tab' => 'password'
+        ]);
     }
+
+
+    // ✅ KYC Upload
+    public function updateKyc(Request $request)
+    {
+        $request->validate([
+            'pancard' => 'required'
+        ]);
+
+        $user = Auth::user();
+        $user->pancard = $request->pancard;
+        $user->save();
+
+        return back()->with([
+            'success' => 'KYC Updated Successfully ✅',
+            'active_tab' => 'kycTab'
+        ]);
+    }
+
+
+    // ✅ Update Bank Details
+    public function updateBankDetails(Request $request)
+    {
+        $request->validate([
+            'account_holder_name' => 'required',
+            'bank_name' => 'required',
+            'account_number' => 'required|same:confirm_account_number',
+            'ifsc_code' => 'required',
+            'account_type' => 'required',
+            'check_image' => 'required'
+        ]);
+
+        $user = Auth::user();
+        $user->account_name = $request->account_holder_name;
+        $user->bank_name = $request->bank_name;
+        $user->account_number = $request->account_number;
+        $user->ifsc_code = $request->ifsc_code;
+        $user->account_type = $request->account_type;
+        $user->check_image = $request->check_image;
+        $user->save();
+
+        return back()->with([
+            'success' => 'Bank Details Updated Successfully ✅',
+            'active_tab' => 'bankTab'
+        ]);
+    }
+
+
 
     public function Cartdetail()
     {
