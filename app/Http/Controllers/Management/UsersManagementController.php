@@ -6,88 +6,131 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class UsersManagementController extends Controller
 {
 
-    function tousers(Request $request)
-{
-    $query = User::with('favourites.store');
-
-    // Check if search input is provided
-    if ($request->has('search')) {
-        $search = $request->search;
-        $query->where(function ($q) use ($search) {
-            $q->where('name', 'LIKE', "%{$search}%")
-              ->orWhere('phone', 'LIKE', "%{$search}%")
-              ->orWhere('status', 'LIKE', "%{$search}%")
-              ->orWhere('state', 'LIKE', "%{$search}%")
-              ->orWhere('city', 'LIKE', "%{$search}%");
-
-            // Optional: You can add search for `favourites.store.store_name` if needed
-            $q->orWhereHas('favourites.store', function ($q) use ($search) {
-                $q->where('store_name', 'LIKE', "%{$search}%");
-            });
-
-            // Check if input is a valid date and filter by `created_at`
-            if (strtotime($search)) {
-                $date = date('Y-m-d', strtotime($search));
-                $q->orWhereDate('created_at', $date);
-            }
-        });
-    }
-
-    // Paginate results
-    $users = $query->paginate(50);
-
-    return view('admin.management.users.users', compact('users'));
-}
-
-
-    public function UserUpdate(Request $request, $id)
+    public function updateProfile(Request $request)
     {
         $request->validate([
-            'name' => 'nullable',
-            'email' => 'nullable|email',
-            'phone' => 'required|unique:users,phone,' . $id, // Ignore current user ID for phone uniqueness
-            'address' => 'nullable',
-            'city' => 'nullable',
+            'id' => 'required|exists:users,id',
+            'name' => 'required|string|max:255',
+            'email' => 'nullable|email|unique:users,email,' . $request->id,
+
+            'phone' => 'required',
+            'phone_2' => 'nullable',
             'state' => 'nullable',
-            'zip_code' => 'nullable|numeric',
+            'city' => 'nullable',
+            'address' => 'nullable',
+            'image' => 'nullable',
+            'shop_name' => 'required'
         ]);
 
-        $user = User::find($id);
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->phone = $request->phone;
-        $user->phone_2 = $request->phone_2;
-        $user->address = $request->address;
-        $user->city = $request->city;
-        $user->state = $request->state;
-        $user->status = $request->status;
-        $user->zip_code = $request->zip_code;
+        $user = User::findOrFail($request->id);
+        $user->update($request->only([
+            'name',
+            'email',
+            'phone',
+            'phone_2',
+            'state',
+            'city',
+            'address',
+            'shop_name'
+        ]));
+
+        if ($request->image) {
+            $user->avatar = $request->image; // because AIZUploader stores file path
+            $user->save();
+        }
+
+        return back()->with(['success', 'Profile Updated Successfully ✅', 'active_tab' => 'card7-home']);
+    }
+
+
+    // ✅ Update Password
+    public function updatePassword(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|exists:users,id',
+            'new_password' => 'required|min:2|confirmed'
+        ]);
+
+        $user = User::findOrFail($request->id);
+        $user->password = Hash::make($request->new_password);
         $user->save();
 
-        return redirect()->back()->with('success', 'User updated successfully');
+        return back()->with(['success', 'Password Updated Successfully ✅', 'active_tab' => 'card7-password']);
     }
 
 
-    public function UserDelete($id)
+    // ✅ KYC Upload
+    public function updateKyc(Request $request)
     {
-        $user = User::findOrFail($id);
-        if ($user->delete()) {
-            return response()->json(['success' => true]);
-        }
-        return response()->json(['success' => false]);
+        $request->validate([
+            'pancard' => 'required',
+            'id' => 'required|exists:users,id',
+
+        ]);
+
+        $user = User::findOrFail($request->id);
+        $user->pancard = $request->pancard;
+        $user->save();
+
+        return back()->with(['success', 'KYC Updated Successfully ✅',  'active_tab' => 'card7-profile']);
     }
 
 
-    function touserview($id)
+    // ✅ Update Bank Details
+    public function updateBankDetails(Request $request)
     {
-        $client = User::find($id);
-        if ($client) {
-            Auth::guard('web')->login($client);
-            return redirect()->route('user.dashboard');
-        }
+        $request->validate([
+            'id' => 'required|exists:users,id',
+
+            'account_holder_name' => 'required',
+            'bank_name' => 'required',
+            'account_number' => 'required|same:confirm_account_number',
+            'ifsc_code' => 'required',
+            'account_type' => 'required',
+            'check_image' => 'required'
+        ]);
+
+        $user = User::findOrFail($request->id);
+        $user->account_name = $request->account_holder_name;
+        $user->bank_name = $request->bank_name;
+        $user->account_number = $request->account_number;
+        $user->ifsc_code = $request->ifsc_code;
+        $user->account_type = $request->account_type;
+        $user->check_image = $request->check_image; // AIZUploader stored path
+        $user->save();
+
+        return back()->with(['success', 'Bank Details Updated Successfully ✅',  'active_tab' => 'card7-contact']);
+    }
+
+     public function toVerify(Request $request)
+    {
+        // ✅ Validate input
+        $validated = $request->validate([
+            'id' => 'required|exists:users,id',
+            'admin_verification_status' => 'required|in:0,1',
+            'status' => 'required|in:0,1,2', // 0=Banned, 1=Active, 2=Pending (optional)
+        ]);
+
+        // ✅ Find the agent safely
+        $agent = User::findOrFail($validated['id']);
+
+        // ✅ Update both statuses
+        $agent->admin_verification_status = $validated['admin_verification_status'];
+        $agent->status = $validated['status'];
+        $agent->save();
+
+
+
+
+        // ✅ Return with success message
+        return back()->with([
+            'success' => 'User verification updated successfully ✅',
+            'active_tab' => 'adminVerify',
+        ]);
     }
 }

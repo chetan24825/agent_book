@@ -4,15 +4,19 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AizUploadController;
 use App\Http\Controllers\User\UserController;
-use App\Http\Controllers\Admin\AdminController;
-use App\Http\Controllers\Agent\AgentController;
+
 use App\Http\Controllers\Basic\BasicController;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('login', [AdminController::class, 'toAdminLogin'])->name('login');
+
+
+Route::middleware('guest')->group(function () {
+    Route::get('/login', [UserController::class, 'toLogin'])->name('login');
+    Route::post('/login', [UserController::class, 'toLoginPost'])->name('login.post');
+});
 
 Route::get('/logout', function () {
     Auth::logout(); // Logs out the current user

@@ -38,7 +38,7 @@ class UserController extends Controller
             'city' => 'nullable',
             'address' => 'nullable',
             'image' => 'nullable',
-            'shop_name'=>'required'
+            'shop_name' => 'required'
         ]);
 
         $user->update($request->only([
@@ -147,5 +147,35 @@ class UserController extends Controller
             ->where('user_id', Auth::guard(current_guard())->id())
             ->findOrFail($id);
         return view('user.orders.invoice', compact('order'));
+    }
+
+
+    function toLogin()
+    {
+        return view('user.auth.login');
+    }
+
+    public function toLoginPost(Request $request)
+    {
+        // ✅ Validate input
+        $request->validate([
+           'email' => 'required|email|exists:users,email',
+            'password' => 'required',
+        ]);
+
+        // ✅ Attempt login with web guard
+        $credentials = $request->only('email', 'password');
+
+        if (Auth::guard('web')->attempt($credentials, $request->filled('remember'))) {
+            $request->session()->regenerate(); // prevent session fixation
+
+            return redirect()->route('user.dashboard')
+                ->with('success', 'Welcome back!');
+        }
+
+        // ❌ Invalid credentials
+        return back()
+            ->withInput($request->only('email'))
+            ->with('error', 'Invalid email or password.');
     }
 }

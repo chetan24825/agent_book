@@ -60,186 +60,85 @@
                                         </a>
                                     </div>
                                 </div>
-                                <div class="card-body"
-                                    style="max-height: 400px; overflow-y: auto;">
-                                <div class="table-responsive">
-                                    <table id="datatable-row-callback"
-                                        class="table table-hover table-bordered table-striped dt-responsive nowrap"
-                                        style="border-collapse: collapse; border-spacing: 0; width: 100%;">
-                                        <thead>
-                                            <tr>
-                                                <th>#</th>
-                                                <th>Name</th>
-                                                <th>Agent Code</th>
-                                                <th>Email</th>
-                                                <th>Phone</th>
-                                                <th>Status</th>
-                                                <th>Created</th>
-                                                <th>Operation</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach ($agents as $index => $agent)
+                                <div class="card-body" style="max-height: 400px; overflow-y: auto;">
+                                    <div class="table-responsive">
+                                        <table id="datatable-row-callback"
+                                            class="table table-hover table-bordered table-striped dt-responsive nowrap"
+                                            style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                            <thead>
                                                 <tr>
-                                                    <td>{{ ($agents->currentPage() - 1) * $agents->perPage() + $index + 1 }}
-                                                    </td>
-                                                    <td>{{ $agent->name }}</td>
-                                                    <td>
-                                                        <span class="badge bg-success">{{ $agent->agent_code }}</span>
-                                                    </td>
+                                                    <th>#</th>
+                                                    <th>Name</th>
+                                                    <th>Agent Code</th>
+                                                    <th>Email</th>
+                                                    <th>Phone</th>
+                                                    <th>Status</th>
+                                                    <th>Verification</th>
 
-
-                                                    <td>{{ $agent->email }}</td>
-                                                    <td>{{ $agent->phone }}</td>
-                                                    <td>
-                                                        @if ($agent->status == 1)
-                                                            <span class="badge bg-success">Active</span>
-                                                        @else
-                                                            <span class="badge bg-danger">In-Active</span>
-                                                        @endif
-                                                    </td>
-                                                    <td>{{ $agent->created_at->format('d-M-Y') }}</td>
-                                                    <td>
-                                                        <button class="btn btn-primary edit-btn" data-bs-toggle="modal"
-                                                            data-bs-target="#editAgentModal{{ $agent->id }}"> <i
-                                                                class="fas fa-pencil-alt"></i></button>
-
-                                                        <!-- <button type="button" class="btn btn-danger  delete-btn"
-                                                                data-id="{{ $agent->id }}">
-                                                                <i class="fas fa-trash-alt"></i>
-                                                            </button> -->
-
-                                                        <a href="{{ route('admin.agent.view', $agent->id) }}"
-                                                            target="blank" class="btn btn-info"><i
-                                                                class="fas fa-eye"></i></a>
-                                                    </td>
+                                                    <th>Created</th>
+                                                    <th>Operation</th>
                                                 </tr>
-
-                                                <!-- Edit Modal for each Agent -->
-                                                <div class="modal fade" id="editAgentModal{{ $agent->id }}"
-                                                    tabindex="-1" aria-labelledby="editAgentModalLabel" aria-hidden="true">
-                                                    <div class="modal-dialog">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title" id="editAgentModalLabel">Edit Agent
-                                                                </h5>
-                                                                <button type="button" class="btn-close"
-                                                                    data-bs-dismiss="modal" aria-label="Close"></button>
-                                                            </div>
-                                                            <form action="{{ route('admin.agents.update', $agent->id) }}"
-                                                                method="POST">
-                                                                @csrf
-                                                                @method('PUT')
-                                                                <div class="modal-body">
-
-                                                                    <div class="col-md-12 mb-3">
-                                                                        <label for="exampleFormControlInput1"
-                                                                            class="form-label">Status<span
-                                                                                class="text-danger">*</span></label>
-
-                                                                        <select name="status" class="form-control">
-                                                                            <option value="1"
-                                                                                {{ old('status', $agent->status) == '1' ? 'selected' : '' }}>
-                                                                                Active</option>
-                                                                            <option value="0"
-                                                                                {{ old('status', $agent->status) == '0' ? 'selected' : '' }}>
-                                                                                In-Active
-                                                                            </option>
-                                                                        </select>
-
-                                                                        @error('status')
-                                                                            <span class="text-danger" role="alert">
-                                                                                <strong>{{ ucwords($message) }}</strong>
-                                                                            </span>
-                                                                        @enderror
-                                                                    </div>
-                                                                    <div class="mb-3">
-                                                                        <label for="name{{ $agent->id }}"
-                                                                            class="form-label">Name</label>
-                                                                        <input type="text" class="form-control"
-                                                                            id="name{{ $agent->id }}" name="name"
-                                                                            value="{{ $agent->name }}">
-                                                                        @error('name')
-                                                                            <span
-                                                                                class="text-danger">{{ $message }}</span>
-                                                                        @enderror
-                                                                    </div>
-                                                                    <div class="mb-3">
-                                                                        <label for="email{{ $agent->id }}"
-                                                                            class="form-label">Email</label>
-                                                                        <input type="email" class="form-control"
-                                                                            id="email{{ $agent->id }}" name="email"
-                                                                            value="{{ $agent->email }}">
-                                                                        @error('email')
-                                                                            <span
-                                                                                class="text-danger">{{ $message }}</span>
-                                                                        @enderror
-                                                                    </div>
-                                                                    <div class="mb-3">
-                                                                        <label for="phone{{ $agent->id }}"
-                                                                            class="form-label">Phone</label>
-                                                                        <input type="text" class="form-control"
-                                                                            id="phone{{ $agent->id }}" name="phone"
-                                                                            oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10)"
-                                                                            maxlength="10" value="{{ $agent->phone }}">
-                                                                        @error('phone')
-                                                                            <span
-                                                                                class="text-danger">{{ $message }}</span>
-                                                                        @enderror
-                                                                    </div>
-                                                                    <div class="mb-3">
-                                                                        <label for="phone_2{{ $agent->id }}"
-                                                                            class="form-label">Alternate Phone</label>
-                                                                        <input type="text" class="form-control"
-                                                                            id="phone_2{{ $agent->id }}"
-                                                                            name="phone_2"
-                                                                            oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10)"
-                                                                            maxlength="10" value="{{ $agent->phone_2 }}">
-                                                                        @error('phone_2')
-                                                                            <span
-                                                                                class="text-danger">{{ $message }}</span>
-                                                                        @enderror
-                                                                    </div>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($agents as $index => $agent)
+                                                    <tr>
+                                                        <td>{{ ($agents->currentPage() - 1) * $agents->perPage() + $index + 1 }}
+                                                        </td>
+                                                        <td>{{ $agent->name }}</td>
+                                                        <td>
+                                                            <span class="badge bg-success">{{ $agent->agent_code }}</span>
+                                                        </td>
 
 
-                                                                    <div class="mb-3">
-                                                                        <label for="address{{ $agent->id }}"
-                                                                            class="form-label">Address</label>
-                                                                        <input type="text" class="form-control"
-                                                                            id="address{{ $agent->id }}"
-                                                                            name="address" value="{{ $agent->address }}">
-                                                                        @error('address')
-                                                                            <span
-                                                                                class="text-danger">{{ $message }}</span>
-                                                                        @enderror
-                                                                    </div>
-                                                                    <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-dark"
-                                                                            data-bs-dismiss="modal">Close</button>
-                                                                        <button type="submit"
-                                                                            class="btn btn-success">Save
-                                                                            Changes</button>
-                                                                    </div>
-                                                                </div>
+                                                        <td>{{ $agent->email }}</td>
+                                                        <td>{{ $agent->phone }}</td>
+                                                        <td>
+                                                            @if ($agent->status == 1)
+                                                                <span class="badge bg-success">Active</span>
+                                                            @else
+                                                                <span class="badge bg-danger">In-Active</span>
+                                                            @endif
+                                                        </td>
 
-                                                            </form>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                    <div class="d-flex justify-content-center mt-4">
-                                        {{ $agents->links('pagination::bootstrap-5') }}
+                                                        <td>
+                                                            @if ($agent->admin_verification_status == 1)
+                                                                <span class="badge bg-success">Verified</span>
+                                                            @else
+                                                                <span class="badge bg-warning">Not-Verified</span>
+                                                            @endif
+                                                        </td>
+
+                                                        <td>{{ $agent->created_at->format('d-M-Y') }}</td>
+                                                        <td>
+
+                                                            <!-- <button type="button" class="btn btn-danger  delete-btn"
+                                                                                    data-id="{{ $agent->id }}">
+                                                                                    <i class="fas fa-trash-alt"></i>
+                                                                                </button> -->
+
+                                                            <a href="{{ route('admin.agent.show', $agent->id) }}"
+                                                                target="blank" class="btn btn-success"><i
+                                                                    class="fas fa-pencil-alt"></i></a>
+
+                                                            <a href="{{ route('admin.agent.view', $agent->id) }}"
+                                                                target="blank" class="btn btn-info"><i
+                                                                    class="fas fa-eye"></i></a>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                        <div class="d-flex justify-content-center mt-4">
+                                            {{ $agents->links('pagination::bootstrap-5') }}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div> <!-- end col -->
+                        </div> <!-- end col -->
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
     </div>
 @endsection
 

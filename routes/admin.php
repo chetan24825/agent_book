@@ -3,10 +3,12 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AizUploadController;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Agent\AgentController;
 use App\Http\Controllers\Orders\OrderController;
 use App\Http\Controllers\Basic\ProductController;
 use App\Http\Controllers\Basic\CategoryController;
 use App\Http\Controllers\Basic\WithdrawalController;
+use App\Http\Controllers\Management\UsersManagementController;
 use App\Http\Controllers\Management\AgentsManagementController;
 
 Route::group(['middleware' => 'guest'], function () {
@@ -21,18 +23,30 @@ Route::group(['middleware' => ['auth:admin']], function () {
     Route::get('/agents', [AgentsManagementController::class, 'toagents'])->name('agents');
     Route::get('/agents/new', [AgentsManagementController::class, 'toagentnew'])->name('agents.new');
     Route::delete('agent-delete/{id}', [AgentsManagementController::class, 'AgentDelete'])->name('agent-delete');
-    Route::put('/agents/{id}', [AgentsManagementController::class, 'AgentUpdate'])->name('agents.update');
     Route::get('/agent/view/{slug}', [AgentsManagementController::class, 'toagentview'])->name('agent.view');
     Route::POST('agent-save', [AgentsManagementController::class, 'AgentSave'])->name('agent-save');
     Route::get('/download/agents', [AdminController::class, 'downloadAgents'])->name('download.agents');
 
+    Route::get('/agent/show/{slug}', [AgentsManagementController::class, 'toagentshow'])->name('agent.show');
+    Route::post('/profile', [AgentsManagementController::class, 'toAgentprofileUpdate'])->name('profile.update');
+    Route::post('/update-password', [AgentsManagementController::class, 'updatePassword'])->name('profile.updatePassword');
+    Route::post('kyc/update', [AgentsManagementController::class, 'updateKyc'])->name('kyc.update');
+    Route::post('bank/update', [AgentsManagementController::class, 'updateBankDetails'])->name('bank.update');
+    Route::post('agent/verify', [AgentsManagementController::class, 'toverify'])->name('agent.verify');
+
+
 
     // users
     Route::get('/users', [AdminController::class, 'UserList'])->name('users');
-    Route::put('/user/update/{id}', [AdminController::class, 'UserUpdate'])->name('users.update');
     Route::get('/user/show/{slug}', [AdminController::class, 'tousershow'])->name('users.show');
     Route::delete('user/delete/{id}', [AdminController::class, 'UserDelete'])->name('user.delete');
     Route::get('/user/view/{slug}', [AdminController::class, 'touserview'])->name('user.view');
+
+    Route::post('profile/update', [UsersManagementController::class, 'updateProfile'])->name('profileupdate');
+    Route::post('password/update', [UsersManagementController::class, 'updatePassword'])->name('password.update');
+    Route::post('kyc/update', [UsersManagementController::class, 'updateKyc'])->name('kyc.update');
+    Route::post('bank/update', [UsersManagementController::class, 'updateBankDetails'])->name('bank.update');
+    Route::post('user/verify', [UsersManagementController::class, 'toverify'])->name('user.verify');
 
 
 

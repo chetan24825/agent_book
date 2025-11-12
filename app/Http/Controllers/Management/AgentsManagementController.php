@@ -23,8 +23,6 @@ class AgentsManagementController extends Controller
                     ->orWhere('email', 'LIKE', "%{$search}%")
                     ->orWhere('phone', 'LIKE', "%{$search}%")
                     ->orWhere('status', 'LIKE', "%{$search}%");
-
-
             });
         }
 
@@ -87,26 +85,7 @@ class AgentsManagementController extends Controller
         return view('admin.management.agents.agents-new');
     }
 
-    public function AgentUpdate(Request $request, $id)
-    {
 
-        $request->validate([
-            'name' => 'required',
-            'email' => 'required',
-            'phone' => 'required|digits:10',
-            'address' => 'required',
-        ]);
-        $agent = Agent::find($id);
-        $agent->name = $request->name;
-        $agent->email = $request->email;
-        $agent->status = $request->status;
-        $agent->phone = $request->phone;
-        $agent->address = $request->address;
-        $agent->phone_2 = $request->phone_2;
-        $agent->save();
-
-        return redirect()->back()->with('success', 'Agent updated successfully!');
-    }
 
     public function AgentDelete($id)
     {
@@ -116,5 +95,135 @@ class AgentsManagementController extends Controller
             return response()->json(['success' => true]);
         }
         return response()->json(['success' => false]);
+    }
+
+    function toagentshow($id)
+    {
+        $user = Agent::find($id);
+        if (!$user) {
+            return redirect()->back()->with('error', 'User not found.');
+        }
+        return view('admin.management.agents.agent-edit', compact('user'));
+    }
+
+
+
+    public function toAgentprofileUpdate(Request $request)
+    {
+
+        $validatedData = $request->validate([
+            'id' => 'required|exists:agents,id',
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:agents,email,' . $request->id,
+            'phone' => 'required|numeric|digits:10',
+            'phone_2' => 'nullable|numeric|digits:10',
+            'avatar' => 'nullable|string|max:255',
+            'address' => 'nullable|string|max:255',
+            'state' => 'nullable|string|max:255',
+            'city' => 'nullable|string|max:255',
+            'agent_code' => 'nullable|unique:agents,agent_code,' . $request->id . ',id',
+        ]);
+
+        $agent = Agent::findOrFail($request->id);
+        $agent->update($validatedData);
+
+
+        return back()->with([
+            'success' => 'Profile Updated Successfully ✅',
+            'active_tab' => 'profile'
+        ]);
+    }
+
+
+    public function updatePassword(Request $request)
+    {
+        $request->validate([
+            'password' => 'required|string|confirmed',
+            'id' => 'required|exists:agents,id',
+        ]);
+
+        $user = Agent::findOrFail($request->id);
+        $user->password = Hash::make($request->password);
+        $user->save();
+
+        return back()->with([
+            'success' => 'Password Updated Successfully ✅',
+            'active_tab' => 'password'
+        ]);
+    }
+
+
+    // ✅ KYC Upload
+    public function updateKyc(Request $request)
+    {
+        $request->validate([
+            'pancard' => 'required',
+            'id' => 'required|exists:agents,id',
+        ]);
+
+        $user =  Agent::findOrFail($request->id);
+        $user->pancard = $request->pancard;
+        $user->save();
+
+        return back()->with([
+            'success' => 'KYC Updated Successfully ✅',
+            'active_tab' => 'kycTab'
+        ]);
+    }
+
+
+    // ✅ Update Bank Details
+    public function updateBankDetails(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|exists:agents,id',
+            'account_holder_name' => 'required',
+            'bank_name' => 'required',
+            'account_number' => 'required|same:confirm_account_number',
+            'ifsc_code' => 'required',
+            'account_type' => 'required',
+            'check_image' => 'required'
+        ]);
+
+        $user = Agent::findOrFail($request->id);
+        $user->account_name = $request->account_holder_name;
+        $user->bank_name = $request->bank_name;
+        $user->account_number = $request->account_number;
+        $user->ifsc_code = $request->ifsc_code;
+        $user->account_type = $request->account_type;
+        $user->check_image = $request->check_image;
+        $user->save();
+
+        return back()->with([
+            'success' => 'Bank Details Updated Successfully ✅',
+            'active_tab' => 'bankTab'
+        ]);
+    }
+
+    public function toVerify(Request $request)
+    {
+        // ✅ Validate input
+        $validated = $request->validate([
+            'id' => 'required|exists:agents,id',
+            'admin_verification_status' => 'required|in:0,1',
+            'status' => 'required|in:0,1,2', // 0=Banned, 1=Active, 2=Pending (optional)
+        ]);
+
+        // ✅ Find the agent safely
+        $agent = Agent::findOrFail($validated['id']);
+
+        // ✅ Update both statuses
+        $agent->admin_verification_status = $validated['admin_verification_status'];
+        $agent->status = $validated['status'];
+        $agent->save();
+
+
+
+
+        // ✅ Return with success message
+        return back()->with([
+            'success' => 'Agent verification updated successfully ✅',
+            'active_tab' => 'adminVerify',
+        ]);
     }
 }

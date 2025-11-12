@@ -196,44 +196,15 @@ class AdminController extends Controller
         return view('admin.management.users.users', compact('users'));
     }
 
-    public function UserUpdate(Request $request, $id)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $id,
-            'phone' => 'required|string|max:20',
-        ]);
 
-        $user = User::find($id);
-
-        if (!$user) {
-            return redirect()->back()->with('error', 'User not found.');
-        }
-
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->phone = $request->phone;
-        $user->status = $request->status;
-        $user->phone_2 = $request->phone_2;
-        $user->state = $request->state;
-        $user->city = $request->city;
-
-        $user->address = $request->address;
-
-        if ($user->save()) {
-            return redirect()->back()->with('success', 'User updated successfully.');
-        }
-
-        return redirect()->back()->with('error', 'User not updated.');
-    }
 
     function tousershow($id)
     {
-        $user = User::find($id);
-        if (!$user) {
+        $profile = User::find($id);
+        if (!$profile) {
             return redirect()->back()->with('error', 'User not found.');
         }
-        return view('admin.management.users.useredit', compact('user'));
+        return view('admin.management.users.useredit', compact('profile'));
     }
 
     public function UserDelete($id)

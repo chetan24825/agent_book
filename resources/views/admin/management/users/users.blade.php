@@ -33,6 +33,7 @@
                                                     <th>Phone</th>
                                                     <th>Joining Date</th>
                                                     <th>Status</th>
+                                                    <th>Verification</th>
                                                     <th>Operation</th>
                                                 </tr>
                                             </thead>
@@ -52,6 +53,14 @@
                                                                 class="badge {{ $user->status == 1 ? 'bg-success' : 'bg-danger' }}">
                                                                 {{ $user->status == 1 ? 'Active' : 'Inactive' }}
                                                             </span>
+                                                        </td>
+
+                                                        <td>
+                                                            @if ($user->admin_verification_status == 1)
+                                                                <span class="badge bg-success">Verified</span>
+                                                            @else
+                                                                <span class="badge bg-warning">Not-Verified</span>
+                                                            @endif
                                                         </td>
 
                                                         <td>
@@ -76,97 +85,7 @@
                                                         </td>
                                                     </tr>
 
-                                                    <!-- Edit Modal -->
-                                                    <div class="modal fade" id="editUserModal{{ $user->id }}"
-                                                        tabindex="-1">
-                                                        <div class="modal-dialog">
-                                                            <div class="modal-content">
-                                                                <form action="{{ route('admin.users.update', $user->id) }}"
-                                                                    method="POST">
-                                                                    @csrf @method('PUT')
-                                                                    <div class="modal-header bg-primary text-white">
-                                                                        <h5>Edit User</h5>
-                                                                        <button type="button" class="btn-close"
-                                                                            data-bs-dismiss="modal"></button>
-                                                                    </div>
 
-                                                                    <div class="modal-body">
-                                                                        <div class="row">
-                                                                            <div class="col-md-6 mb-3">
-                                                                                <label>Status</label>
-                                                                                <select name="status" class="form-control">
-                                                                                    <option value="1"
-                                                                                        {{ $user->status == 1 ? 'selected' : '' }}>
-                                                                                        Active</option>
-                                                                                    <option value="0"
-                                                                                        {{ $user->status == 0 ? 'selected' : '' }}>
-                                                                                        Inactive</option>
-                                                                                </select>
-                                                                            </div>
-
-                                                                            <div class="col-md-6 mb-3">
-                                                                                <label>Name</label>
-                                                                                <input type="text" name="name"
-                                                                                    class="form-control"
-                                                                                    value="{{ $user->name }}">
-                                                                            </div>
-
-                                                                            <div class="col-md-6 mb-3">
-                                                                                <label>Email</label>
-                                                                                <input type="email" name="email"
-                                                                                    class="form-control"
-                                                                                    value="{{ $user->email }}">
-                                                                            </div>
-
-                                                                            <div class="col-md-6 mb-3">
-                                                                                <label>Phone</label>
-                                                                                <input type="text" name="phone"
-                                                                                    maxlength="10" class="form-control"
-                                                                                    value="{{ $user->phone }}">
-                                                                            </div>
-
-                                                                            <div class="col-md-6 mb-3">
-                                                                                <label>Alternate Phone</label>
-                                                                                <input type="text" name="phone_2"
-                                                                                    maxlength="10" class="form-control"
-                                                                                    value="{{ $user->phone_2 }}">
-                                                                            </div>
-
-                                                                            <div class="col-md-6 mb-3">
-                                                                                <label>State</label>
-                                                                                <input type="text" name="state"
-                                                                                    class="form-control"
-                                                                                    value="{{ $user->state }}">
-                                                                            </div>
-
-                                                                            <div class="col-md-6 mb-3">
-                                                                                <label>City</label>
-                                                                                <input type="text" name="city"
-                                                                                    class="form-control"
-                                                                                    value="{{ $user->city }}">
-                                                                            </div>
-
-
-
-                                                                            <div class="col-md-6 mb-3">
-                                                                                <label>Address</label>
-                                                                                <input type="text" name="address"
-                                                                                    class="form-control"
-                                                                                    value="{{ $user->address }}">
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-dark"
-                                                                            data-bs-dismiss="modal">Close</button>
-                                                                        <button type="submit"
-                                                                            class="btn btn-success">Update</button>
-                                                                    </div>
-                                                                </form>
-                                                            </div>
-                                                        </div>
-                                                    </div>
                                                 @endforeach
                                             </tbody>
                                         </table>
