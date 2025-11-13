@@ -43,6 +43,7 @@ Route::group(['middleware' => ['auth:web'], 'prefix' => 'user', 'as' => 'user.']
     Route::get('/products', [UserController::class, 'toproducts'])->name('products');
     Route::get('carts', [UserController::class, 'Cartdetail'])->name('carts');
     Route::post('checkout', [BasicController::class, 'toCheck'])->name('checkout');
+    Route::get('thankyou', [BasicController::class, 'toThankyou'])->name('thankyou');
 
 
     Route::post('cart/add', [BasicController::class, 'addToCart'])->name('cart.add');

@@ -12,7 +12,7 @@
 
 
 
-                <li>
+                {{-- <li>
                     <a href="javascript: void(0);" class="has-arrow ">
                         <i class="fa fa-th-list"></i>
                         <span>Agents </span>
@@ -27,22 +27,52 @@
                                     class="mdi mdi-checkbox-blank-circle align-middle"></i>Add New Agents
                             </a></li>
                     </ul>
+                </li> --}}
+
+
+                <li class="{{ Route::is('admin.agents', 'admin.agents.new', 'admin.agent.show') ? 'mm-active' : '' }}">
+                    <a href="javascript:void(0);"
+                        class="has-arrow {{ Route::is('admin.agents', 'admin.agents.new', 'admin.agent.show') ? 'mm-active' : '' }}">
+                        <i class="fa fa-th-list"></i>
+                        <span>Agents</span>
+                    </a>
+
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li class="{{ Route::is('admin.agents') ? 'mm-active' : '' }}">
+                            <a class="{{ Route::is('admin.agents') ? 'active' : '' }}"
+                                href="{{ route('admin.agents') }}">
+                                <i class="mdi mdi-checkbox-blank-circle align-middle"></i> List of Agents
+                            </a>
+                        </li>
+
+                        <li class="{{ Route::is('admin.agents.new') ? 'mm-active' : '' }}">
+                            <a class="{{ Route::is('admin.agents.new') ? 'active' : '' }}"
+                                href="{{ route('admin.agents.new') }}">
+                                <i class="mdi mdi-checkbox-blank-circle align-middle"></i> Add New Agent
+                            </a>
+                        </li>
+
+
+                    </ul>
                 </li>
 
 
 
-                <li>
-                    <a href="javascript: void(0);" class="has-arrow ">
+
+                <li class="{{ Route::is('admin.users', 'admin.users.show') ? 'mm-active' : '' }}">
+                    <a href="javascript:void(0);"
+                        class="has-arrow {{ Route::is('admin.users', 'admin.users.show') ? 'mm-active' : '' }}">
                         <i class="fa fa-user-cog"></i>
                         <span>Users</span>
                     </a>
+
                     <ul class="sub-menu" aria-expanded="false">
-                        <li><a href="#"><i class="mdi mdi-checkbox-blank-circle align-middle"></i>Add Users
-                            </a></li>
-
-                        <li><a href="{{ route('admin.users') }}"><i
-                                    class="mdi mdi-checkbox-blank-circle align-middle"></i>List of Users</a></li>
-
+                        <li class="{{ Route::is('admin.users') ? 'mm-active' : '' }}">
+                            <a class="{{ Route::is('admin.users') ? 'active' : '' }}"
+                                href="{{ route('admin.users') }}">
+                                <i class="mdi mdi-checkbox-blank-circle align-middle"></i> List of Users
+                            </a>
+                        </li>
                     </ul>
                 </li>
 
@@ -85,7 +115,7 @@
                 </li>
 
                 <li>
-                    <a href="{{route('admin.withdraws')}}">
+                    <a href="{{ route('admin.withdraws') }}">
                         <i class="fas fa-wallet"></i>
                         <span>Withdraws</span>
                     </a>

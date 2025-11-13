@@ -178,6 +178,11 @@ class BasicController extends Controller
         // Clear cart
         session()->forget('cart');
 
-        return redirect()->back()->with('success', 'Order placed successfully!');
+        return redirect()->route('user.thankyou')->with('success', 'Order placed successfully!');
+    }
+
+    function toThankyou()
+    {
+        return view('user.product.thankyou');
     }
 }

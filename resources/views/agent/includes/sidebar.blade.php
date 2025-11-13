@@ -38,7 +38,7 @@
                 <li>
                     <a href="javascript: void(0);" class="has-arrow ">
                         <i class="fas fa-baby-carriage"></i>
-                        <span>Products</span>
+                        <span>Orders Now</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
                         <li><a href="{{ route('agent.products') }}"><i

@@ -210,7 +210,7 @@ class AgentController extends Controller
         // ✅ Clear cart
         session()->forget('cart');
 
-        return redirect()->back()->with('success', 'Order placed successfully!');
+        return redirect()->route('agent.thankyou')->with('success', 'Order placed successfully!');
     }
 
 
@@ -259,5 +259,10 @@ class AgentController extends Controller
         } catch (\Exception $e) {
             return redirect()->back()->with('error', $e->getMessage());
         }
+    }
+
+    function toThankyou()
+    {
+        return view('agent.product.thankyou');
     }
 }
