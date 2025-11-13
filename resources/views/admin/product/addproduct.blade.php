@@ -54,6 +54,15 @@
                                             @enderror
                                         </div>
 
+                                        <div class="col-md-12">
+                                            <label for="Subcategory" class="form-label mt-3">Subcategory</label>
+                                            <select id="select2-2" name="subcategory_id" class="form-select">
+                                                <option value="">Select Subcategory</option>
+                                            </select>
+                                            @error('subcategory_id')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                        </div>
 
 
                                         <!-- Product Name -->
@@ -435,8 +444,59 @@
         });
     </script>
 
+    <script>
+        $(document).ready(function() {
+            // Initialize Select2 for dropdowns
+            $('#select2-1, #select2-2').select2();
 
+            // Preselected values from server
+            const selectedCategoryId = "{{ old('category_id') }}";
+            const selectedSubcategoryId = "{{ old('subcategory_id') }}";
 
+            // If a category is preselected, load the subcategories
+            if (selectedCategoryId) {
+                loadSubcategories(selectedCategoryId, selectedSubcategoryId);
+            }
+
+            // When the category dropdown changes
+            $('#select2-1').on('change', function() {
+                const categoryId = $(this).val();
+                const subcategoryDropdown = $('#select2-2');
+
+                // Reset subcategory dropdown
+                subcategoryDropdown.html('<option value="">Select Subcategory</option>').select2();
+
+                if (categoryId) {
+                    loadSubcategories(categoryId);
+                }
+            });
+
+            // Function to load subcategories based on category ID
+            function loadSubcategories(categoryId, preselectedSubcategoryId = null) {
+                const subcategoryDropdown = $('#select2-2');
+
+                $.ajax({
+                    url: `subcategories/${categoryId}`, // Replace with your route
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function(subcategories) {
+                        // Populate subcategory dropdown
+                        $.each(subcategories, function(index, subcategory) {
+                            const isSelected = preselectedSubcategoryId == subcategory.id ?
+                                'selected' : '';
+                            subcategoryDropdown.append(
+                                `<option value="${subcategory.id}" ${isSelected}>${subcategory.category_name}</option>`
+                            );
+                        });
+                        subcategoryDropdown.select2();
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error loading subcategories:', error);
+                    }
+                });
+            }
+        });
+    </script>
 
     <link href="{{ asset('panel/libs/select2/css/select2.min.css') }}" rel="stylesheet" type="text/css">
 @endpush

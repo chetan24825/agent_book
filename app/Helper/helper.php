@@ -4,6 +4,7 @@ use App\Models\Inc\Upload;
 use App\Models\Inc\BusinessSetting;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Orders\CommissionInstallment;
 
 if (!function_exists('get_setting')) {
     function get_setting($key, $default = null)
@@ -117,6 +118,15 @@ if (!function_exists('uploaded_asset')) {
 }
 
 
+if (!function_exists('order_installment')) {
+    function order_installment($id)
+    {
+        return CommissionInstallment::where('order_id', $id)->sum('payment_amount');
+    }
+}
+
+
+
 
 if (!function_exists('formatUrl')) {
     /**
@@ -144,5 +154,3 @@ if (!function_exists('uploaded_asset_path')) {
         return null;
     }
 }
-
-

@@ -8,6 +8,7 @@ use App\Http\Controllers\Orders\OrderController;
 use App\Http\Controllers\Basic\ProductController;
 use App\Http\Controllers\Basic\CategoryController;
 use App\Http\Controllers\Basic\WithdrawalController;
+use App\Http\Controllers\Basic\InstallmentController;
 use App\Http\Controllers\Management\UsersManagementController;
 use App\Http\Controllers\Management\AgentsManagementController;
 
@@ -49,10 +50,14 @@ Route::group(['middleware' => ['auth:admin']], function () {
     Route::post('user/verify', [UsersManagementController::class, 'toverify'])->name('user.verify');
 
 
+    Route::get('/subcategories/{categoryId}', [CategoryController::class, 'getSubcategories'])->name('get.subcategories');
+
 
     // GetSettings
     Route::get('/settings', [AdminController::class, 'toSettings'])->name('settings');
     Route::post('/settings', [AdminController::class, 'toSettingUpload']);
+
+
 
     //Products
     Route::get('add-product', [ProductController::class, 'AddProduct'])->name('add-product');
@@ -69,6 +74,13 @@ Route::group(['middleware' => ['auth:admin']], function () {
     Route::get('order/edit/{id}', [OrderController::class, 'toOrderEdit'])->name('order.edit');
     Route::post('order/update/{id}', [OrderController::class, 'toOrderUpdate'])->name('order.update');
     Route::get('order/invoice/{id}', [OrderController::class, 'invoice'])->name('order.invoice');
+
+
+    Route::get('order/commission/{id}', [InstallmentController::class, 'tocommission'])->name('order.commission');
+    Route::post('order/installment', [InstallmentController::class, 'toinstallment'])->name('order.installment');
+
+
+
 
 
     Route::get('/withdrawls', [WithdrawalController::class, 'topending'])->name('withdraws');

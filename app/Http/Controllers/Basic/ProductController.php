@@ -12,18 +12,15 @@ class ProductController extends Controller
 {
     public function Products()
     {
-        $products = Product::with(['category'])->cursor();
-
+        $products = Product::with(['category', 'subcategory'])->cursor();
         $categories = Category::all();
-        $subcategories = [];
-        return view('admin.product.products', compact('categories', 'subcategories', 'products'));
+        return view('admin.product.products', compact('categories', 'products'));
     }
+
     public function addproduct()
     {
-        $categories = Category::all();
-
-        $subcategories = [];
-        return view('admin.product.addproduct', compact('categories', 'subcategories'));
+        $categories = Category::whereNull('parent_id')->get();
+        return view('admin.product.addproduct', compact('categories'));
     }
 
 
@@ -54,6 +51,7 @@ class ProductController extends Controller
         // ✅ Create Product
         $product = new Product();
         $product->category_id = $request->category_id;
+        $product->sub_category_id = $request->subcategory_id;
         $product->product_name = $request->product;
         $product->product_slug = Str::slug($request->product);
         $product->thumbphotos = $request->thumbphotos;
@@ -87,7 +85,7 @@ class ProductController extends Controller
     public function productEdit(string $id)
     {
         $product = Product::findOrFail($id);
-        $categories = Category::all();
+        $categories = Category::whereNull('parent_id')->get();
         return view('admin.product.editproduct', compact('product', 'categories'));
     }
     public function productUpdate(Request $request, $id)
@@ -116,6 +114,7 @@ class ProductController extends Controller
 
         $product = Product::findOrFail($id);
         $product->category_id = $request->category_id;
+        $product->sub_category_id = $request->subcategory_id;
         $product->product_name = $request->product;
         $product->product_slug = Str::slug($request->product);
         $product->thumbphotos = $request->thumbphotos;

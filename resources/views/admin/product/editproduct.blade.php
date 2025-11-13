@@ -55,6 +55,17 @@
                                         </div>
 
 
+                                        <div class="col-md-12">
+                                            <label for="Subcategory" class="form-label mt-3">Subcategory</label>
+                                            <select id="select2-2" name="subcategory_id" class="form-select">
+                                                <option value="">Select Subcategory</option>
+                                            </select>
+                                            @error('subcategory_id')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+
+
 
                                         <!-- Product Name -->
                                         <div class="col-md-12">
@@ -361,7 +372,7 @@
 
             // Preselected values from server
             const selectedCategoryId = "{{ old('category_id', $product->category_id) }}";
-            const selectedSubcategoryId = "{{ old('subcategory_id', $product->subcategory_id) }}";
+            const selectedSubcategoryId = "{{ old('subcategory_id', $product->sub_category_id) }}";
 
             // If a category is preselected, load the subcategories
             if (selectedCategoryId) {
@@ -386,7 +397,7 @@
                 const subcategoryDropdown = $('#select2-2');
 
                 $.ajax({
-                    url: `/admin/get-subcategories/${categoryId}`, // Replace with your route
+                    url: `/admin/subcategories/${categoryId}`, // Replace with your route
                     type: 'GET',
                     dataType: 'json',
                     success: function(subcategories) {
@@ -395,7 +406,7 @@
                             const isSelected = preselectedSubcategoryId == subcategory.id ?
                                 'selected' : '';
                             subcategoryDropdown.append(
-                                `<option value="${subcategory.id}" ${isSelected}>${subcategory.name}</option>`
+                                `<option value="${subcategory.id}" ${isSelected}>${subcategory.category_name}</option>`
                             );
                         });
                         subcategoryDropdown.select2();
@@ -488,10 +499,6 @@
             calculateSalePrice();
         });
     </script>
-
-
-
-
 
     <link href="{{ asset('panel/libs/select2/css/select2.min.css') }}" rel="stylesheet" type="text/css">
 @endpush

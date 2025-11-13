@@ -36,10 +36,11 @@
                                             <th>Order ID</th>
                                             <th>Total Amount</th>
                                             <th>Payment Status</th>
+
+                                            <th>Recieve Amount</th>
                                             <th>Commission Status</th>
                                             <th>Commission Amount</th>
                                             <th>Commission Date</th>
-
 
                                         </tr>
                                     </thead>
@@ -61,6 +62,10 @@
                                                 @else bg-warning @endif">
                                                         {{ ucfirst($order->payment_status) }}
                                                     </span>
+                                                </td>
+
+                                                <td>
+                                                   ₹{{ order_installment($order->id) ?? 0 }}
                                                 </td>
 
                                                 <td>
@@ -108,7 +113,8 @@
 {{-- ✅ STYLES --}}
 @push('styles')
     <link rel="stylesheet" href="{{ asset('panel/libs/datatables.net-bs5/css/dataTables.bootstrap5.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('panel/libs/datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css') }}">
+    <link rel="stylesheet"
+        href="{{ asset('panel/libs/datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css') }}">
     <link rel="stylesheet" href="{{ asset('panel/libs/sweetalert2/sweetalert2.min.css') }}">
 @endpush
 

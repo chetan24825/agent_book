@@ -102,17 +102,30 @@
                     </ul>
                 </li>
 
-                <li>
-                    <a href="javascript: void(0);" class="has-arrow ">
+                <li
+                    class=" {{ Route::is('admin.orders') || Route::is('admin.order.edit') || Route::is('admin.order.commission') ? 'mm-active' : '' }}">
+
+                    <a href="javascript:void(0);"
+                        class="has-arrow {{ Route::is('admin.orders') || Route::is('admin.order.edit') || Route::is('admin.order.commission')
+                            ? 'mm-active'
+                            : '' }}">
+
                         <i class="fa fa-window-restore"></i>
                         <span>Orders</span>
                     </a>
+
                     <ul class="sub-menu" aria-expanded="false">
-                        <li><a href="{{ route('admin.orders') }}"><i
-                                    class="mdi mdi-checkbox-blank-circle align-middle"></i>Lists Of
-                                Orders</a></li>
+
+                        <li class="{{ Route::is('admin.orders') ? 'mm-active' : '' }}">
+                            <a href="{{ route('admin.orders') }}"
+                                class="{{ Route::is('admin.orders') ? 'active' : '' }}">
+                                <i class="mdi mdi-checkbox-blank-circle align-middle"></i>
+                                Lists of Orders
+                            </a>
+                        </li>
                     </ul>
                 </li>
+
 
                 <li>
                     <a href="{{ route('admin.withdraws') }}">

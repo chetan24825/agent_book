@@ -55,7 +55,7 @@
                                                     {{ $order->user?->shop_name ?? '' }} <br>
                                                     <small class="text-muted">
 
-                                                         {{ $order->user?->name ?? 'N/A' }}
+                                                        {{ $order->user?->name ?? 'N/A' }}
                                                     </small>
                                                 </td>
 
@@ -88,7 +88,7 @@
                                                 </td>
 
 
-                                                 <td>₹{{ number_format($order->total_commission, 2) }}</td>
+                                                <td>₹{{ number_format($order->total_commission, 2) }}</td>
 
                                                 <td>
                                                     <a href="{{ route('admin.order.invoice', $order->id) }}"
@@ -101,6 +101,11 @@
                                                         data-id="{{ $order->id }}">
                                                         Delete
                                                     </button>
+
+                                                    <a href="{{ route('admin.order.commission', $order->id) }}"
+                                                        class="btn btn-dark btn-sm">Installments</a>
+
+
                                                 </td>
 
                                             </tr>

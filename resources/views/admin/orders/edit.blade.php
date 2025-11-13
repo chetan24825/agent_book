@@ -87,7 +87,7 @@
                                     </div>
 
                                     <div class="col-md-4">
-                                        <label class="form-label fw-semibold">Commission Amount</label>
+                                        <label class="form-label fw-semibold">Set Commission</label>
                                         <input type="text" class="form-control" name="total_commission"
                                             {{ $order->commission_status == 1 ? 'disabled' : '' }}
                                             value="{{ number_format($order->total_commission, 2) }}">

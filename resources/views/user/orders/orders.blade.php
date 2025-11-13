@@ -37,6 +37,7 @@
                                             <th>User</th>
                                             <th>Sponsor</th>
                                             <th>Total Amount</th>
+                                            <th>Pay Amount</th>
                                             <th>Payment Status</th>
                                             <th>Order Status</th>
                                             <th>Action</th>
@@ -61,6 +62,10 @@
                                                 </td>
 
                                                 <td>₹{{ number_format($order->total_amount, 2) }}</td>
+
+                                                <td>
+                                                    ₹{{ order_installment($order->id) ?? 0 }}
+                                                </td>
 
                                                 <td>
                                                     <span
