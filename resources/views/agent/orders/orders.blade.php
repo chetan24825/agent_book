@@ -41,6 +41,7 @@
                                             <th>Commission Status</th>
                                             <th>Commission Amount</th>
                                             <th>Commission Date</th>
+                                            <th>Action</th>
 
                                         </tr>
                                     </thead>
@@ -65,7 +66,7 @@
                                                 </td>
 
                                                 <td>
-                                                   ₹{{ order_installment($order->id) ?? 0 }}
+                                                    ₹{{ order_installment($order->id) ?? 0 }}
                                                 </td>
 
                                                 <td>
@@ -94,6 +95,25 @@
                                                         Pending
                                                     @endif
                                                 </td>
+
+                                                <td>
+                                                    @php
+                                                        $pendingCount = order_installment_pending($order->id);
+                                                    @endphp
+
+                                                    <a href="{{ route('agent.order.commission', encrypt($order->id)) }}"
+                                                        class="btn btn-dark position-relative">
+                                                        Installments
+
+                                                        @if ($pendingCount > 0)
+                                                            <span
+                                                                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                                                {{ $pendingCount }}
+                                                            </span>
+                                                        @endif
+                                                    </a>
+                                                </td>
+
                                             </tr>
                                         @endforeach
                                     </tbody>

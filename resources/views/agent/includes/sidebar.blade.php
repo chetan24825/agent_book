@@ -55,15 +55,17 @@
 
 
 
-                <li>
-                    <a href="{{route('agent.orders')}}" class="">
+                <li class="{{ Route::is('agent.orders', 'agent.order.commission') ? 'mm-active' : '' }}">
+                    <a href="{{ route('agent.orders') }}"
+                        class="{{ Route::is('agent.orders', 'agent.order.commission') ? 'active' : '' }}">
                         <i class="fas fa-box"></i>
                         <span>My Order</span>
                     </a>
                 </li>
 
+
                 <li>
-                    <a href="{{route('agent.wallet')}}">
+                    <a href="{{ route('agent.wallet') }}">
                         <i class="fas fa-wallet"></i>
                         <span>My Wallet</span>
                     </a>

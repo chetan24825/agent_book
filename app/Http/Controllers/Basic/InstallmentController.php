@@ -13,7 +13,7 @@ class InstallmentController extends Controller
     {
         $order = Order::with(['user', 'sponsor'])->findOrFail($id);
 
-        $total_installment = CommissionInstallment::where('order_id', $order->id)->sum('payment_amount');
+        $total_installment = CommissionInstallment::where('order_id', $order->id)->where('status', 1)->sum('payment_amount');
 
         $installments = CommissionInstallment::where('order_id', $order->id)->cursor();
 
@@ -33,8 +33,16 @@ class InstallmentController extends Controller
         $order = Order::findOrFail($request->order_id);
 
         // Remaining commission calculation
-        $previousPaid = CommissionInstallment::where('order_id', $order->id)->sum('payment_amount');
+        $previousPaid = CommissionInstallment::where('order_id', $order->id)->where('status', 1)->sum('payment_amount');
         $remaining = $order->total_amount - ($previousPaid + $request->amount);
+
+
+        $PendingCommission = CommissionInstallment::where('order_id', $order->id)->where('status', 0)->count();
+
+
+        if ($PendingCommission > 0) {
+            return back()->with('error', 'Installment amount Already into Pending.');
+        }
 
         // Prevent negative remaining balance
         if ($remaining < 0) {
@@ -48,9 +56,58 @@ class InstallmentController extends Controller
             'user_guard'     => $order->guard,
             'payment_amount' => $request->amount,
             'payment_remain' => $remaining,
-            'remarks'        => $request->remarks,
+            'remarks'        => $request->remarks ?? null,
+            'status'        => 0,
+
         ]);
 
         return back()->with('success', 'Installment added successfully.');
+    }
+
+    function toinstallmentUpdate(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|exists:commission_installments,id',
+            'status' => 'required|in:1,2,3'
+        ]);
+
+        $ins = CommissionInstallment::find($request->id);
+        $ins->status = $request->status;
+        $ins->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Installment status updated successfully!'
+        ]);
+    }
+
+
+
+    public function toCommissionAgent($order_id)
+    {
+        $id = decrypt($order_id);
+
+        $order = Order::with(['user', 'sponsor'])->findOrFail($id);
+
+        $total_installment = CommissionInstallment::where('order_id', $order->id)->where('status', 1)->sum('payment_amount');
+
+        $installments = CommissionInstallment::where('order_id', $order->id)->cursor();
+
+        return view('agent.orders.installment', compact('order', 'total_installment', 'installments'));
+    }
+
+
+    public function toCommissionUser($order_id)
+    {
+
+        $id = decrypt($order_id);
+
+        $order = Order::with(['user', 'sponsor'])->findOrFail($id);
+
+        $total_installment = CommissionInstallment::where('order_id', $order->id)->where('status', 1)->sum('payment_amount');
+
+        $installments = CommissionInstallment::where('order_id', $order->id)->cursor();
+
+        return view('user.orders.installment', compact('order', 'total_installment', 'installments'));
     }
 }

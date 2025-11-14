@@ -121,10 +121,17 @@ if (!function_exists('uploaded_asset')) {
 if (!function_exists('order_installment')) {
     function order_installment($id)
     {
-        return CommissionInstallment::where('order_id', $id)->sum('payment_amount');
+        return CommissionInstallment::where('order_id', $id)->where('status', 1)->sum('payment_amount');
     }
 }
 
+
+if (!function_exists('order_installment_pending')) {
+    function order_installment_pending($id)
+    {
+        return CommissionInstallment::where('order_id', $id)->where('status', 0)->count();
+    }
+}
 
 
 

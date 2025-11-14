@@ -28,7 +28,7 @@
 
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table id="datatable-orders" class="table table-bordered table-striped nowrap"
+                                <table id="datatable-orders"   class="table table-bordered table-striped nowrap"
                                     style="width:100%;">
                                     <thead class="table-primary text-center">
                                         <tr>
@@ -102,8 +102,23 @@
                                                         Delete
                                                     </button>
 
+
+
+                                                    @php
+                                                        $pendingCount = order_installment_pending($order->id);
+                                                    @endphp
+
                                                     <a href="{{ route('admin.order.commission', $order->id) }}"
-                                                        class="btn btn-dark btn-sm">Installments</a>
+                                                        class="btn btn-dark position-relative">
+                                                        Installments
+
+                                                        @if ($pendingCount > 0)
+                                                            <span
+                                                                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                                                {{ $pendingCount }}
+                                                            </span>
+                                                        @endif
+                                                    </a>
 
 
                                                 </td>

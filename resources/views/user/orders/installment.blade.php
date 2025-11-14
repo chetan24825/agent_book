@@ -1,4 +1,4 @@
-@extends('admin.layouts.app')
+@extends('user.layouts.app')
 
 @section('content')
     <div id="layout-wrapper">
@@ -9,7 +9,7 @@
                     <!-- Title + Back -->
                     <div class="d-flex justify-content-between align-items-center mb-4">
                         <h3 class="fw-bold">Order Installments — #{{ $order->custom_order_id }}</h3>
-                        <a href="{{ route('admin.orders') }}" class="btn btn-dark btn-sm">← Back</a>
+                        <a href="{{ route('user.order') }}" class="btn btn-dark btn-sm">← Back</a>
                     </div>
 
                     <!-- SUCCESS / ERROR MESSAGES -->
@@ -21,150 +21,7 @@
                         <div class="alert alert-danger">{{ session('error') }}</div>
                     @endif
 
-                    <!-- COMMISSION INFORMATION CARD -->
-                    <div class="card shadow-lg border-0">
-                        <div class="card-header bg-gradient-primary text-white py-3">
-                            <h4 class="mb-0"><i class="mdi mdi-cash-multiple me-2"></i>Commission Information</h4>
-                        </div>
 
-                        <div class="card-body">
-                            <div class="row g-4">
-
-                                <!-- ================= LEFT SIDE ================= -->
-                                <div class="col-md-5">
-
-                                    <div class="card border-0 shadow-sm h-100">
-                                        <div class="card-header bg-dark text-white">
-                                            <h5 class="mb-0"><i class="mdi mdi-file-document-outline me-2"></i>Order
-                                                Details</h5>
-                                        </div>
-
-                                        <div class="card-body p-0">
-                                            <table class="table table-hover table-bordered mb-0 align-middle">
-
-                                                <tr>
-                                                    <th width="40%">Order ID</th>
-                                                    <td><strong>{{ $order->custom_order_id }}</strong></td>
-                                                </tr>
-
-                                                <tr>
-                                                    <th>User Name</th>
-                                                    <td>{{ $order->user?->name }}</td>
-                                                </tr>
-
-                                                <tr>
-                                                    <th>User Email</th>
-                                                    <td>{{ $order->user?->email }}</td>
-                                                </tr>
-
-                                                <tr>
-                                                    <th>Total Amount</th>
-                                                    <td><span
-                                                            class="fw-bold">₹{{ number_format($order->total_amount, 2) }}</span>
-                                                    </td>
-                                                </tr>
-
-                                                <tr>
-                                                    <th>Payment Status</th>
-                                                    <td>
-                                                        <span
-                                                            class="badge
-                                        @if ($order->payment_status == 'paid') bg-success
-                                        @elseif($order->payment_status == 'pending') bg-warning
-                                        @else bg-danger @endif">
-                                                            {{ ucfirst($order->payment_status) }}
-                                                        </span>
-                                                    </td>
-                                                </tr>
-
-                                                <tr>
-                                                    <th>Order Status</th>
-                                                    <td>
-                                                        <span
-                                                            class="badge bg-info">{{ ucfirst($order->order_status) }}</span>
-                                                    </td>
-                                                </tr>
-
-
-                                                <tr>
-                                                    <th>Recieved Amount</th>
-                                                    <td>
-                                                        <span class="fw-bold text-success">
-                                                            ₹{{ number_format($total_installment - 0, 2) }}</span>
-                                                    </td>
-                                                </tr>
-
-                                                <tr>
-                                                    <th>Remain Amount</th>
-                                                    <td>
-                                                        <span class="fw-bold text-warning">
-                                                            ₹{{ number_format($order->total_amount - $total_installment - 0, 2) }}
-                                                        </span>
-
-                                                    </td>
-                                                </tr>
-
-                                            </table>
-                                        </div>
-                                    </div>
-
-                                </div>
-
-
-                                <div class="col-md-7">
-
-                                    <form action="{{ route('admin.order.installment') }}" method="POST">
-                                        @csrf
-                                        <input type="hidden" name="order_id" value="{{ $order->id }}">
-
-                                        <div class="modal-body">
-
-                                            {{-- GLOBAL ERROR ALERT --}}
-                                            @if ($errors->any())
-                                                <div class="alert alert-danger py-2">
-                                                    <ul class="mb-0">
-                                                        @foreach ($errors->all() as $error)
-                                                            <li class="small">{{ $error }}</li>
-                                                        @endforeach
-                                                    </ul>
-                                                </div>
-                                            @endif
-
-                                            {{-- Installment Amount --}}
-                                            <div class="mb-3">
-                                                <label class="form-label">Installment Amount</label>
-                                                <input type="number" step="1.0" name="amount"
-                                                    value="{{ old('amount') }}"
-                                                    class="form-control @error('amount') is-invalid @enderror">
-
-                                                @error('amount')
-                                                    <span class="invalid-feedback">{{ $message }}</span>
-                                                @enderror
-                                            </div>
-
-                                            {{-- Remarks --}}
-                                            <div class="mb-3">
-                                                <label class="form-label">Remarks</label>
-                                                <textarea class="form-control @error('remarks') is-invalid @enderror" name="remarks" rows="3">{{ old('remarks') }}</textarea>
-
-                                                @error('remarks')
-                                                    <span class="invalid-feedback">{{ $message }}</span>
-                                                @enderror
-                                            </div>
-
-                                            <div class="modal-footer">
-                                                <button type="submit" class="btn btn-success">Add Installment</button>
-                                            </div>
-
-                                        </div>
-                                    </form>
-
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- INSTALLMENT STATS -->
                     <div class="row mt-4">
                         <div class="col-md-3">
                             <div class="card shadow-sm text-center p-3">
@@ -243,22 +100,12 @@
                                                 <button class="btn btn-sm btn-info viewInstallment"
                                                     data-id="{{ $ins->id }}" data-amount="{{ $ins->payment_amount }}"
                                                     data-remain="{{ $ins->payment_remain }}"
-                                                    data-status="{{ $ins->status }}" data-remarks="{{ $ins->remarks }}"
+                                                    data-status="{{ $ins->status }}"
                                                     data-date="{{ $ins->created_at->format('d M Y • h:i A') }}">
                                                     View
                                                 </button>
 
-                                                @if ($ins->status == 0)
-                                                    <button class="btn btn-danger btn-sm status-btn"
-                                                        data-id="{{ $ins->id }}" data-status='2'>
-                                                        Reject
-                                                    </button>
 
-                                                    <button class="btn btn-success btn-sm status-btn" data-status='1'
-                                                        data-id="{{ $ins->id }}">
-                                                        Approve
-                                                    </button>
-                                                @endif
 
                                             </td>
 
@@ -299,10 +146,6 @@
                                                     <td id="viewStatus"></td>
                                                 </tr>
 
-                                                <tr>
-                                                    <th>Remarks</th>
-                                                    <td id="viewRemarks"></td>
-                                                </tr>
 
                                                 <tr>
                                                     <th>Date</th>
@@ -350,7 +193,7 @@
                 let amount = $(this).data('amount');
                 let remain = $(this).data('remain');
                 let status = $(this).data('status');
-                let remarks = $(this).data('remarks') || "No remarks";
+
                 let date = $(this).data('date');
                 let images = $(this).data('image');
 
@@ -368,8 +211,7 @@
 
                 $('#viewStatus').html(badgeHtml);
 
-                // Remarks
-                $('#viewRemarks').text(remarks);
+
 
                 // Date
                 $('#viewDate').text(date);

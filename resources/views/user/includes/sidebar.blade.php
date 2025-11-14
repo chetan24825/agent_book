@@ -62,12 +62,16 @@
                 </li>
 
 
-                <li class="">
-                    <a href="{{ route('user.order') }}" class="">
+                <li class="{{ Route::is('user.order', 'user.order.commission') ? 'mm-active' : '' }}">
+                    <a href="{{ route('user.order') }}"
+                        class="{{ Route::is('user.order', 'user.order.commission') ? 'active' : '' }}">
                         <i class="fa fa-palette"></i>
                         <span>Orders</span>
                     </a>
                 </li>
+
+
+
 
                 {{-- <li>
                     <a href="#">

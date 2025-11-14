@@ -92,6 +92,23 @@
                                                     <a href="{{ route('user.order.invoice', $order->id) }}"
                                                         class="btn btn-info btn-sm">View</a>
 
+
+                                                    @php
+                                                        $pendingCount = order_installment_pending($order->id);
+                                                    @endphp
+
+                                                    <a href="{{ route('user.order.commission', encrypt($order->id)) }}"
+                                                        class="btn btn-dark position-relative">
+                                                        Installments
+
+                                                        @if ($pendingCount > 0)
+                                                            <span
+                                                                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                                                {{ $pendingCount }}
+                                                            </span>
+                                                        @endif
+                                                    </a>
+
                                                 </td>
 
                                             </tr>

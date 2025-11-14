@@ -1,5 +1,4 @@
-@extends('admin.layouts.app')
-
+@extends('agent.layouts.app')
 @section('content')
     <div id="layout-wrapper">
         <div class="main-content">
@@ -9,7 +8,7 @@
                     <!-- Title + Back -->
                     <div class="d-flex justify-content-between align-items-center mb-4">
                         <h3 class="fw-bold">Order Installments — #{{ $order->custom_order_id }}</h3>
-                        <a href="{{ route('admin.orders') }}" class="btn btn-dark btn-sm">← Back</a>
+                        <a href="{{ route('agent.orders') }}" class="btn btn-dark btn-sm">← Back</a>
                     </div>
 
                     <!-- SUCCESS / ERROR MESSAGES -->
@@ -113,7 +112,7 @@
 
                                 <div class="col-md-7">
 
-                                    <form action="{{ route('admin.order.installment') }}" method="POST">
+                                    <form action="{{ route('agent.order.installment') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="order_id" value="{{ $order->id }}">
 
@@ -143,14 +142,14 @@
                                             </div>
 
                                             {{-- Remarks --}}
-                                            <div class="mb-3">
+                                            {{-- <div class="mb-3">
                                                 <label class="form-label">Remarks</label>
                                                 <textarea class="form-control @error('remarks') is-invalid @enderror" name="remarks" rows="3">{{ old('remarks') }}</textarea>
 
                                                 @error('remarks')
                                                     <span class="invalid-feedback">{{ $message }}</span>
                                                 @enderror
-                                            </div>
+                                            </div> --}}
 
                                             <div class="modal-footer">
                                                 <button type="submit" class="btn btn-success">Add Installment</button>
@@ -248,17 +247,7 @@
                                                     View
                                                 </button>
 
-                                                @if ($ins->status == 0)
-                                                    <button class="btn btn-danger btn-sm status-btn"
-                                                        data-id="{{ $ins->id }}" data-status='2'>
-                                                        Reject
-                                                    </button>
 
-                                                    <button class="btn btn-success btn-sm status-btn" data-status='1'
-                                                        data-id="{{ $ins->id }}">
-                                                        Approve
-                                                    </button>
-                                                @endif
 
                                             </td>
 
@@ -384,63 +373,6 @@
 
         });
     </script>
-
-    <script>
-        $(document).ready(function() {
-
-            $('.status-btn').click(function() {
-
-                let id = $(this).data('id');
-                let status = $(this).data('status');
-
-                Swal.fire({
-                    title: 'Are you sure?',
-                    text: "Do you want to update this installment?",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, Update!'
-                }).then((result) => {
-
-                    if (result.isConfirmed) {
-
-                        fetch("{{ route('admin.installment.update') }}", {
-                                method: "POST",
-                                headers: {
-                                    "Content-Type": "application/json",
-                                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr('content')
-                                },
-                                body: JSON.stringify({
-                                    id: id,
-                                    status: status
-                                })
-                            })
-                            .then(response => response.json())
-                            .then(data => {
-
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: data.message ?? 'Updated Successfully!',
-                                    showConfirmButton: true,
-                                    confirmButtonText: "OK"
-                                }).then(() => {
-                                    // 🔥 Only refresh when OK is clicked
-                                    location.reload();
-                                });
-
-                            })
-                            .catch(err => {
-                                Swal.fire('Error!', 'Something went wrong.', 'error');
-                            });
-                    }
-                });
-
-            });
-
-        });
-    </script>
-
 
 
     <script src="{{ asset('panel/libs/datatables.net/js/jquery.dataTables.min.js') }}"></script>

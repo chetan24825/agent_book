@@ -103,34 +103,51 @@
                 </li>
 
                 <li
-                    class=" {{ Route::is('admin.orders') || Route::is('admin.order.edit') || Route::is('admin.order.commission') ? 'mm-active' : '' }}">
-
+                    class="{{ Route::is('admin.orders', 'admin.order.edit', 'admin.order.commission') ? 'mm-active' : '' }}">
                     <a href="javascript:void(0);"
-                        class="has-arrow {{ Route::is('admin.orders') || Route::is('admin.order.edit') || Route::is('admin.order.commission')
-                            ? 'mm-active'
-                            : '' }}">
-
+                        class="has-arrow {{ Route::is('admin.orders', 'admin.order.edit', 'admin.order.commission') ? 'mm-active' : '' }}">
                         <i class="fa fa-window-restore"></i>
                         <span>Orders</span>
+
+                        {{-- Pending Orders Count Badge --}}
+                        @php
+                            $pendingOrders = App\Models\Orders\Order::where('payment_status', 'pending')->count();
+                        @endphp
+
+                        @if ($pendingOrders > 0)
+                            <span class="badge bg-danger ms-2">{{ $pendingOrders }}</span>
+                        @endif
                     </a>
 
                     <ul class="sub-menu" aria-expanded="false">
-
                         <li class="{{ Route::is('admin.orders') ? 'mm-active' : '' }}">
                             <a href="{{ route('admin.orders') }}"
                                 class="{{ Route::is('admin.orders') ? 'active' : '' }}">
                                 <i class="mdi mdi-checkbox-blank-circle align-middle"></i>
-                                Lists of Orders
+                                All Orders
+
+                                @if ($pendingOrders > 0)
+                                    <span class="badge bg-danger float-end">{{ $pendingOrders }}</span>
+                                @endif
                             </a>
                         </li>
                     </ul>
                 </li>
 
 
+
                 <li>
                     <a href="{{ route('admin.withdraws') }}">
                         <i class="fas fa-wallet"></i>
                         <span>Withdraws</span>
+
+                        @php
+                            $pendingWithdraws = App\Models\Inc\Withdrawal::where('status', 0)->count();
+                        @endphp
+
+                        @if ($pendingWithdraws > 0)
+                            <span class="badge bg-danger float-end">{{ $pendingWithdraws }}</span>
+                        @endif
                     </a>
                 </li>
 

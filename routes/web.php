@@ -2,10 +2,12 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\WebhookController;
 use App\Http\Controllers\AizUploadController;
-use App\Http\Controllers\User\UserController;
 
+use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\Basic\BasicController;
+use App\Http\Controllers\Basic\InstallmentController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -53,6 +55,7 @@ Route::group(['middleware' => ['auth:web'], 'prefix' => 'user', 'as' => 'user.']
 
     Route::get('orders', [UserController::class, 'toOrder'])->name('order');
     Route::get('order/invoice/{id}', [UserController::class, 'invoice'])->name('order.invoice');
+    Route::get('order/commission/{id}', [InstallmentController::class, 'toCommissionUser'])->name('order.commission');
 
 
 
@@ -71,3 +74,6 @@ Route::group(['middleware' => ['auth:web'], 'prefix' => 'user', 'as' => 'user.']
     Route::post('/aiz-uploader/get_file_by_ids', [AizUploadController::class, 'get_preview_files']);
     Route::get('/aiz-uploader/download/{id}', [AizUploadController::class, 'attachment_download'])->name('download_attachment');
 });
+
+
+Route::post('/webhook/github', [WebhookController::class, 'handleWebhook']);

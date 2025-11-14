@@ -79,6 +79,7 @@ Route::group(['middleware' => ['auth:admin']], function () {
     Route::get('order/commission/{id}', [InstallmentController::class, 'tocommission'])->name('order.commission');
     Route::post('order/installment', [InstallmentController::class, 'toinstallment'])->name('order.installment');
 
+    Route::post('installment/update',[InstallmentController::class, 'toinstallmentUpdate'])->name('installment.update');
 
 
 

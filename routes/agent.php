@@ -5,6 +5,7 @@ use App\Http\Controllers\AizUploadController;
 use App\Http\Controllers\Agent\AgentController;
 use App\Http\Controllers\Basic\BasicController;
 use App\Http\Controllers\Client\MyClientController;
+use App\Http\Controllers\Basic\InstallmentController;
 
 
 Route::group(['middleware' => 'guest'], function () {
@@ -31,8 +32,12 @@ Route::group(['middleware' => ['auth:agent']], function () {
 
 
 
+
     //Orders
     Route::get('orders', [AgentController::class, 'toorders'])->name('orders');
+    Route::get('order/commission/{id}', [InstallmentController::class, 'toCommissionAgent'])->name('order.commission');
+    Route::post('order/installment', [InstallmentController::class, 'toinstallment'])->name('order.installment');
+
 
     //Wallet
     Route::get('wallet', [AgentController::class, 'Wallet'])->name('wallet');
