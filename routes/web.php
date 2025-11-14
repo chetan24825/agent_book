@@ -65,8 +65,6 @@ Route::group(['middleware' => ['auth:web'], 'prefix' => 'user', 'as' => 'user.']
     Route::delete('favourite/delete/{id}', [UserController::class, 'toDeleteFavourite'])->name('user.favourite');
 
 
-
-
     // AizUpload
     Route::post('/aiz-uploader', [AizUploadController::class, 'show_uploader']);
     Route::post('/aiz-uploader/upload', [AizUploadController::class, 'upload']);
