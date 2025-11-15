@@ -31,7 +31,7 @@ class AgentController extends Controller
         // Validate the email and password fields
         $request->validate([
             'email' => 'required|email|exists:agents,email',
-            'password' => 'required|min:6',
+            'password' => 'required|min:3',
         ]);
 
         // Prepare the credentials
