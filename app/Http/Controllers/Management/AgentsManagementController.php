@@ -100,7 +100,7 @@ class AgentsManagementController extends Controller
     function toagentshow($id)
     {
         $user = Agent::find($id);
-        dd("njs");
+
         if (!$user) {
             return redirect()->back()->with('error', 'User not found.');
         }
