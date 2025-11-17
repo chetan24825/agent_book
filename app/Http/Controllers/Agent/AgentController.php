@@ -12,6 +12,7 @@ use App\Models\Orders\OrderItem;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Models\Orders\CommissionInstallment;
 
 class AgentController extends Controller
 {
@@ -161,7 +162,8 @@ class AgentController extends Controller
         // ✅ Validate Form Request
         $request->validate([
             'checkout_user_id'   => 'required|exists:users,id',
-            'checkout_user_guard' => 'required'
+            'checkout_user_guard' => 'required',
+            'payment_amount' => 'required|numeric|gt:0'
         ]);
 
         // ✅ Get Cart
@@ -206,6 +208,19 @@ class AgentController extends Controller
                 'total'        => $item['price'] * $item['quantity'],
             ]);
         }
+
+        $previousPaid = CommissionInstallment::where('order_id', $order->id)->sum('payment_amount');
+        $remaining = $order->total_amount - ($previousPaid + $request->payment_amount);
+
+        CommissionInstallment::create([
+            'order_id'       => $order->id,
+            'user_id'        => $order->user_id ?? null,
+            'user_guard'     => $order->guard,
+            'payment_amount' => $request->payment_amount,
+            'payment_remain' => $remaining,
+            'remarks'        => $request->remarks ?? null,
+            'status'        => 0,
+        ]);
 
         // ✅ Clear cart
         session()->forget('cart');

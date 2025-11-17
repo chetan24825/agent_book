@@ -8,6 +8,8 @@ use App\Http\Controllers\AizUploadController;
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\Basic\BasicController;
 use App\Http\Controllers\Basic\InstallmentController;
+use App\Http\Controllers\User\ResetPasswordController;
+use App\Http\Controllers\User\ForgotPasswordController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -18,6 +20,11 @@ Route::get('/', function () {
 Route::middleware('guest')->group(function () {
     Route::get('/login', [UserController::class, 'toLogin'])->name('login');
     Route::post('/login', [UserController::class, 'toLoginPost'])->name('login.post');
+
+    Route::get('/user/forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('user.password.request');
+    Route::post('/user/forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('user.password.email');
+    Route::get('/user/reset-password/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
+    Route::post('/user/reset-password', [ResetPasswordController::class, 'reset'])->name('user.password.update');
 });
 
 Route::get('/logout', function () {
@@ -29,9 +36,8 @@ Route::get('/logout', function () {
 
 
 
-Route::group(['middleware' => ['auth:web'], 'prefix' => 'user', 'as' => 'user.'], function () {
+Route::group(['middleware' => ['auth:web', 'user.active'], 'prefix' => 'user', 'as' => 'user.'], function () {
     Route::get('/dashboard', [UserController::class, 'toUserDashboard'])->name('dashboard');
-
 
     // Profile Update
     Route::get('profile', [UserController::class, 'UserProfile'])->name('profile');

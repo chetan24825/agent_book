@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
+use App\Http\Middleware\CheckUserStatus;
 use App\Http\Middleware\RemoveWwwMiddleware;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -28,6 +29,9 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->append(RemoveWwwMiddleware::class);
         $middleware->validateCsrfTokens(except: [
             '/webhook/github',
+        ]);
+        $middleware->alias([
+            'user.active' => CheckUserStatus::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {})->create();

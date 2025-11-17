@@ -58,7 +58,6 @@ class InstallmentController extends Controller
             'payment_remain' => $remaining,
             'remarks'        => $request->remarks ?? null,
             'status'        => 0,
-
         ]);
 
         return back()->with('success', 'Installment added successfully.');

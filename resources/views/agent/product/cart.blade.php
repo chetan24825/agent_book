@@ -132,6 +132,13 @@
                                                 </select>
                                             </div>
 
+                                            <div class="mb-3">
+                                                <label class="form-label fw-semibold">Enter Advance Payment <span
+                                                        class="text-danger">*</span></label>
+                                                <input type="number" class="form-control" step="1.0" required
+                                                    name="payment_amount" value="{{ old('payment_amount') }}">
+                                            </div>
+
                                             <button type="submit"
                                                 class="btn btn-success btn-lg w-100 rounded-pill shadow-sm">
                                                 <i class="fas fa-shopping-cart me-1"></i> Proceed to Checkout

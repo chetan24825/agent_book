@@ -93,7 +93,7 @@
                         <hr>
                         <div class="text-center">
                             <small>Don’t have an account?
-                                <a href="#">Register here</a>
+                                <a href="{{ route('user.password.request') }}">Reset Password</a>
                             </small>
                         </div>
                     </div>

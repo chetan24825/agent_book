@@ -110,8 +110,17 @@
 
                                         <form action="{{ route('user.checkout') }}" method="POST">
                                             @csrf
+                                            <hr>
+                                            <div class="mb-3">
+                                                <label class="form-label fw-semibold">Enter Advance Payment <span
+                                                        class="text-danger">*</span></label>
+                                                <input type="number" class="form-control" step="1.0" required
+                                                    name="payment_amount" value="{{ old('payment_amount') }}">
+                                            </div>
                                             <button class="btn btn-success btn-lg w-100">Proceed to Checkout</button>
                                         </form>
+
+
 
                                     </div>
                                 </div>
