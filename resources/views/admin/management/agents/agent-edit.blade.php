@@ -325,7 +325,7 @@
                                             <option value="">Select Status</option>
                                             <option value="1" {{ $user->status == 1 ? 'selected' : '' }}>Active
                                             </option>
-                                            <option value="0" {{ $user->status == 0 ? 'selected' : '' }}>Banned
+                                            <option value="0" {{ $user->status == 0 ? 'selected' : '' }}>In-Active
                                             </option>
 
                                         </select>

@@ -151,7 +151,9 @@ class AgentController extends Controller
     {
         $users = User::orderBy('name')
             ->where('sponsor_id', Auth::guard(current_guard())->id()) // ✅ correct id()
-            ->where('guard', current_guard())                         // ✅ filter by guard correctly
+            ->where('guard', current_guard())
+            ->where('status', 1)
+            ->where('admin_verification_status', 1)
             ->cursor();
 
         return view('agent.product.cart', compact('users'));

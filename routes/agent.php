@@ -13,7 +13,7 @@ Route::group(['middleware' => 'guest'], function () {
     Route::post('/login', [AgentController::class, 'toAgentLoginPost']);
 });
 
-Route::group(['middleware' => ['auth:agent']], function () {
+Route::group(['middleware' => ['auth:agent', 'user.active']], function () {
     Route::get('/dashboard', [AgentController::class, 'toAgentDashboard'])->name('dashboard');
 
     // profile

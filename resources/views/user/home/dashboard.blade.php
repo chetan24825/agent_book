@@ -35,6 +35,66 @@
                                             </div>
                                         </div>
 
+                                        <div class="col-sm-3">
+                                            <div class="d-flex justify-content-between align-content-end shadow-lg p-3">
+                                                <div>
+                                                    <p class="text-muted text-truncate mb-2">Pending Orders</p>
+                                                    <h5 class="mb-0">
+                                                        {{ App\Models\Orders\Order::where('guard', current_guard())->where('user_id', Auth::id())->where('order_status', 'pending')->count() }}
+
+                                                    </h5>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-3">
+                                            <div class="d-flex justify-content-between align-content-end shadow-lg p-3">
+                                                <div>
+                                                    <p class="text-muted text-truncate mb-2">Completed Orders</p>
+                                                    <h5 class="mb-0">
+                                                        {{ App\Models\Orders\Order::where('guard', current_guard())->where('user_id', Auth::id())->where('order_status', 'delivered')->count() }}
+
+                                                    </h5>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-3">
+                                            <div class="d-flex justify-content-between align-content-end shadow-lg p-3">
+                                                <div>
+                                                    <p class="text-muted text-truncate mb-2">Total Orders Amount</p>
+                                                    <h5 class="mb-0">
+                                                        {{ App\Models\Orders\Order::where('guard', current_guard())->where('user_id', Auth::id())->sum('total_amount') }}
+
+                                                    </h5>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-3">
+                                            <div class="d-flex justify-content-between align-content-end shadow-lg p-3">
+                                                <div>
+                                                    <p class="text-muted text-truncate mb-2">Orders Remain Amount</p>
+                                                    <h5 class="mb-0">
+                                                        {{ App\Models\Orders\CommissionInstallment::where('user_guard', current_guard())->where('user_id', Auth::id())->sum('payment_remain') }}
+                                                    </h5>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-sm-3">
+                                            <div class="d-flex justify-content-between align-content-end shadow-lg p-3">
+                                                <div>
+                                                    <p class="text-muted text-truncate mb-2">Orders Payable Amount</p>
+                                                    <h5 class="mb-0">
+                                                        {{ App\Models\Orders\CommissionInstallment::where('user_guard', current_guard())->where('user_id', Auth::id())->sum('payment_amount') }}
+                                                    </h5>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
                                     </div>
                                 </div>
                             </div>

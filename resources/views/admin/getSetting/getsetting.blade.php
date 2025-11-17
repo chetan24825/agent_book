@@ -72,6 +72,20 @@
                                         </div>
 
 
+                                           <div>
+                                            <label for="exampleFormControlInput1" class="form-label">Company GST Number</label>
+                                            <input type="text" class="form-control" name="company_gst"
+                                                id="exampleFormControlInput1" placeholder=""
+                                                value="{{ old('company_gst', get_setting('company_gst')) }}" />
+                                            @error('company_gst')
+                                                <span class="text-danger" role="alert">
+                                                    <strong>{{ ucwords($message) }}</strong>
+                                                </span>
+                                            @enderror
+                                        </div>
+
+
+
                                     </div>
                                 </div>
                             </div>

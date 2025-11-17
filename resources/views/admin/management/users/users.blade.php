@@ -78,14 +78,14 @@
                                                             </a>
 
                                                             <!-- View -->
-                                                            <a href="{{ route('admin.user.view', $user->id) }}"
-                                                                class="btn btn-info" target="_blank">
-                                                                <i class="fas fa-eye"></i>
-                                                            </a>
+                                                            @if ($user->status == 1)
+                                                                <a href="{{ route('admin.user.view', $user->id) }}"
+                                                                    class="btn btn-info" target="_blank">
+                                                                    <i class="fas fa-eye"></i>
+                                                                </a>
+                                                            @endif
                                                         </td>
                                                     </tr>
-
-
                                                 @endforeach
                                             </tbody>
                                         </table>

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->string('guard')->nullable()->after('sponsor_id');
 
             // Status
-            $table->tinyInteger('status')->default(1)->after('guard');
+            $table->tinyInteger('status')->default(0)->after('guard');
             $table->tinyInteger('admin_verification_status')->default(0)->after('status');
 
             // Contact + Address

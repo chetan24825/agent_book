@@ -23,7 +23,7 @@ class CheckUserStatus
         if (Auth::check()) {
             $user = Auth::user();
             if ($user->status == '0') {
-                Auth::logout();
+                Auth::guard(current_guard())->logout();
                 Session::invalidate();
                 Session::regenerateToken();
                 return redirect()->route('login')->with('error', 'Your Account is inactive By Admin.');

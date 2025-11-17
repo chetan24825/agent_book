@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('email')->unique()->nullable();
             $table->string('avatar')->nullable();
             $table->string('phone')->nullable();
-            $table->tinyInteger('status')->default(1);  // status 0 => inactive , 1 => active
+            $table->tinyInteger('status')->default(0);  // status 0 => inactive , 1 => active
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable();
             $table->decimal('commission',50,2)->default(0);

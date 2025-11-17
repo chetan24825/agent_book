@@ -112,17 +112,20 @@
                                                         <td>
 
                                                             <!-- <button type="button" class="btn btn-danger  delete-btn"
-                                                                                    data-id="{{ $agent->id }}">
-                                                                                    <i class="fas fa-trash-alt"></i>
-                                                                                </button> -->
+                                                                                        data-id="{{ $agent->id }}">
+                                                                                        <i class="fas fa-trash-alt"></i>
+                                                                                    </button> -->
 
                                                             <a href="{{ route('admin.agent.show', $agent->id) }}"
                                                                 target="blank" class="btn btn-success"><i
                                                                     class="fas fa-pencil-alt"></i></a>
 
-                                                            <a href="{{ route('admin.agent.view', $agent->id) }}"
-                                                                target="blank" class="btn btn-info"><i
-                                                                    class="fas fa-eye"></i></a>
+
+                                                            @if ($agent->status == 1)
+                                                                <a href="{{ route('admin.agent.view', $agent->id) }}"
+                                                                    target="blank" class="btn btn-info"><i
+                                                                        class="fas fa-eye"></i></a>
+                                                            @endif
                                                         </td>
                                                     </tr>
                                                 @endforeach

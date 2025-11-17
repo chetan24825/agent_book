@@ -43,23 +43,24 @@
 
                 </li>
 
+                @if (Auth::guard(current_guard())->user()->admin_verification_status == 1)
+                    <li>
+                        <a href="javascript: void(0);" class="has-arrow ">
+                            <i class="fas fa-baby-carriage"></i>
+                            <span>Products</span>
+                        </a>
+                        <ul class="sub-menu" aria-expanded="false">
+                            <li><a href="{{ route('user.products') }}"><i
+                                        class="mdi mdi-checkbox-blank-circle align-middle"></i>Products
+                                </a></li>
 
-                <li>
-                    <a href="javascript: void(0);" class="has-arrow ">
-                        <i class="fas fa-baby-carriage"></i>
-                        <span>Products</span>
-                    </a>
-                    <ul class="sub-menu" aria-expanded="false">
-                        <li><a href="{{ route('user.products') }}"><i
-                                    class="mdi mdi-checkbox-blank-circle align-middle"></i>Products
-                            </a></li>
+                            <li><a href="{{ route('user.carts') }}"><i
+                                        class="mdi mdi-checkbox-blank-circle align-middle"></i>List of
+                                    Cart</a></li>
 
-                        <li><a href="{{ route('user.carts') }}"><i
-                                    class="mdi mdi-checkbox-blank-circle align-middle"></i>List of
-                                Cart</a></li>
-
-                    </ul>
-                </li>
+                        </ul>
+                    </li>
+                @endif
 
 
                 <li class="{{ Route::is('user.order', 'user.order.commission') ? 'mm-active' : '' }}">
@@ -79,11 +80,6 @@
                         <span> Wallet</span>
                     </a>
                 </li> --}}
-
-
-
-
-
 
                 <li>
                     <a href="{{ route('logout') }}" class="">
