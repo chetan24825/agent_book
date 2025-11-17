@@ -97,6 +97,10 @@
                                                 </td>
 
                                                 <td>
+                                                    <a href="{{ route('agent.order.invoice', $order->id) }}"
+                                                        class="btn btn-info">Invoice</a>
+
+
                                                     @php
                                                         $pendingCount = order_installment_pending($order->id);
                                                     @endphp
@@ -112,6 +116,9 @@
                                                             </span>
                                                         @endif
                                                     </a>
+
+
+
                                                 </td>
 
                                             </tr>

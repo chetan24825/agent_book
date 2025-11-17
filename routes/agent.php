@@ -37,6 +37,7 @@ Route::group(['middleware' => ['auth:agent', 'user.active']], function () {
     Route::get('orders', [AgentController::class, 'toorders'])->name('orders');
     Route::get('order/commission/{id}', [InstallmentController::class, 'toCommissionAgent'])->name('order.commission');
     Route::post('order/installment', [InstallmentController::class, 'toinstallment'])->name('order.installment');
+    Route::get('order/invoice/{id}', [AgentController::class, 'invoice'])->name('order.invoice');
 
 
     //Wallet

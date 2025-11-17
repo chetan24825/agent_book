@@ -60,6 +60,12 @@
                                             @enderror
                                         </div>
 
+                                         <div class="col-12 mb-3">
+                                            <label for="ifsc_code" class="form-label">State</label>
+                                            <input type="text" class="form-control" name="company_state" id="company_state"
+                                                value="{{ old('company_state', get_setting('company_state')) }}" />
+                                        </div>
+
                                         <div>
                                             <label for="exampleFormControlTextarea1" class="form-label">Company
                                                 Address</label>
@@ -246,7 +252,7 @@
 
                         <div class="col-md-6">
 
-                            <div class="card">
+                            {{-- <div class="card">
                                 <div class="card-header card-header-bordered">
                                     <h3 class="card-title">Seo Section</h3>
                                 </div>
@@ -342,7 +348,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
                             <div class="card">
                                 <div class="card-header card-header-bordered">
                                     <h3 class="card-title">Seo Section</h3>

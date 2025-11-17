@@ -173,6 +173,10 @@
                         <li><a href="{{ route('admin.settings') }}"><i
                                     class="mdi mdi-checkbox-blank-circle align-middle"></i> General
                             </a></li>
+
+                        <li><a href="{{ route('admin.bank') }}"><i
+                                    class="mdi mdi-checkbox-blank-circle align-middle"></i> Bank Details
+                            </a></li>
                         <li
                             class="{{ Route::is('admin.custom-page') || Route::is('admin.custom-page-edit') ? 'mm-active' : '' }}">
                             <a href="{{ route('admin.custom-page-all') }}"><i

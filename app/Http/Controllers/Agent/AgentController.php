@@ -282,4 +282,12 @@ class AgentController extends Controller
     {
         return view('agent.product.thankyou');
     }
+
+    function invoice($id)
+    {
+        $order = Order::with('items', 'user', 'sponsor')
+            ->where('commission_user_id', Auth::guard(current_guard())->id())
+            ->findOrFail($id);
+        return view('agent.orders.invoice', compact('order'));
+    }
 }

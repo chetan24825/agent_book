@@ -57,6 +57,11 @@ class AdminController extends Controller
         return  view('admin.getSetting.getsetting');
     }
 
+    function toSettingbanks()
+    {
+        return  view('admin.getSetting.bankdetail');
+    }
+
     public function toSettingUpload(Request $request)
     {
         $settings = $request->except('_token');

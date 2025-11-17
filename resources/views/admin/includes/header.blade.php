@@ -4,19 +4,23 @@
         <div class="navbar-logo-box">
             <a href="{{ route('admin.dashboard') }}" class="logo logo-dark">
                 <span class="logo-sm">
-                    <img src="{{ asset('panel/images/logo-dark.png') }}" alt="logo-sm-dark" height="20">
+                    <img src="{{ uploaded_asset(get_setting('web_logo')) ?? asset('panel/images/logo-dark.png') }}"
+                        alt="logo-sm-dark" height="{{ get_setting('web_logo') ? '75' : '20' }}">
                 </span>
                 <span class="logo-lg">
-                    <img src="{{ asset('panel/images/logo-dark.png') }}" alt="logo-dark" height="18">
+                    <img src="{{ uploaded_asset(get_setting('web_logo')) ?? asset('panel/images/logo-dark.png') }}"
+                        alt="logo-dark" height="{{ get_setting('web_logo') ? '75' : '18' }}">
                 </span>
             </a>
 
             <a href="#" class="logo logo-light">
                 <span class="logo-sm">
-                    <img src="{{ asset('panel/images/logo-sm.png') }}" alt="logo-sm-light" height="20">
+                    <img src="{{ uploaded_asset(get_setting('web_logo')) ?? asset('panel/images/logo-sm.png') }}"
+                        alt="logo-sm-light" height="{{ get_setting('web_logo') ? '75' : '20' }}">
                 </span>
                 <span class="logo-lg">
-                    <img src="{{ asset('panel/images/logo-light.png') }}" alt="logo-light" height="18">
+                    <img src="{{ uploaded_asset(get_setting('web_logo')) ?? asset('panel/images/logo-light.png') }}"
+                        alt="logo-light" height="{{ get_setting('web_logo') ? '75' : '18' }}">
                 </span>
             </a>
 
@@ -24,6 +28,7 @@
                 <i class="mdi mdi-menu-open align-middle fs-19"></i>
             </button>
         </div>
+
         <!-- End navbar brand -->
 
         <!-- Start menu -->
@@ -54,29 +59,29 @@
                         </div>
                         <div data-simplebar style="max-height: 230px;">
 
-                                <a href="#" class="text-reset notification-item">
-                                    <div class="d-flex">
-                                        <div class="avatar avatar-xs avatar-label-info me-3">
-                                            <span class="rounded fs-16">
-                                                <i class="mdi mdi-information-outline"></i>
-                                            </span>
-                                        </div>
-                                        <div class="flex-1">
-                                            <h6 class="mb-1">
-                                                Your package request was approved.
-                                            </h6>
-                                            <div class="fs-12 text-muted">
-                                                <p class="mb-0">
-                                                    <i class="mdi mdi-clock-outline"></i>
-                                                    date
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <i class="mdi mdi-chevron-right align-middle ms-2"></i>
+                            <a href="#" class="text-reset notification-item">
+                                <div class="d-flex">
+                                    <div class="avatar avatar-xs avatar-label-info me-3">
+                                        <span class="rounded fs-16">
+                                            <i class="mdi mdi-information-outline"></i>
+                                        </span>
                                     </div>
-                                </a>
+                                    <div class="flex-1">
+                                        <h6 class="mb-1">
+                                            Your package request was approved.
+                                        </h6>
+                                        <div class="fs-12 text-muted">
+                                            <p class="mb-0">
+                                                <i class="mdi mdi-clock-outline"></i>
+                                                date
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <i class="mdi mdi-chevron-right align-middle ms-2"></i>
+                                </div>
+                            </a>
 
-                                <p class="text-center p-3 text-muted">No new notifications.</p>
+                            <p class="text-center p-3 text-muted">No new notifications.</p>
 
                         </div>
                         <div class="p-2 border-top">
@@ -134,4 +139,3 @@
         </div>
     </div>
 </header>
-

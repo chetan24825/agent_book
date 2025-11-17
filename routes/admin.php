@@ -55,6 +55,8 @@ Route::group(['middleware' => ['auth:admin']], function () {
 
     // GetSettings
     Route::get('/settings', [AdminController::class, 'toSettings'])->name('settings');
+    Route::get('/bank/settings', [AdminController::class, 'toSettingbanks'])->name('bank');
+
     Route::post('/settings', [AdminController::class, 'toSettingUpload']);
 
 
