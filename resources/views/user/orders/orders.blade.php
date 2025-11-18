@@ -89,8 +89,15 @@
                                                 </td>
 
                                                 <td>
+
+
+
+                                                    <a href="{{ route('user.order.view', encrypt($order->id)) }}"
+                                                        class="btn btn-primary btn-sm">View</a>
+
+
                                                     <a href="{{ route('user.order.invoice', $order->id) }}"
-                                                        class="btn btn-info btn-sm">View</a>
+                                                        class="btn btn-info btn-sm">Invoice</a>
 
 
                                                     @php

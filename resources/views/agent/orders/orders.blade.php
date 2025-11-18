@@ -97,6 +97,10 @@
                                                 </td>
 
                                                 <td>
+
+                                                    <a href="{{ route('agent.order.view', encrypt($order->id)) }}"
+                                                        class="btn btn-primary btn-sm">View</a>
+
                                                     <a href="{{ route('agent.order.invoice', $order->id) }}"
                                                         class="btn btn-info">Invoice</a>
 

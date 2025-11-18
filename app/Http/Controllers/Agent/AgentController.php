@@ -21,6 +21,13 @@ class AgentController extends Controller
         return view('agent.auth.login');
     }
 
+    function toOrderView($order_id)
+    {
+        $id = decrypt($order_id);
+        $order = Order::with('items')->findOrFail($id);
+        return view('agent.orders.view', compact('order'));
+    }
+
     function toproducts()
     {
         $products = Product::with(['category'])->cursor();
@@ -165,7 +172,8 @@ class AgentController extends Controller
         $request->validate([
             'checkout_user_id'   => 'required|exists:users,id',
             'checkout_user_guard' => 'required',
-            'payment_amount' => 'required|numeric|gt:0'
+            'payment_amount' => 'required|numeric|gt:0',
+            'utr_id' => 'required'
         ]);
 
         // ✅ Get Cart
@@ -207,6 +215,7 @@ class AgentController extends Controller
                 'product_name' => $item['name'],
                 'price'        => $item['price'],
                 'quantity'     => $item['quantity'],
+                'message'     => $item['message'],
                 'total'        => $item['price'] * $item['quantity'],
             ]);
         }
@@ -221,6 +230,10 @@ class AgentController extends Controller
             'payment_amount' => $request->payment_amount,
             'payment_remain' => $remaining,
             'remarks'        => $request->remarks ?? null,
+
+            'payment_by'    => current_guard(),
+            'utr_id'        => $request->utr_id ?? null,
+            'payment_image' => $request->payment_image ?? null,
             'status'        => 0,
         ]);
 

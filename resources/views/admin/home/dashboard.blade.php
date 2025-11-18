@@ -119,7 +119,7 @@
                                         <div class="col-sm-3">
                                             <div class="d-flex justify-content-between align-content-end shadow-lg p-3">
                                                 <div>
-                                                    <p class="text-muted text-truncate mb-2">Orders Payable Amount</p>
+                                                    <p class="text-muted text-truncate mb-2">Orders Payed Amount</p>
                                                     <h5 class="mb-0">
                                                         {{ App\Models\Orders\CommissionInstallment::where('status', 1)->sum('payment_amount') }}
                                                     </h5>

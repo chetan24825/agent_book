@@ -15,7 +15,7 @@
 
                     @if ($globalCartCount > 0)
                         <div class="row">
-                            <div class="col-lg-8">
+                             <div class="col-lg-8">
 
                                 <div class="card shadow-sm">
                                     <div class="card-header bg-primary text-white">
@@ -27,9 +27,10 @@
                                                 <tr>
                                                     <th>Product</th>
                                                     <th>Image</th>
-                                                    <th>Price</th>
+                                                    <th>Price (₹)</th>
                                                     <th>Quantity</th>
-                                                    <th>Total</th>
+                                                    <th>Total (₹)</th>
+                                                    <th>Note</th>
                                                     <th>Action</th>
                                                 </tr>
                                             </thead>
@@ -44,7 +45,10 @@
                                                     @endphp
 
                                                     <tr>
-                                                        <td class="fw-semibold">{{ $item['name'] }}</td>
+                                                        <td class="fw-semibold">{{ $item['name'] }}
+
+
+                                                        </td>
 
                                                         <td>
                                                             <img src="{{ uploaded_asset($item['image']) }}" width="60"
@@ -55,7 +59,7 @@
 
                                                         <td style="width: 160px;">
                                                             <form
-                                                                action="{{ route('user.cart.update', $item['product_id']) }}"
+                                                                action="{{ route('agent.cart.update', $item['product_id']) }}"
                                                                 method="POST"
                                                                 class="update-qty-form d-flex justify-content-center">
                                                                 @csrf
@@ -72,8 +76,15 @@
 
                                                         <td class="fw-bold">₹{{ number_format($itemTotal, 2) }}</td>
 
+                                                        <td class="fw-bold">
+                                                            <em data-bs-toggle="tooltip" style="cursor: pointer;"
+                                                                title="{{ $item['message'] }}">
+                                                                {{ Str::limit($item['message'] ?? '', 40, '...') }}
+                                                            </em>
+                                                        </td>
+
                                                         <td>
-                                                            <a href="{{ route('user.cart.remove', $item['product_id']) }}"
+                                                            <a href="{{ route('agent.cart.remove', $item['product_id']) }}"
                                                                 class="btn btn-danger btn-sm">
                                                                 Remove
                                                             </a>
@@ -107,7 +118,7 @@
                                         </p>
 
 
-
+                                        {{--
                                         <form action="{{ route('user.checkout') }}" method="POST">
                                             @csrf
                                             <hr>
@@ -118,13 +129,107 @@
                                                     name="payment_amount" value="{{ old('payment_amount') }}">
                                             </div>
                                             <button class="btn btn-success btn-lg w-100">Proceed to Checkout</button>
-                                        </form>
+                                        </form> --}}
 
 
 
                                     </div>
                                 </div>
 
+                            </div>
+                        </div>
+
+                        {{-- Main Card --}}
+                        <div class="card shadow-sm border-0 rounded-4">
+                            <div class="card-header bg-primary text-white">
+                                <h4 class="mb-0"><i class="mdi mdi-credit-card-outline me-2"></i> Payment Checkout</h4>
+                            </div>
+
+                            <div class="card-body py-4">
+                                <div class="row g-4">
+
+
+
+                                    @if ($errors->any())
+                                        @foreach ($errors->all() as $error)
+                                            <div>{{ $error }}</div>
+                                        @endforeach
+                                    @endif
+
+
+                                    <div class="col-lg-5">
+                                        <div class="card border-0 shadow-sm rounded-3 h-100">
+                                            <div class="card-body text-center">
+                                                <h5 class="fw-bold text-primary mb-3">Scan & Pay Using UPI</h5>
+
+                                                <div class="upi-image-box mx-auto mb-3">
+                                                    <img src="{{ uploaded_asset(get_setting('upi_scaner')) }}"
+                                                        alt="UPI QR" class="img-fluid">
+                                                </div>
+
+                                                <a href="https://cfpe.me/kingpinwears" target="_blank"
+                                                    class="btn btn-gradient w-100 fw-bold py-2 rounded-pill mt-2">
+                                                    <i class="fa fa-credit-card me-1"></i> Pay via Link
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {{-- Right: Form --}}
+                                    <div class="col-lg-7">
+                                        <div class="card border-0 shadow-sm rounded-3 h-100">
+                                            <div class="card-body">
+
+                                                <h5 class="fw-bold mb-3 text-dark">Enter Payment Details</h5>
+
+                                                <form action="{{ route('user.checkout') }}" method="POST">
+                                                    @csrf
+
+                                                    <div class="mb-3">
+                                                        <label class="form-label fw-semibold">Advance Amount <span
+                                                                class="text-danger">*</span></label>
+                                                        <input type="number" name="payment_amount" class="form-control"
+                                                            value="{{ old('payment_amount') }}" required>
+                                                    </div>
+
+                                                    <div class="mb-3">
+                                                        <label class="form-label fw-semibold">UTR ID <span
+                                                                class="text-danger">*</span></label>
+                                                        <input type="text" name="utr_id" value="{{ old('utr_id') }}"
+                                                            class="form-control @error('utr_id') is-invalid @enderror"
+                                                            required>
+                                                        @error('utr_id')
+                                                            <span class="invalid-feedback">{{ $message }}</span>
+                                                        @enderror
+                                                    </div>
+
+                                                    <div class="mb-3">
+                                                        <label class="form-label fw-semibold">Payment Proof Image</label>
+                                                        <div class="input-group" data-toggle="aizuploader"
+                                                            data-type="image">
+                                                            <div class="input-group-prepend">
+                                                                <div class="input-group-text bg-soft-secondary">Browse
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-control file-amount">Choose Image</div>
+                                                            <input type="hidden" name="payment_image"
+                                                                value="{{ old('payment_image') }}"
+                                                                class="selected-files">
+                                                        </div>
+                                                        <div class="file-preview box sm"></div>
+                                                    </div>
+
+                                                    <button type="submit"
+                                                        class="btn btn-success w-100 py-2 fw-bold rounded-pill mt-3 shadow-sm">
+                                                        <i class="fas fa-check-circle me-1"></i> Confirm & Checkout
+                                                    </button>
+                                                </form>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
                             </div>
                         </div>
                     @else
@@ -141,6 +246,32 @@
 @endsection
 
 @push('scripts')
+    <style>
+        .btn-gradient {
+            background: linear-gradient(135deg, #ff1f3d, #bb0a24);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+
+        .btn-gradient:hover {
+            opacity: .85;
+            transform: translateY(-2px);
+        }
+
+        .upi-image-box {
+            width: 200px;
+            height: 200px;
+            border: 2px dashed #d6d6d6;
+            border-radius: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            background: #fafafa;
+        }
+    </style>
     <script>
         $(document).ready(function() {
 

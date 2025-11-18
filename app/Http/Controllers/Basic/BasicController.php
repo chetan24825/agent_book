@@ -51,6 +51,7 @@ class BasicController extends Controller
 
     public function addToCart(Request $request)
     {
+
         $request->validate([
             'product_id' => 'required|integer',
             'quantity'   => 'required|integer|min:1',
@@ -73,6 +74,7 @@ class BasicController extends Controller
         // If product already exists in cart, update quantity
         if (isset($cart[$product_id])) {
             $cart[$product_id]['quantity'] += $request->quantity;
+            $cart[$product_id]['message'] = $request->message ?? null;
         } else {
             // Add new item to cart
             $cart[$product_id] = [
@@ -83,6 +85,7 @@ class BasicController extends Controller
                 'price'      => $product->sale_price ?? $product->mrp_price,
                 'name'       => $product->product_name,
                 'image'      => $product->thumbphotos ?? null,
+                'message' => $request->message ?? null
             ];
         }
 
@@ -173,6 +176,7 @@ class BasicController extends Controller
                 'product_name' => $item['name'],
                 'price'        => $item['price'],
                 'quantity'     => $item['quantity'],
+                'message'     => $item['message'],
                 'total'        => $item['price'] * $item['quantity'],
             ]);
         }
@@ -188,6 +192,10 @@ class BasicController extends Controller
             'payment_remain' => $remaining,
             'remarks'        => $request->remarks ?? null,
             'status'        => 0,
+
+            'payment_by'    => current_guard(),
+            'utr_id'        => $request->utr_id ?? null,
+            'payment_image' => $request->payment_image ?? null,
         ]);
 
         // Clear cart

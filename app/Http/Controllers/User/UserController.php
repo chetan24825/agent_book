@@ -16,6 +16,13 @@ class UserController extends Controller
         return view('user.home.dashboard');
     }
 
+    function toOrderView($order_id)
+    {
+        $id = decrypt($order_id);
+        $order = Order::with('items')->findOrFail($id);
+        return view('user.orders.view', compact('order'));
+    }
+
     public function UserProfile()
     {
         $profile = Auth::user();
@@ -135,7 +142,7 @@ class UserController extends Controller
         $orders = Order::with(['user', 'sponsor'])
             ->where('user_id', Auth::guard(current_guard())->id())
             ->orderBy('id', 'DESC')
-            ->get();
+            ->cursor();
 
         return view('user.orders.orders', compact('orders'));
     }
@@ -159,7 +166,7 @@ class UserController extends Controller
     {
         // ✅ Validate input
         $request->validate([
-           'email' => 'required|email|exists:users,email',
+            'email' => 'required|email|exists:users,email',
             'password' => 'required',
         ]);
 

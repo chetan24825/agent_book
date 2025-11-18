@@ -146,6 +146,7 @@
                                         <th>Product</th>
                                         <th>Price (₹)</th>
                                         <th>Qty</th>
+                                        <th>Note</th>
                                         <th>Total (₹)</th>
                                     </tr>
                                 </thead>
@@ -157,6 +158,14 @@
                                             <td>{{ $item->product_name }}</td>
                                             <td>{{ $item->price }}</td>
                                             <td>{{ $item->quantity }}</td>
+                                            <td>
+
+                                                <em data-bs-toggle="tooltip" style="cursor: pointer;"
+                                                    title="{{ $item->message }}">
+                                                    {{ Str::limit($item->message ?? '', 50, '...') }}
+                                                </em>
+                                            </td>
+
                                             <td>{{ number_format($item->total, 2) }}</td>
                                         </tr>
                                     @endforeach
@@ -164,7 +173,7 @@
 
                                 <tfoot>
                                     <tr class="fw-bold table-info">
-                                        <td colspan="4" class="text-end">Grand Total:</td>
+                                        <td colspan="5" class="text-end">Grand Total:</td>
                                         <td>₹{{ number_format($order->total_amount, 2) }}</td>
                                     </tr>
                                 </tfoot>

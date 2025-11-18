@@ -66,6 +66,7 @@
                                             <button class="btn avail-btn w-100 addCartBtn" data-id="{{ $product->id }}"
                                                 data-name="{{ $product->product_name }}"
                                                 data-price="{{ $product->sale_price }}"
+                                                data-description="{{ $product->short_description }}"
                                                 data-img="{{ uploaded_asset($product->thumbphotos) }}">
                                                 <i class="fas fa-shopping-bag me-1"></i> AVAIL NOW
                                             </button>
@@ -85,49 +86,65 @@
 
     {{-- ✅ Add to Cart Modal --}}
     <div class="modal fade" id="addCartModal" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content add-cart-modal">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content add-cart-modal rounded-3">
 
                 <form id="addCartForm">
                     @csrf
 
                     <div class="modal-header border-0">
-                        {{-- <h5 class="fw-bold text-success">Add to Cart</h5> --}}
+                        <h5 class="fw-bold mb-0 text-primary">Add to Cart</h5>
                         <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"></button>
                     </div>
 
-                    <div class="modal-body text-center">
+                    <div class="modal-body">
+                        <div class="row g-4">
 
-                        <input type="hidden" name="product_id" id="modalProductId">
+                            {{-- LEFT SIDE PRODUCT VIEW --}}
+                            <div class="col-md-6 text-center">
 
-                        {{-- IMAGE --}}
-                        <img id="modalProductImg" class="product-modal-img mb-2">
+                                <input type="hidden" name="product_id" id="modalProductId">
 
-                        {{-- NAME --}}
-                        <h6 class="fw-bold" id="modalProductName"></h6>
+                                <img id="modalProductImg" class="img-fluid rounded shadow-sm mb-3" style="max-height:220px">
 
-                        {{-- PRICE --}}
-                        <p class="price-text">₹ <span id="modalProductPrice"></span></p>
+                                <h5 class="fw-bold text-dark" id="modalProductName"></h5>
 
-                        {{-- QUANTITY --}}
-                        <label class="fw-semibold mt-3">Quantity</label>
-                        <div class="quantity-box mb-3">
-                            <button type="button" class="qty-btn" id="qtyMinus">−</button>
-                            <input type="number" class="form-control qty-input" id="qtyInput" name="quantity"
-                                min="1" value="1">
-                            <button type="button" class="qty-btn" id="qtyPlus">+</button>
-                        </div>
+                                <p class="price-text fs-4 fw-bold text-success mb-2">
+                                    ₹ <span id="modalProductPrice"></span>
+                                </p>
 
+                                {{-- QUANTITY --}}
+                                <label class="fw-semibold d-block mb-1">Quantity</label>
+                                <div class="quantity-box d-flex align-items-center justify-content-center">
+                                    <button type="button" class="qty-btn" id="qtyMinus">−</button>
+                                    <input type="number" id="qtyInput" class="form-control qty-input mx-2" name="quantity"
+                                        min="1" value="1" style="width:70px;">
+                                    <button type="button" class="qty-btn" id="qtyPlus">+</button>
+                                </div>
 
-                        <div class="modal-footer border-0">
-                            <button type="submit" class="btn confirm-cart-btn w-100">
-                                <i class="fas fa-shopping-cart me-1"></i> Add to Cart
-                            </button>
+                            </div>
+
+                            {{-- RIGHT SIDE DETAILS & MESSAGE --}}
+                            <div class="col-md-6">
+
+                                <h6 class="fw-bold text-dark">Product Description</h6>
+                                <p id="modalProductdescription" class="text-muted small border rounded p-2 bg-light">
+                                    Not available
+                                </p>
+
+                                <label class="fw-semibold mt-3">Add Message (Optional)</label>
+                                <textarea name="message" class="form-control" rows="4" placeholder="Write any customization or notes..."></textarea>
+                            </div>
+
                         </div>
 
                     </div>
 
-
+                    <div class="modal-footer border-0">
+                        <button type="submit" class="btn btn-success w-100 py-2 fw-bold rounded-pill">
+                            <i class="fas fa-shopping-cart me-1"></i> Add to Cart
+                        </button>
+                    </div>
 
                 </form>
 
@@ -241,6 +258,7 @@
                 $('#modalProductName').text($(this).data('name'));
                 $('#modalProductPrice').text($(this).data('price'));
                 $('#modalProductImg').attr('src', $(this).data('img'));
+                $('#modalProductdescription').text($(this).data('description'));
                 $('#addCartModal').modal('show');
             });
 

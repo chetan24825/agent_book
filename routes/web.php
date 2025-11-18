@@ -64,6 +64,8 @@ Route::group(['middleware' => ['auth:web', 'user.active'], 'prefix' => 'user', '
     Route::get('order/commission/{id}', [InstallmentController::class, 'toCommissionUser'])->name('order.commission');
     Route::post('order/installment', [InstallmentController::class, 'toinstallment'])->name('order.installment');
 
+    Route::get('order/view/{id}', [UserController::class, 'toOrderView'])->name('order.view');
+
 
 
 
