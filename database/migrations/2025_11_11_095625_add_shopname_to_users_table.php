@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->string('shop_name')->nullable()->after('name'); // Add after name
+            $table->string('gst_number')->nullable(); // Add after name
+
         });
     }
 
@@ -22,7 +24,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('shop_name');
+            $table->dropColumn(['shop_name', 'gst_number']);
         });
     }
 };

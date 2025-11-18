@@ -330,6 +330,16 @@
 
                                                             </div>
 
+                                                            <div class="col-md-6">
+                                                                <label for="gst_number" class="form-label">GST
+                                                                    Number</label>
+                                                                <input type="text" class="form-control"
+                                                                    id="gst_number"
+                                                                    value="{{ old('gst_number', $profile->gst_number) }}"
+                                                                    name="gst_number" required />
+                                                            </div>
+
+
 
                                                             <div class="col-md-6">
                                                                 <label for="Status" class="form-label mt-3">Check Book
@@ -425,10 +435,12 @@
                                                     <label class="form-label fw-bold"> Status</label>
                                                     <select name="status" class="form-select form-control" required>
                                                         <option value="">Select Status</option>
-                                                        <option value="1" {{ $profile->status == 1 ? 'selected' : '' }}>
+                                                        <option value="1"
+                                                            {{ $profile->status == 1 ? 'selected' : '' }}>
                                                             Active
                                                         </option>
-                                                        <option value="0" {{ $profile->status == 0 ? 'selected' : '' }}>
+                                                        <option value="0"
+                                                            {{ $profile->status == 0 ? 'selected' : '' }}>
                                                             Banned
                                                         </option>
 

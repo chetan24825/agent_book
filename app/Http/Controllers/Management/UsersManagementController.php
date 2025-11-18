@@ -102,6 +102,8 @@ class UsersManagementController extends Controller
         $user->ifsc_code = $request->ifsc_code;
         $user->account_type = $request->account_type;
         $user->check_image = $request->check_image; // AIZUploader stored path
+        $user->gst_number = $request->gst_number;
+
         $user->save();
 
         return back()->with(['success', 'Bank Details Updated Successfully ✅',  'active_tab' => 'card7-contact']);

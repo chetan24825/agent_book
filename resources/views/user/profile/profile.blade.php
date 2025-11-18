@@ -86,7 +86,8 @@
                                                                 <p class="mb-0">Shop Name</p>
                                                             </div>
                                                             <div class="col-sm-8">
-                                                                <p class="text-muted mb-0">{{ auth()->user()->shop_name }}</p>
+                                                                <p class="text-muted mb-0">{{ auth()->user()->shop_name }}
+                                                                </p>
                                                             </div>
                                                         </div>
                                                         <hr>
@@ -318,6 +319,15 @@
 
                                                             </div>
 
+                                                            <div class="col-md-6">
+                                                                <label for="gst_number" class="form-label">GST
+                                                                    Number</label>
+                                                                <input type="text" class="form-control"
+                                                                    id="gst_number"
+                                                                    value="{{ old('gst_number', auth()->user()->gst_number) }}"
+                                                                    name="gst_number" required />
+                                                            </div>
+
 
                                                             <div class="col-md-6">
                                                                 <label for="Status" class="form-label mt-3">Check Book
@@ -341,9 +351,6 @@
                                                                     <span class="text-danger">{{ $message }}</span>
                                                                 @enderror
                                                             </div>
-
-
-
 
                                                             <div class="col-12">
                                                                 <button type="submit" name="save"
@@ -421,7 +428,7 @@
                             </div>
 
                             <!-- Other Profile Fields -->
-                            @foreach (['shop_name' => 'Shop Name','name' => 'Full Name', 'email' => 'Email', 'phone' => 'Phone', 'phone_2' => 'Alternate Phone', 'state' => 'State', 'city' => 'City', 'address' => 'Address'] as $field => $label)
+                            @foreach (['shop_name' => 'Shop Name', 'name' => 'Full Name', 'email' => 'Email', 'phone' => 'Phone', 'phone_2' => 'Alternate Phone', 'state' => 'State', 'city' => 'City', 'address' => 'Address'] as $field => $label)
                                 <div class="col-md-6 mb-3">
                                     <label for="{{ $field }}" class="form-label">{{ $label }}</label>
                                     <input type="text" class="form-control" id="{{ $field }}"
