@@ -35,7 +35,7 @@
                                                 <div>
                                                     <p class="text-muted text-truncate mb-2">Total Sale</p>
                                                     <h5 class="mb-0">
-                                                       {{ App\Models\Orders\Order::sum('total_amount') }}
+                                                        {{ App\Models\Orders\Order::sum('total_amount') }}
                                                     </h5>
                                                 </div>
                                             </div>
@@ -47,6 +47,104 @@
                                                     <p class="text-muted text-truncate mb-2">Total Commission</p>
                                                     <h5 class="mb-0">
                                                         {{ App\Models\Orders\Order::sum('total_commission') }}
+                                                    </h5>
+                                                </div>
+                                            </div>
+
+
+
+                                        </div>
+
+                                        <div class="col-sm-3">
+                                            <div class="d-flex justify-content-between align-content-end shadow-lg p-3">
+                                                <div>
+                                                    <p class="text-muted text-truncate mb-2">Pending Orders</p>
+                                                    <h5 class="mb-0">
+                                                        {{ App\Models\Orders\Order::where('order_status', 'pending')->count() }}
+
+                                                    </h5>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-3">
+                                            <div class="d-flex justify-content-between align-content-end shadow-lg p-3">
+                                                <div>
+                                                    <p class="text-muted text-truncate mb-2">Completed Orders</p>
+                                                    <h5 class="mb-0">
+                                                        {{ App\Models\Orders\Order::where('order_status', 'delivered')->count() }}
+
+                                                    </h5>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-3">
+                                            <div class="d-flex justify-content-between align-content-end shadow-lg p-3">
+                                                <div>
+                                                    <p class="text-muted text-truncate mb-2">Total Commission</p>
+                                                    <h5 class="mb-0">
+                                                        {{ App\Models\Orders\Order::where('commission_status', 1)->sum('total_commission') }}
+
+                                                    </h5>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-3">
+                                            <div class="d-flex justify-content-between align-content-end shadow-lg p-3">
+                                                <div>
+                                                    <p class="text-muted text-truncate mb-2">Pending Commission</p>
+                                                    <h5 class="mb-0">
+                                                        {{ App\Models\Orders\Order::where('commission_status', 0)->sum('total_commission') }}
+
+                                                    </h5>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-sm-3">
+                                            <div class="d-flex justify-content-between align-content-end shadow-lg p-3">
+                                                <div>
+                                                    <p class="text-muted text-truncate mb-2">Orders Remain Amount</p>
+                                                    <h5 class="mb-0">
+                                                        {{ App\Models\Orders\CommissionInstallment::where('status', 1)->sum('payment_remain') }}
+                                                    </h5>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-sm-3">
+                                            <div class="d-flex justify-content-between align-content-end shadow-lg p-3">
+                                                <div>
+                                                    <p class="text-muted text-truncate mb-2">Orders Payable Amount</p>
+                                                    <h5 class="mb-0">
+                                                        {{ App\Models\Orders\CommissionInstallment::where('status', 1)->sum('payment_amount') }}
+                                                    </h5>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-sm-3">
+                                            <div class="d-flex justify-content-between align-content-end shadow-lg p-3">
+                                                <div>
+                                                    <p class="text-muted text-truncate mb-2">Pending Installment</p>
+                                                    <h5 class="mb-0">
+                                                        {{ App\Models\Orders\CommissionInstallment::where('status', 0)->count() }}
+                                                    </h5>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-3">
+                                            <div class="d-flex justify-content-between align-content-end shadow-lg p-3">
+                                                <div>
+                                                    <p class="text-muted text-truncate mb-2">Shipped orders</p>
+                                                    <h5 class="mb-0">
+                                                        {{ App\Models\Orders\Order::where('order_status', 'shipped')->count() }}
                                                     </h5>
                                                 </div>
                                             </div>
