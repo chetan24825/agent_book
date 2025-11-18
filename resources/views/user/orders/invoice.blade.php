@@ -28,7 +28,8 @@
                                     <p>
                                         {{ get_setting('company_address') }}<br>
                                         Phone: {{ get_setting('company_phone') }}<br>
-                                        Email: {{ get_setting('company_email') }}
+                                        Email: {{ get_setting('company_email') }}<br>
+                                        GSTIN: {{ get_setting('company_gst') }}
                                     </p>
                                 </div>
                             </div>
@@ -55,7 +56,7 @@
                                     {{ $order->user?->address }}<br>
                                     Phone: {{ $order->user?->phone }}<br>
                                     Email: {{ $order->user?->email }}<br>
-                                    GSTIN: {{ get_setting('company_gst') }}<br>
+                                    {{-- GSTIN: {{ get_setting('company_gst') }}<br> --}}
                                     State: {{ $order->user?->state }}
                                 </p>
                             </div>

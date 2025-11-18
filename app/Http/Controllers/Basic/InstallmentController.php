@@ -22,6 +22,7 @@ class InstallmentController extends Controller
 
     public function toInstallment(Request $request)
     {
+
         // Validate fields
         $request->validate([
             'order_id' => 'required|exists:orders,id',
@@ -57,6 +58,11 @@ class InstallmentController extends Controller
             'payment_amount' => $request->amount,
             'payment_remain' => $remaining,
             'remarks'        => $request->remarks ?? null,
+
+            'payment_by'    => current_guard(),
+            'utr_id'        => $request->utr_id ?? null,
+            'payment_image' => $request->payment_image ?? null,
+
             'status'        => 0,
         ]);
 
