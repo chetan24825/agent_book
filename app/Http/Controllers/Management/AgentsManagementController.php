@@ -42,7 +42,7 @@ class AgentsManagementController extends Controller
             'phone' => 'required|integer|digits:10',
         ]);
 
-        $agentCode = $this->generateUniqueAgentCode($request->name);
+
         // $agentCode = 'AG' . now()->format('YmdHis');
 
         // Create a new agent
@@ -50,13 +50,18 @@ class AgentsManagementController extends Controller
         $agent->name = $request->name;
         $agent->email = $request->email;
         $agent->password = Hash::make($request->password);
-        $agent->agent_code = $agentCode;
         $agent->status = $request->status;
         $agent->avatar = $request->avatar;
         $agent->address = $request->address;
         $agent->phone = $request->phone;
         $agent->phone_2 = $request->phone_2;
         $agent->save();
+
+        $agentCode = 'KINGPIN00' . $agent->id;
+
+        $agent->update([
+            'agent_code' => $agentCode,
+        ]);
 
         return redirect()->back()->with('success', 'Agent created successfully.');
     }
