@@ -13,7 +13,7 @@
                 <form action="{{ route('admin.settings') }}" method="POST">
                     @csrf
                     <div class="row">
-                        <div class="col-12">
+                        <div class="col-md-6">
 
                             <div class="card">
                                 <div class="card-header card-header-bordered">
@@ -80,6 +80,42 @@
                                             </div>
                                             <div class="file-preview box sm"></div>
                                         </div>
+
+                                        <div class="col-12 d-flex btn-group btn-group-lg mb-2 mt-2">
+                                            <button type="submit" class="btn btn-primary text-white">Update</button>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <div class="card">
+                                <div class="card-header card-header-bordered">
+                                    <h3 class="card-title">Security Deposit Set</h3>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+
+                                        <div class="col-12 mb-3">
+                                            <label for="security_deposit" class="form-label">Security Deposit Amount</label>
+
+                                            {{-- <input type="text" class="form-control" name="security_deposit"
+                                                id="security_deposit" maxlength="8"
+                                                value="{{ old('security_deposit', get_setting('security_deposit')) }}"
+                                                oninput="this.value = this.value.replace(/[^0-9]/g, '')" /> --}}
+
+                                            <input type="text" class="form-control" name="security_deposit"
+                                                id="security_deposit"
+                                                value="{{ old('security_deposit', get_setting('security_deposit')) }}"
+                                                oninput="this.value = this.value.replace(/[^0-9]/g, '')" />
+
+
+                                        </div>
+
 
                                         <div class="col-12 d-flex btn-group btn-group-lg mb-2 mt-2">
                                             <button type="submit" class="btn btn-primary text-white">Update</button>

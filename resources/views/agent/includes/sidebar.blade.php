@@ -52,6 +52,13 @@
                     </ul>
                 </li>
 
+                <li>
+                    <a href="{{ route('agent.security') }}">
+                        <i class="fas fa-rupee-sign"></i>
+                        <span>Deposit & Refunds</span>
+                    </a>
+                </li>
+
 
 
 
@@ -70,6 +77,7 @@
                         <span>My Wallet</span>
                     </a>
                 </li>
+
 
 
                 <li>

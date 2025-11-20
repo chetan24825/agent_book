@@ -112,6 +112,7 @@
                         {{-- Pending Orders Count Badge --}}
                         @php
                             $pendingOrders = App\Models\Orders\Order::where('payment_status', 'pending')->count();
+
                         @endphp
 
                         @if ($pendingOrders > 0)
@@ -131,6 +132,51 @@
                                 @endif
                             </a>
                         </li>
+                    </ul>
+                </li>
+
+
+                <li>
+                    <a href="javascript: void(0);" class="has-arrow ">
+                        <i class="fas fa-rupee-sign"></i>
+                        <span>Security Deposit</span>
+
+                        @php
+                            $security_deposit_pending = App\Models\Inc\SecurityDeposit::where('status', '0')->count();
+                            $security_deposit_refund = App\Models\Inc\SecurityDeposit::where('is_refundable_request', 1)
+                                ->where('is_refundable', 0)
+                                ->count();
+
+                        @endphp
+
+                        @if ($security_deposit_pending > 0 || $security_deposit_refund > 0)
+                            <span
+                                class="badge bg-danger ms-2">{{ $security_deposit_pending + $security_deposit_refund }}</span>
+                        @endif
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+
+                        <li><a href="{{ route('admin.security') }}"><i
+                                    class="mdi mdi-checkbox-blank-circle align-middle"></i>List of Topup
+
+                                @if ($security_deposit_pending > 0)
+                                    <span class="badge bg-danger ms-2">{{ $security_deposit_pending }}</span>
+                                @endif
+                            </a></li>
+
+                        <li><a href="{{ route('admin.security.refund') }}"><i
+                                    class="mdi mdi-checkbox-blank-circle align-middle"></i>List Of Refunds
+                                @if ($security_deposit_refund > 0)
+                                    <span class="badge bg-danger ms-2">{{ $security_deposit_refund }}</span>
+                                @endif
+                            </a></li>
+
+
+                        <li><a href="{{ route('admin.security.history') }}"><i
+                                    class="mdi mdi-checkbox-blank-circle align-middle"></i>List Of History
+                            </a></li>
+
+
                     </ul>
                 </li>
 

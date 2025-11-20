@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
 use App\Http\Middleware\CheckUserStatus;
 use App\Http\Middleware\RemoveWwwMiddleware;
+use App\Http\Middleware\SecurityDepositMiddleware;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 
@@ -32,6 +33,7 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
         $middleware->alias([
             'user.active' => CheckUserStatus::class,
+            'topup.verified' => SecurityDepositMiddleware::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {})->create();

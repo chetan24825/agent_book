@@ -12,7 +12,7 @@
                         @if (session()->has('message') || session()->has('error') || session()->has('success'))
                             <div
                                 class="alert {{ session()->has('error') ? 'alert-danger' : (session()->has('success') ? 'alert-success' : 'alert-warning') }}">
-                                {{ session('message') ?? session('error') ?? session('success') }}
+                                {{ session('message') ?? (session('error') ?? session('success')) }}
                             </div>
                         @endif
 
@@ -107,18 +107,46 @@
                                 <form class="row g-3" action="{{ route('agent.kyc.update') }}" method="post"
                                     enctype="multipart/form-data">
                                     @csrf
+
+
                                     <div class="col-md-6">
-                                        <label class="form-label mt-3">Pan Card <span class="text-danger">*</span></label>
-                                        <div class="input-group" data-toggle="aizuploader" data-type="image" data-multiple="false">
+                                        <label for="Status" class="form-label mt-3">Government Document
+                                            of Verification
+                                            <span class="text-danger">*</span></label>
+                                        <div class="input-group" data-toggle="aizuploader" data-type="image"
+                                            data-multiple="false">
                                             <div class="input-group-prepend">
-                                                <div class="input-group-text bg-soft-secondary font-weight-medium">Browse</div>
+                                                <div class="input-group-text bg-soft-secondary font-weight-medium">
+                                                    Browse</div>
                                             </div>
                                             <div class="form-control file-amount">Choose file</div>
                                             <input type="hidden" name="pancard" class="selected-files"
                                                 value="{{ old('pancard', auth()->user()->pancard) }}" required>
                                         </div>
                                         <div class="file-preview box sm"></div>
-                                        @error('pancard') <span class="text-danger">{{ $message }}</span> @enderror
+                                        @error('pancard')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label for="Status" class="form-label mt-3">Government Document
+                                            of Verification Back
+                                            <span class="text-danger">*</span></label>
+                                        <div class="input-group" data-toggle="aizuploader" data-type="image"
+                                            data-multiple="false">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text bg-soft-secondary font-weight-medium">
+                                                    Browse</div>
+                                            </div>
+                                            <div class="form-control file-amount">Choose file</div>
+                                            <input type="hidden" name="aadhar_card" class="selected-files"
+                                                value="{{ old('aadhar_card', auth()->user()->aadhar_card) }}" required>
+                                        </div>
+                                        <div class="file-preview box sm"></div>
+                                        @error('aadhar_card')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
                                     </div>
 
                                     <div class="col-12">
@@ -138,7 +166,8 @@
                                     <div class="col-md-6">
                                         <label class="form-label">Account Holder Name</label>
                                         <input type="text" class="form-control" name="account_holder_name"
-                                            value="{{ old('account_holder_name', auth()->user()->account_name) }}" required>
+                                            value="{{ old('account_holder_name', auth()->user()->account_name) }}"
+                                            required>
                                     </div>
 
                                     <div class="col-md-6">
@@ -156,7 +185,8 @@
                                     <div class="col-md-6">
                                         <label class="form-label">Confirm Account Number</label>
                                         <input type="text" class="form-control" name="confirm_account_number"
-                                            value="{{ old('confirm_account_number', auth()->user()->account_number) }}" required>
+                                            value="{{ old('confirm_account_number', auth()->user()->account_number) }}"
+                                            required>
                                     </div>
 
                                     <div class="col-md-6">
@@ -169,23 +199,32 @@
                                         <label class="form-label">Account Type</label>
                                         <select class="form-control" name="account_type" required>
                                             <option value="">Select Account Type</option>
-                                            <option value="savings" {{ old('account_type', auth()->user()->account_type) == 'savings' ? 'selected' : '' }}>Savings</option>
-                                            <option value="current" {{ old('account_type', auth()->user()->account_type) == 'current' ? 'selected' : '' }}>Current</option>
+                                            <option value="savings"
+                                                {{ old('account_type', auth()->user()->account_type) == 'savings' ? 'selected' : '' }}>
+                                                Savings</option>
+                                            <option value="current"
+                                                {{ old('account_type', auth()->user()->account_type) == 'current' ? 'selected' : '' }}>
+                                                Current</option>
                                         </select>
                                     </div>
 
                                     <div class="col-md-6">
-                                        <label class="form-label mt-3">Check Book Image <span class="text-danger">*</span></label>
-                                        <div class="input-group" data-toggle="aizuploader" data-type="image" data-multiple="false">
+                                        <label class="form-label mt-3">Check Book Image <span
+                                                class="text-danger">*</span></label>
+                                        <div class="input-group" data-toggle="aizuploader" data-type="image"
+                                            data-multiple="false">
                                             <div class="input-group-prepend">
-                                                <div class="input-group-text bg-soft-secondary font-weight-medium">Browse</div>
+                                                <div class="input-group-text bg-soft-secondary font-weight-medium">Browse
+                                                </div>
                                             </div>
                                             <div class="form-control file-amount">Choose file</div>
                                             <input type="hidden" name="check_image" class="selected-files"
                                                 value="{{ old('check_image', auth()->user()->check_image) }}" required>
                                         </div>
                                         <div class="file-preview box sm"></div>
-                                        @error('check_image') <span class="text-danger">{{ $message }}</span> @enderror
+                                        @error('check_image')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
                                     </div>
 
                                     <div class="col-12">
@@ -201,7 +240,9 @@
 
                                     @php
                                         try {
-                                            $decryptedPassword = auth()->user()->plain_password ? Crypt::decryptString(auth()->user()->plain_password) : null;
+                                            $decryptedPassword = auth()->user()->plain_password
+                                                ? Crypt::decryptString(auth()->user()->plain_password)
+                                                : null;
                                         } catch (\Exception $e) {
                                             $decryptedPassword = null;
                                         }
@@ -211,8 +252,10 @@
                                         <div class="col-md-6 mt-2">
                                             <label class="form-label">Current Login Password</label>
                                             <div class="input-group">
-                                                <input type="password" class="form-control" id="currentPassword" value="{{ $decryptedPassword }}" readonly>
-                                                <button type="button" class="btn btn-outline-secondary" onclick="togglePassword('currentPassword','ic1')">
+                                                <input type="password" class="form-control" id="currentPassword"
+                                                    value="{{ $decryptedPassword }}" readonly>
+                                                <button type="button" class="btn btn-outline-secondary"
+                                                    onclick="togglePassword('currentPassword','ic1')">
                                                     <i id="ic1" class="fas fa-eye"></i>
                                                 </button>
                                             </div>
@@ -222,19 +265,25 @@
                                     <div class="col-md-6 mt-2">
                                         <label class="form-label">New Password</label>
                                         <div class="input-group">
-                                            <input type="password" class="form-control" name="password" id="newPassword" required>
-                                            <button type="button" class="btn btn-outline-secondary" onclick="togglePassword('newPassword','ic2')">
+                                            <input type="password" class="form-control" name="password" id="newPassword"
+                                                required>
+                                            <button type="button" class="btn btn-outline-secondary"
+                                                onclick="togglePassword('newPassword','ic2')">
                                                 <i id="ic2" class="fas fa-eye"></i>
                                             </button>
                                         </div>
-                                        @error('password') <span class="text-danger">{{ $message }}</span> @enderror
+                                        @error('password')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
                                     </div>
 
                                     <div class="col-md-6 mt-2">
                                         <label class="form-label">Confirm Password</label>
                                         <div class="input-group">
-                                            <input type="password" class="form-control" name="password_confirmation" id="confirmPassword" required>
-                                            <button type="button" class="btn btn-outline-secondary" onclick="togglePassword('confirmPassword','ic3')">
+                                            <input type="password" class="form-control" name="password_confirmation"
+                                                id="confirmPassword" required>
+                                            <button type="button" class="btn btn-outline-secondary"
+                                                onclick="togglePassword('confirmPassword','ic3')">
                                                 <i id="ic3" class="fas fa-eye"></i>
                                             </button>
                                         </div>

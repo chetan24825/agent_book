@@ -87,11 +87,14 @@ class UserController extends Controller
     public function updateKyc(Request $request)
     {
         $request->validate([
-            'pancard' => 'required'
+            'pancard' => 'required',
+            'aadhar_card'=>'required'
+
         ]);
 
         $user = Auth::user();
         $user->pancard = $request->pancard;
+        $user->aadhar_card = $request->aadhar_card ?? null;
         $user->save();
 
         return back()->with(['success', 'KYC Updated Successfully ✅',  'active_tab' => 'card7-profile']);

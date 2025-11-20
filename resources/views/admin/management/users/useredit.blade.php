@@ -221,7 +221,8 @@
                                                     <input type="hidden" name="id" value="{{ $profile->id }}">
                                                     <!-- Aadhar Fields -->
                                                     <div class="col-md-6">
-                                                        <label for="Status" class="form-label mt-3">PanCard
+                                                        <label for="Status" class="form-label mt-3">Government Document
+                                                            of Verification
                                                             <span class="text-danger">*</span></label>
                                                         <div class="input-group" data-toggle="aizuploader"
                                                             data-type="image" data-multiple="false">
@@ -236,6 +237,29 @@
                                                         </div>
                                                         <div class="file-preview box sm"></div>
                                                         @error('pancard')
+                                                            <span class="text-danger">{{ $message }}</span>
+                                                        @enderror
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        <label for="Status" class="form-label mt-3">Government Document
+                                                            of Verification Back
+                                                            <span class="text-danger">*</span></label>
+                                                        <div class="input-group" data-toggle="aizuploader"
+                                                            data-type="image" data-multiple="false">
+                                                            <div class="input-group-prepend">
+                                                                <div
+                                                                    class="input-group-text bg-soft-secondary font-weight-medium">
+                                                                    Browse</div>
+                                                            </div>
+                                                            <div class="form-control file-amount">Choose file</div>
+                                                            <input type="hidden" name="aadhar_card"
+                                                                class="selected-files"
+                                                                value="{{ old('aadhar_card', $profile->aadhar_card) }}"
+                                                                required>
+                                                        </div>
+                                                        <div class="file-preview box sm"></div>
+                                                        @error('aadhar_card')
                                                             <span class="text-danger">{{ $message }}</span>
                                                         @enderror
                                                     </div>

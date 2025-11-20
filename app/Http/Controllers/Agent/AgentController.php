@@ -116,6 +116,7 @@ class AgentController extends Controller
 
         $user = Auth::user();
         $user->pancard = $request->pancard;
+        $user->aadhar_card = $request->aadhar_card ?? null;
         $user->save();
 
         return back()->with([

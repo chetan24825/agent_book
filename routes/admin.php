@@ -9,6 +9,7 @@ use App\Http\Controllers\Basic\ProductController;
 use App\Http\Controllers\Basic\CategoryController;
 use App\Http\Controllers\Basic\WithdrawalController;
 use App\Http\Controllers\Basic\InstallmentController;
+use App\Http\Controllers\Basic\SecurityDepositController;
 use App\Http\Controllers\Management\UsersManagementController;
 use App\Http\Controllers\Management\AgentsManagementController;
 
@@ -29,6 +30,7 @@ Route::group(['middleware' => ['auth:admin']], function () {
     Route::get('/download/agents', [AdminController::class, 'downloadAgents'])->name('download.agents');
 
     Route::get('/agent/show/{slug}', [AgentsManagementController::class, 'toagentshow'])->name('agent.show');
+
     Route::post('/profile', [AgentsManagementController::class, 'toAgentprofileUpdate'])->name('profile.update');
     Route::post('/update-password', [AgentsManagementController::class, 'updatePassword'])->name('profile.updatePassword');
     Route::post('kyc/update', [AgentsManagementController::class, 'updateKyc'])->name('kyc.update');
@@ -56,8 +58,19 @@ Route::group(['middleware' => ['auth:admin']], function () {
     // GetSettings
     Route::get('/settings', [AdminController::class, 'toSettings'])->name('settings');
     Route::get('/bank/settings', [AdminController::class, 'toSettingbanks'])->name('bank');
-
     Route::post('/settings', [AdminController::class, 'toSettingUpload']);
+
+    // security
+    Route::get('security', [SecurityDepositController::class, 'topaymentadmin'])->name('security');
+    Route::post('security/update', [SecurityDepositController::class, 'updatepayment'])->name('security.update');
+
+    // security Refund
+    Route::get('security/refund', [SecurityDepositController::class, 'topaymentadminrefund'])->name('security.refund');
+    Route::post('security/refund/update', [SecurityDepositController::class, 'topaymentadminrefundupdate'])->name('security.refund.update');
+    Route::post('security/topup-message', [SecurityDepositController::class, 'sendTopupMessage'])->name('security.topup.message');
+
+    // security History
+    Route::get('security/history', [SecurityDepositController::class, 'topaymenthistory'])->name('security.history');
 
 
 
@@ -81,7 +94,7 @@ Route::group(['middleware' => ['auth:admin']], function () {
     Route::get('order/commission/{id}', [InstallmentController::class, 'tocommission'])->name('order.commission');
     Route::post('order/installment', [InstallmentController::class, 'toinstallment'])->name('order.installment');
 
-    Route::post('installment/update',[InstallmentController::class, 'toinstallmentUpdate'])->name('installment.update');
+    Route::post('installment/update', [InstallmentController::class, 'toinstallmentUpdate'])->name('installment.update');
 
 
 

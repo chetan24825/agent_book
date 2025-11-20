@@ -165,10 +165,13 @@ class AgentsManagementController extends Controller
         $request->validate([
             'pancard' => 'required',
             'id' => 'required|exists:agents,id',
+
         ]);
 
         $user =  Agent::findOrFail($request->id);
         $user->pancard = $request->pancard;
+        $user->aadhar_card = $request->aadhar_card ?? null;
+
         $user->save();
 
         return back()->with([

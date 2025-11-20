@@ -70,11 +70,14 @@ class UsersManagementController extends Controller
         $request->validate([
             'pancard' => 'required',
             'id' => 'required|exists:users,id',
+            'aadhar_card' => 'required'
 
         ]);
 
         $user = User::findOrFail($request->id);
         $user->pancard = $request->pancard;
+        $user->aadhar_card = $request->aadhar_card ?? null;
+
         $user->save();
 
         return back()->with(['success', 'KYC Updated Successfully ✅',  'active_tab' => 'card7-profile']);
@@ -109,7 +112,7 @@ class UsersManagementController extends Controller
         return back()->with(['success', 'Bank Details Updated Successfully ✅',  'active_tab' => 'card7-contact']);
     }
 
-     public function toVerify(Request $request)
+    public function toVerify(Request $request)
     {
         // ✅ Validate input
         $validated = $request->validate([

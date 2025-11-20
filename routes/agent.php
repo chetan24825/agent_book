@@ -6,6 +6,7 @@ use App\Http\Controllers\Agent\AgentController;
 use App\Http\Controllers\Basic\BasicController;
 use App\Http\Controllers\Client\MyClientController;
 use App\Http\Controllers\Basic\InstallmentController;
+use App\Http\Controllers\Basic\SecurityDepositController;
 
 
 Route::group(['middleware' => 'guest'], function () {
@@ -16,47 +17,56 @@ Route::group(['middleware' => 'guest'], function () {
 Route::group(['middleware' => ['auth:agent', 'user.active']], function () {
     Route::get('/dashboard', [AgentController::class, 'toAgentDashboard'])->name('dashboard');
 
-    // profile
-    Route::get('/profile', [AgentController::class, 'toAgentprofile'])->name('profile');
-    Route::post('/profile', [AgentController::class, 'toAgentprofileUpdate']);
-    Route::post('/update-password', [AgentController::class, 'updatePassword'])->name('profile.updatePassword');
-    Route::post('kyc/update', [AgentController::class, 'updateKyc'])->name('kyc.update');
-    Route::post('bank/update', [AgentController::class, 'updateBankDetails'])->name('bank.update');
+    Route::group(['middleware' => ['topup.verified']], function () {
+
+        // profile
+        Route::get('/profile', [AgentController::class, 'toAgentprofile'])->name('profile');
+        Route::post('/profile', [AgentController::class, 'toAgentprofileUpdate']);
+        Route::post('/update-password', [AgentController::class, 'updatePassword'])->name('profile.updatePassword');
+        Route::post('kyc/update', [AgentController::class, 'updateKyc'])->name('kyc.update');
+        Route::post('bank/update', [AgentController::class, 'updateBankDetails'])->name('bank.update');
 
 
-    //Products
-    Route::get('/products', [AgentController::class, 'toproducts'])->name('products');
-    Route::get('carts', [AgentController::class, 'Cartdetail'])->name('carts');
-    Route::post('checkout', [AgentController::class, 'toCheck'])->name('checkout');
-    Route::get('thankyou', [AgentController::class, 'toThankyou'])->name('thankyou');
+        //Products
+        Route::get('/products', [AgentController::class, 'toproducts'])->name('products');
+        Route::get('carts', [AgentController::class, 'Cartdetail'])->name('carts');
+        Route::post('checkout', [AgentController::class, 'toCheck'])->name('checkout');
+        Route::get('thankyou', [AgentController::class, 'toThankyou'])->name('thankyou');
 
 
 
-    //Orders
-    Route::get('orders', [AgentController::class, 'toorders'])->name('orders');
-    Route::get('order/commission/{id}', [InstallmentController::class, 'toCommissionAgent'])->name('order.commission');
-    Route::post('order/installment', [InstallmentController::class, 'toinstallment'])->name('order.installment');
-    Route::get('order/invoice/{id}', [AgentController::class, 'invoice'])->name('order.invoice');
-    Route::get('order/view/{id}', [AgentController::class, 'toOrderView'])->name('order.view');
+        //Orders
+        Route::get('orders', [AgentController::class, 'toorders'])->name('orders');
+        Route::get('order/commission/{id}', [InstallmentController::class, 'toCommissionAgent'])->name('order.commission');
+        Route::post('order/installment', [InstallmentController::class, 'toinstallment'])->name('order.installment');
+        Route::get('order/invoice/{id}', [AgentController::class, 'invoice'])->name('order.invoice');
+        Route::get('order/view/{id}', [AgentController::class, 'toOrderView'])->name('order.view');
 
+        //My Clients
+        Route::get('/my-clients', [MyClientController::class, 'toclients'])->name('ourClients');
+        Route::get('/clients/new', [MyClientController::class, 'tonewclients'])->name('newClients');
+        Route::post('/clients/new', [MyClientController::class, 'toClientStore']);
+        Route::delete('/clients/delete/{id}', [MyClientController::class, 'toClientDelete'])->name('newClients.delete');
+        Route::put('/clients/update/{id}', [MyClientController::class, 'toClientupdate'])->name('clients.update');
+
+        Route::post('/cart/add', [BasicController::class, 'addToCart'])->name('cart.add');
+        Route::get('/cart/remove/{id}', [BasicController::class, 'removeFromCart'])->name('cart.remove');
+        Route::post('/cart/update/{id}', [BasicController::class, 'updateCart'])->name('cart.update');
+    });
 
     //Wallet
     Route::get('wallet', [AgentController::class, 'Wallet'])->name('wallet');
     Route::post('/withdraw', [AgentController::class, 'Userwithdraw'])->name('withdraw');
 
+    // SecurityDepositController
+    Route::get('security', [SecurityDepositController::class, 'topayment'])->name('security');
+    Route::post('security', [SecurityDepositController::class, 'topaymentStore']);
+
+    Route::post('security/refund', [SecurityDepositController::class, 'toPaymentRefund'])->name('security.refund');
 
 
-    Route::post('/cart/add', [BasicController::class, 'addToCart'])->name('cart.add');
-    Route::get('/cart/remove/{id}', [BasicController::class, 'removeFromCart'])->name('cart.remove');
-    Route::post('/cart/update/{id}', [BasicController::class, 'updateCart'])->name('cart.update');
 
 
-    //My Clients
-    Route::get('/my-clients', [MyClientController::class, 'toclients'])->name('ourClients');
-    Route::get('/clients/new', [MyClientController::class, 'tonewclients'])->name('newClients');
-    Route::post('/clients/new', [MyClientController::class, 'toClientStore']);
-    Route::delete('/clients/delete/{id}', [MyClientController::class, 'toClientDelete'])->name('newClients.delete');
-    Route::put('/clients/update/{id}', [MyClientController::class, 'toClientupdate'])->name('clients.update');
 
 
 

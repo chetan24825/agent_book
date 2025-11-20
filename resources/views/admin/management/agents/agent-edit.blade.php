@@ -123,12 +123,14 @@
 
 
                                     <div class="col-md-6">
-                                        <label class="form-label mt-3">Pan Card <span class="text-danger">*</span></label>
+                                        <label for="Status" class="form-label mt-3">Government Document
+                                            of Verification
+                                            <span class="text-danger">*</span></label>
                                         <div class="input-group" data-toggle="aizuploader" data-type="image"
                                             data-multiple="false">
                                             <div class="input-group-prepend">
-                                                <div class="input-group-text bg-soft-secondary font-weight-medium">Browse
-                                                </div>
+                                                <div class="input-group-text bg-soft-secondary font-weight-medium">
+                                                    Browse</div>
                                             </div>
                                             <div class="form-control file-amount">Choose file</div>
                                             <input type="hidden" name="pancard" class="selected-files"
@@ -136,6 +138,26 @@
                                         </div>
                                         <div class="file-preview box sm"></div>
                                         @error('pancard')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label for="Status" class="form-label mt-3">Government Document
+                                            of Verification Back
+                                            <span class="text-danger">*</span></label>
+                                        <div class="input-group" data-toggle="aizuploader" data-type="image"
+                                            data-multiple="false">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text bg-soft-secondary font-weight-medium">
+                                                    Browse</div>
+                                            </div>
+                                            <div class="form-control file-amount">Choose file</div>
+                                            <input type="hidden" name="aadhar_card" class="selected-files"
+                                                value="{{ old('aadhar_card', $user->aadhar_card) }}" required>
+                                        </div>
+                                        <div class="file-preview box sm"></div>
+                                        @error('aadhar_card')
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
                                     </div>
