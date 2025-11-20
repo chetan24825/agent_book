@@ -13,13 +13,18 @@ use App\Http\Controllers\User\ForgotPasswordController;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('home');
 
 
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', [UserController::class, 'toLogin'])->name('login');
     Route::post('/login', [UserController::class, 'toLoginPost'])->name('login.post');
+    Route::get('/register', [UserController::class, 'toregister'])->name('register');
+    Route::post('/register', [UserController::class, 'registerPost'])->name('register.post');
+    Route::post('/check-sponsor', [UserController::class, 'checkSponsor'])->name('check.sponsor');
+
+
 
     Route::get('/user/forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('user.password.request');
     Route::post('/user/forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('user.password.email');

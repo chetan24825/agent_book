@@ -26,7 +26,7 @@ class CheckUserStatus
                 Auth::guard(current_guard())->logout();
                 Session::invalidate();
                 Session::regenerateToken();
-                return redirect()->route('login')->with('error', 'Your Account is inactive By Admin.');
+                return redirect()->route('home')->with('error', 'Your Account is inactive By Admin.');
             }
         }
         return $next($request);

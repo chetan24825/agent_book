@@ -96,6 +96,13 @@
                                 <a href="{{ route('user.password.request') }}">Reset Password</a>
                             </small>
                         </div>
+
+                        <hr>
+                        <div class="text-center">
+                            <small>Back to Home ?
+                                <a href="{{ route('home') }}">Home</a>
+                            </small>
+                        </div>
                     </div>
                 </div>
             </div>

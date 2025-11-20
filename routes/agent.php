@@ -12,6 +12,8 @@ use App\Http\Controllers\Basic\SecurityDepositController;
 Route::group(['middleware' => 'guest'], function () {
     Route::get('/login', [AgentController::class, 'toAgentLogin'])->name('login');
     Route::post('/login', [AgentController::class, 'toAgentLoginPost']);
+    Route::get('register', [AgentController::class, 'toRegister'])->name('register');
+    Route::post('register', [AgentController::class, 'Register']);
 });
 
 Route::group(['middleware' => ['auth:agent', 'user.active']], function () {
@@ -61,7 +63,6 @@ Route::group(['middleware' => ['auth:agent', 'user.active']], function () {
     // SecurityDepositController
     Route::get('security', [SecurityDepositController::class, 'topayment'])->name('security');
     Route::post('security', [SecurityDepositController::class, 'topaymentStore']);
-
     Route::post('security/refund', [SecurityDepositController::class, 'toPaymentRefund'])->name('security.refund');
 
 

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Models\User;
+use App\Models\Role\Agent;
 use App\Models\Orders\Order;
 use Illuminate\Http\Request;
 use App\Models\Product\Product;
@@ -88,7 +90,7 @@ class UserController extends Controller
     {
         $request->validate([
             'pancard' => 'required',
-            'aadhar_card'=>'required'
+            'aadhar_card' => 'required'
 
         ]);
 
@@ -165,6 +167,58 @@ class UserController extends Controller
     {
         return view('user.auth.login');
     }
+
+    function toregister()
+    {
+        return view('user.auth.register');
+    }
+
+    public function registerPost(Request $request)
+    {
+        $request->validate([
+            'name'       => 'required|string|max:255',
+            'email'      => 'required|email|unique:users,email',
+            'phone'      => 'required|numeric|digits:10|unique:users,phone',
+            'password'   => 'required|min:3|confirmed',
+            'sponsor_id' => 'required|exists:agents,agent_code',
+        ]);
+
+        // Fetch sponsor user
+        $sponsor = Agent::where('agent_code', $request->sponsor_id)->first();
+
+        if (!$sponsor) {
+            return back()->with('error', 'Invalid Sponsor ID')->withInput();
+        }
+
+        // Create new user
+        $user = new User();
+        $user->name      = $request->name;
+        $user->email     = $request->email;
+        $user->phone     = $request->phone;
+        $user->password  = Hash::make($request->password);
+        $user->sponsor_id = $sponsor->id;  // Sponsor reference
+        $user->save();
+
+        return redirect()->route('login')->with('success', 'Account created successfully! Please login.');
+    }
+
+
+    public function checkSponsor(Request $request)
+    {
+        $request->validate(['sponsor_id' => 'required']);
+
+        $user = Agent::where('agent_code', $request->sponsor_id)->first();
+
+        if ($user) {
+            return response()->json([
+                'status' => true,
+                'name' => $user->name
+            ]);
+        }
+
+        return response()->json(['status' => false]);
+    }
+
 
     public function toLoginPost(Request $request)
     {

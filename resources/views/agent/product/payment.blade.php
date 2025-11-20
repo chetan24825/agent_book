@@ -30,7 +30,7 @@
                         <div class="card-body p-4">
 
 
-                            @if (isset($security->remarks))
+                            @if (isset($security->remarks) && $security->status !== 3)
                                 <div class="text-center">
                                     <p class="mt-2 fw-bold">Admin Message</p>
                                     <div class="alert alert-warning text-center fw-semibold mb-4">

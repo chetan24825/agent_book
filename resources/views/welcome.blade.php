@@ -57,6 +57,29 @@
 
         <div class="row g-4 w-100 justify-content-center">
 
+
+            <div class="col-md-12">
+                @if (session('error'))
+                    <div class="alert alert-danger text-center mb-3">{{ session('error') }}</div>
+                @endif
+
+                @if (session('success'))
+                    <div class="alert alert-success text-center mb-3">{{ session('success') }}</div>
+                @endif
+
+                {{-- Validation Errors --}}
+                @if ($errors->any())
+                    <div class="alert alert-danger mb-3">
+                        <ul class="mb-0">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+            </div>
+
+
             <!-- Customer -->
             <div class="col-md-4 col-sm-6">
                 <div class="card shadow text-center p-4 border-0">
@@ -64,6 +87,7 @@
                     <h4 class="fw-bold">Customer</h4>
                     <p>Login as Customer</p>
                     <a href="{{ route('login') }}" class="btn btn-primary mt-2">Login</a>
+                    <a href="{{ route('register') }}" class="btn btn-success mt-2">Register</a>
                 </div>
             </div>
 
@@ -73,19 +97,21 @@
                     <div class="display-5 mb-3">🛍️</div>
                     <h4 class="fw-bold">Agents</h4>
                     <p>Login to manage products</p>
-                    <a href="{{route('agent.login')}}" class="btn btn-success mt-2">Login</a>
+                    <a href="{{ route('agent.login') }}" class="btn btn-success mt-2">Login</a>
+                    <a href="{{ route('agent.register') }}" class="btn btn-success mt-2">Register</a>
+
                 </div>
             </div>
 
-            <!-- Admin -->
-            <div class="col-md-4 col-sm-6">
+
+            {{-- <div class="col-md-4 col-sm-6">
                 <div class="card shadow text-center p-4 border-0">
                     <div class="display-5 mb-3">👑</div>
                     <h4 class="fw-bold">Admin</h4>
                     <p>Login as System Admin</p>
-                    <a href="{{route('admin.login')}}" class="btn btn-warning mt-2 text-white">Login</a>
+                    <a href="{{ route('admin.login') }}" class="btn btn-warning mt-2 text-white">Login</a>
                 </div>
-            </div>
+            </div> --}}
 
         </div>
 

@@ -13,6 +13,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Orders\CommissionInstallment;
+use App\Models\Role\Agent;
 
 class AgentController extends Controller
 {
@@ -20,6 +21,41 @@ class AgentController extends Controller
     {
         return view('agent.auth.login');
     }
+
+
+    function toRegister()
+    {
+        return view('agent.auth.register');
+    }
+
+    public function Register(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:50',
+            'email' => 'required|email|unique:agents,email',
+            'phone' => 'required|numeric|digits_between:8,15|unique:agents,phone',
+            'password' => 'required|min:3|confirmed',
+        ]);
+
+        // Create agent
+        $agent = Agent::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'password' => bcrypt($request->password),
+        ]);
+
+        // Generate unique agent code
+        $agentCode = 'KINGPIN00' . $agent->id;
+
+        // Update record
+        $agent->update([
+            'agent_code' => $agentCode,
+        ]);
+
+        return redirect()->route('agent.login')->with('success', 'Registration successful, please login');
+    }
+
 
     function toOrderView($order_id)
     {
