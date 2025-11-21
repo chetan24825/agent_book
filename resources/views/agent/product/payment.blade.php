@@ -30,6 +30,25 @@
                         <div class="card-body p-4">
 
 
+                            <div class="alert alert-warning border-0 shadow-sm rounded-3 p-4 mb-4"
+                                style="font-size: 15px; line-height: 1.6;">
+                                <h5 class="fw-bold text-dark mb-2">
+                                    <i class="mdi mdi-alert-circle-outline text-warning me-1"></i>
+                                    Important Notice — Security Deposit ₹{{ get_setting('security_deposit') }} (Refundable)
+                                </h5>
+
+                                <p class="mb-0">
+                                    A refundable <strong>₹1000 security deposit</strong> is collected because the company
+                                    provides
+                                    valuable visual kits and premium clothing sample items for work purposes.
+                                    <br><br>
+                                    When you resign, you must return all issued items in <strong>good condition</strong>.
+                                    After return verification, your full deposit amount will be refunded.
+                                </p>
+                            </div>
+
+
+
                             @if (isset($security->remarks) && $security->status !== 3)
                                 <div class="text-center">
                                     <p class="mt-2 fw-bold">Admin Message</p>
@@ -79,7 +98,7 @@
                                     @endif
                                 @break
 
-                                @case(2)
+                                {{-- @case(2)
                                     @if ($security->is_refundable_request == 1)
                                         <div class="alert alert-warning text-center fw-semibold mb-4">
                                             Refund Request Submitted — Waiting for Admin Approval
@@ -112,7 +131,7 @@
                                             </button>
                                         </form>
                                     @endif
-                                @break
+                                @break --}}
 
                                 {{-- ---------------- PENDING ---------------- --}}
                                 @case(0)
@@ -135,7 +154,6 @@
                                         <div class="col-lg-5">
                                             <div class="card shadow-sm border-0 h-100 rounded-3">
                                                 <div class="card-body text-center">
-
                                                     <h5 class="fw-bold text-primary">Scan & Pay via UPI</h5>
                                                     <div class="upi-box mx-auto my-3">
                                                         <img src="{{ uploaded_asset(get_setting('upi_scaner')) }}" class="img-fluid"
@@ -147,6 +165,12 @@
                                                         <i class="fa fa-credit-card me-1"></i> Pay Online
                                                     </a>
                                                 </div>
+
+
+
+
+
+
                                             </div>
                                         </div>
 
@@ -180,8 +204,7 @@
                                                             <div class="input-group" data-toggle="aizuploader" data-type="image">
                                                                 <span class="input-group-text bg-light">Browse</span>
                                                                 <div class="form-control file-amount">Choose Image</div>
-                                                                <input type="hidden" name="payment_image"
-                                                                    class="selected-files">
+                                                                <input type="hidden" name="payment_image" class="selected-files">
                                                             </div>
                                                             <div class="file-preview box sm"></div>
                                                         </div>

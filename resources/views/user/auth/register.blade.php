@@ -8,6 +8,8 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="{{ uploaded_asset(get_setting('favicon')) }}">
+
 </head>
 
 <body style="background-color: #f8f9fa;">
@@ -48,10 +50,14 @@
 
                             {{-- Sponsor ID --}}
                             <div class="mb-3">
-                                <label class="form-label fw-bold">Sponsor ID</label>
-                                <input type="text" class="form-control @error('sponsor_id') is-invalid @enderror"
-                                    id="sponsor_id" name="sponsor_id" value="{{ old('sponsor_id') }}"
-                                    placeholder="Enter Sponsor ID" required>
+                                <label class="form-label fw-bold">Sponsor ID </label>
+                                <br>
+                                <small> (User Sponsor ID 'admin', if you don't have
+                                    sponsor id)</small>
+                                <input type="text"
+                                    class="form-control mt-2 @error('sponsor_id') is-invalid @enderror" id="sponsor_id"
+                                    name="sponsor_id" value="{{ old('sponsor_id') }}" placeholder="Enter Sponsor ID"
+                                    required>
                                 <div id="sponsorStatus" class="mt-1"></div>
                                 @error('sponsor_id')
                                     <span class="invalid-feedback">{{ $message }}</span>

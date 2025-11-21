@@ -10,6 +10,7 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('site/css/style.css') }}">
+    <link rel="icon" type="image/x-icon" href="{{ uploaded_asset(get_setting('favicon')) }}">
     <style>
         .dropdown-menu {
             z-index: 2000 !important;

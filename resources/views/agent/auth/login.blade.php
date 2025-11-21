@@ -10,6 +10,8 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('panel/css/login.css') }}">
+    <link rel="icon" type="image/x-icon" href="{{ uploaded_asset(get_setting('favicon')) }}">
+
 
 
 </head>

@@ -73,7 +73,7 @@ class SecurityDepositController extends Controller
 
     function topaymentadmin()
     {
-        $security = SecurityDeposit::with('user')->orderBy('id', 'DESC')->where('is_refundable_request', 0)->where('is_refundable', 0)->cursor();
+        $security = SecurityDeposit::with('user')->orderBy('id', 'DESC')->where('is_refundable_request', 0)->where('is_refundable', 0)->where('status', 0)->cursor();
         return view('admin.security.security', compact('security'));
     }
 
@@ -148,7 +148,7 @@ class SecurityDepositController extends Controller
 
     function topaymenthistory()
     {
-        $security = SecurityDeposit::with('user')->orderBy('id', 'DESC')->where('status', 3)->cursor();
+        $security = SecurityDeposit::with('user')->orderBy('id', 'DESC')->whereIn('status', [3, 1, 2])->cursor();
         return view('admin.security.history', compact('security'));
     }
 }

@@ -47,7 +47,8 @@ class UserController extends Controller
             'city' => 'nullable',
             'address' => 'nullable',
             'image' => 'nullable',
-            'shop_name' => 'required'
+            'shop_name' => 'required',
+            'shop_address'=>'nullable'
         ]);
 
         $user->update($request->only([
@@ -58,7 +59,8 @@ class UserController extends Controller
             'state',
             'city',
             'address',
-            'shop_name'
+            'shop_name',
+            'shop_address'
         ]));
 
         if ($request->image) {

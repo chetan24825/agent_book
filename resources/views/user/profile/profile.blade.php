@@ -91,6 +91,8 @@
                                                             </div>
                                                         </div>
                                                         <hr>
+
+
                                                         <div class="row mb-3">
                                                             <div class="col-sm-4">
                                                                 <p class="mb-0">Full Name</p>
@@ -162,6 +164,31 @@
                                                             </div>
                                                             <div class="col-sm-8">
                                                                 <p class="text-muted mb-0">{{ auth()->user()->address }}
+                                                                </p>
+                                                            </div>
+
+                                                        </div>
+                                                        <hr>
+
+                                                        <div class="row mb-3">
+                                                            <div class="col-sm-4">
+                                                                <p class="mb-0">Shop Full Addrss</p>
+                                                            </div>
+                                                            <div class="col-sm-8">
+                                                                <p class="text-muted mb-0">
+                                                                    {{ auth()->user()->shop_address }}
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                        <hr>
+
+                                                        <div class="row mb-3">
+                                                            <div class="col-sm-4">
+                                                                <p class="mb-0">Shop GST Number</p>
+                                                            </div>
+                                                            <div class="col-sm-8">
+                                                                <p class="text-muted mb-0">
+                                                                    {{ auth()->user()->gst_number }}
                                                                 </p>
                                                             </div>
                                                         </div>
@@ -245,7 +272,8 @@
                                                                     Browse</div>
                                                             </div>
                                                             <div class="form-control file-amount">Choose file</div>
-                                                            <input type="hidden" name="aadhar_card" class="selected-files"
+                                                            <input type="hidden" name="aadhar_card"
+                                                                class="selected-files"
                                                                 value="{{ old('aadhar_card', auth()->user()->aadhar_card) }}"
                                                                 required>
                                                         </div>
@@ -458,6 +486,13 @@
                                         name="{{ $field }}" value="{{ auth()->user()->$field }}">
                                 </div>
                             @endforeach
+
+
+                            <div class="col-md-12 mb-3">
+                                <label for="shop_address" class="form-label">Shop Full Address</label>
+                                <textarea name="shop_address" class="form-control" cols="4" rows="4">{{ old('shop_address', $profile->shop_address) }}</textarea>
+
+                            </div>
                         </div>
 
                         <div class="modal-footer">
