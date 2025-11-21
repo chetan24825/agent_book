@@ -78,6 +78,15 @@
                     </a>
                 </li>
 
+                <li>
+                    <a href="{{ route('agent.contact') }}">
+                      <i class="fas fa-id-badge"></i>
+                        <span>Contact Us</span>
+                    </a>
+                </li>
+
+
+
 
 
                 <li>

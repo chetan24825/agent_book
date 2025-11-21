@@ -71,6 +71,13 @@
                     </a>
                 </li>
 
+                <li>
+                    <a href="{{ route('user.contact') }}">
+                      <i class="fas fa-id-badge"></i>
+                        <span>Contact Us</span>
+                    </a>
+                </li>
+
 
 
 

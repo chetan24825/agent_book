@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AizUploadController;
 use App\Http\Controllers\Agent\AgentController;
 use App\Http\Controllers\Basic\BasicController;
+use App\Http\Controllers\Basic\ContactController;
 use App\Http\Controllers\Client\MyClientController;
 use App\Http\Controllers\Basic\InstallmentController;
 use App\Http\Controllers\Basic\SecurityDepositController;
@@ -18,6 +19,9 @@ Route::group(['middleware' => 'guest'], function () {
 
 Route::group(['middleware' => ['auth:agent', 'user.active']], function () {
     Route::get('/dashboard', [AgentController::class, 'toAgentDashboard'])->name('dashboard');
+
+    Route::get('/contact-us', [ContactController::class, 'toContact'])->name('contact');
+
 
     Route::group(['middleware' => ['topup.verified']], function () {
 
@@ -64,11 +68,6 @@ Route::group(['middleware' => ['auth:agent', 'user.active']], function () {
     Route::get('security', [SecurityDepositController::class, 'topayment'])->name('security');
     Route::post('security', [SecurityDepositController::class, 'topaymentStore']);
     Route::post('security/refund', [SecurityDepositController::class, 'toPaymentRefund'])->name('security.refund');
-
-
-
-
-
 
 
 

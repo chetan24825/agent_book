@@ -7,6 +7,7 @@ use App\Http\Controllers\AizUploadController;
 
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\Basic\BasicController;
+use App\Http\Controllers\Basic\ContactController;
 use App\Http\Controllers\Basic\InstallmentController;
 use App\Http\Controllers\User\ResetPasswordController;
 use App\Http\Controllers\User\ForgotPasswordController;
@@ -43,6 +44,9 @@ Route::get('/logout', function () {
 
 Route::group(['middleware' => ['auth:web', 'user.active'], 'prefix' => 'user', 'as' => 'user.'], function () {
     Route::get('/dashboard', [UserController::class, 'toUserDashboard'])->name('dashboard');
+
+    Route::get('/contact-us', [ContactController::class, 'toUserContact'])->name('contact');
+
 
     // Profile Update
     Route::get('profile', [UserController::class, 'UserProfile'])->name('profile');
