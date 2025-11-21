@@ -9,11 +9,13 @@
 <meta name="file-base-url" content="{{ getFileBaseURL() }}">
 <script src="{{ asset('panel/js/pages/layout.js') }}"></script>
 <link href="{{ asset('panel/css/app.min.css') }}" id="app-style" rel="stylesheet" type="text/css" />
-<link  href="{{ asset('panel/css/bootstrap.min.css') }}" id="bootstrap-style" rel="stylesheet" type="text/css" />
+<link href="{{ asset('panel/css/bootstrap.min.css') }}" id="bootstrap-style" rel="stylesheet" type="text/css" />
 <link href="{{ asset('panel/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('aizfiles/vendor.css') }}" rel="stylesheet">
 <script src="{{ asset('aizfiles/vendors.js') }}"></script>
 <link href="{{ asset('aizfiles/aiz-core.css') }}" rel="stylesheet">
+<link rel="icon" type="image/x-icon" href="{{ uploaded_asset(get_setting('favicon')) }}">
+
 @stack('styles')
 <script>
     var AIZ = AIZ || {};
@@ -39,4 +41,3 @@
         files: 'Files',
     }
 </script>
-
